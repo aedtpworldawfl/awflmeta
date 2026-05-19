@@ -1,0 +1,1685 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AEDTP WORLD — Register Your Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:        #0a0a0c;
+    --surface:   #111116;
+    --surface2:  #18181f;
+    --border:    #2a2a35;
+    --border2:   #3a3a48;
+    --gold:      #c9a84c;
+    --gold2:     #e8c87a;
+    --goldglow:  rgba(201,168,76,0.15);
+    --text:      #e8e6e0;
+    --muted:     #7a7888;
+    --accent:    #4a9eff;
+    --error:     #ff6b6b;
+    --success:   #5dd98c;
+    --radius:    10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── TOP HEADER BAR ── */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(10,10,12,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+
+  .site-header .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .site-header .logo span {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .header-pill {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page-wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 100px 24px 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    margin-bottom: 52px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.7s 0.1s ease forwards;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    background: var(--goldglow);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 5px 16px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.7s 0.25s ease forwards;
+  }
+
+  .card-section {
+    padding: 32px 36px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border2), transparent);
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-row.full { grid-template-columns: 1fr; }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .card-section { padding: 24px 20px; }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  label .req {
+    color: var(--gold);
+    margin-left: 3px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  select,
+  textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    appearance: none;
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    background: #1a1a22;
+  }
+
+  input.error, select.error, textarea.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+    cursor: pointer;
+  }
+
+  select option {
+    background: #1a1a22;
+    color: var(--text);
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  .field-error {
+    font-size: 11px;
+    color: var(--error);
+    display: none;
+  }
+
+  .field-error.show { display: block; }
+
+  /* ── CATEGORY GRID ── */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .cat-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cat-btn .cat-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    transition: all 0.18s;
+  }
+
+  .cat-btn:hover {
+    border-color: var(--border2);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .cat-btn.selected {
+    border-color: var(--gold);
+    background: var(--goldglow);
+    color: var(--gold2);
+    box-shadow: 0 0 16px rgba(201,168,76,0.08);
+  }
+
+  .cat-btn.selected .cat-icon {
+    background: rgba(201,168,76,0.15);
+    border-color: rgba(201,168,76,0.4);
+  }
+
+  /* ── BUSINESS SECTION ── */
+  .business-section {
+    display: none;
+    overflow: hidden;
+  }
+
+  .business-section.visible {
+    display: block;
+    animation: slideDown 0.35s ease;
+  }
+
+  /* ── RICH TEXT EDITOR ── */
+  .rte-wrapper {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface2);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .rte-wrapper:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+
+  .rte-wrapper.error { border-color: var(--error); }
+
+  .rte-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 10px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .rte-btn {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 9px;
+    font-family: 'DM Mono', monospace;
+    transition: all 0.15s;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .rte-btn:hover {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .rte-btn.active {
+    background: var(--goldglow);
+    border-color: rgba(201,168,76,0.3);
+    color: var(--gold);
+  }
+
+  .rte-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .rte-area {
+    min-height: 160px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 14px 16px;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .rte-area:empty::before {
+    content: attr(data-placeholder);
+    color: var(--muted);
+    opacity: 0.55;
+    pointer-events: none;
+    display: block;
+  }
+
+  /* Saved blocks in RTE */
+  .saved-block {
+    display: block;
+    background: rgba(201,168,76,0.05);
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 0 6px 6px 0;
+    position: relative;
+  }
+
+  .saved-block::after {
+    content: 'SAVED';
+    position: absolute;
+    top: 4px; right: 8px;
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  .rte-save-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .rte-save-hint {
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.6;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .rte-save-btn {
+    background: var(--goldglow);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 6px;
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+
+  .rte-save-btn:hover {
+    background: rgba(201,168,76,0.22);
+    border-color: rgba(201,168,76,0.5);
+  }
+
+  /* ── SUBMIT SECTION ── */
+  .submit-section {
+    padding: 28px 36px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .submit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .submit-info strong {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .submit-info small {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .submit-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    border-radius: 10px;
+    color: #0a0a0c;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 13px 32px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 170px;
+    text-align: center;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,0.25); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .submit-btn .btn-loader {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(10,10,12,0.3);
+    border-top-color: #0a0a0c;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+
+  .submit-btn.loading .btn-text { display: none; }
+  .submit-btn.loading .btn-loader { display: block; }
+
+  /* ── TOAST / MODAL ── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    z-index: 9000;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .toast-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .toast.success .toast-icon { background: rgba(93,217,140,0.15); color: var(--success); border: 1px solid rgba(93,217,140,0.3); }
+  .toast.error .toast-icon { background: rgba(255,107,107,0.15); color: var(--error); border: 1px solid rgba(255,107,107,0.3); }
+  .toast.info .toast-icon { background: rgba(74,158,255,0.15); color: var(--accent); border: 1px solid rgba(74,158,255,0.3); }
+
+  .toast-body { flex: 1; }
+  .toast-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .toast-msg { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── SUCCESS OVERLAY ── */
+  .success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,12,0.96);
+    z-index: 8000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .success-overlay.show { display: flex; animation: fadeIn 0.4s ease; }
+
+  .success-orb {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(93,217,140,0.25), rgba(93,217,140,0.05));
+    border: 2px solid rgba(93,217,140,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    animation: orbPulse 2s ease infinite;
+  }
+
+  .success-orb svg { color: var(--success); }
+
+  .success-overlay h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .success-overlay p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 420px;
+    margin-bottom: 8px;
+  }
+
+  .success-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    background: var(--goldglow);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin: 16px 0 28px;
+    word-break: break-all;
+    max-width: 520px;
+  }
+
+  .success-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  .btn-outline {
+    background: none;
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .btn-solid {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    border-radius: 10px;
+    color: #0a0a0c;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-solid:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: rgba(74,158,255,0.06);
+    border: 1px solid rgba(74,158,255,0.18);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 12.5px;
+    color: #9bc8ff;
+    line-height: 1.6;
+    margin-top: 6px;
+  }
+
+  .info-box strong { color: var(--accent); }
+
+  /* ── STEP INDICATOR ── */
+  .step-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.4s ease forwards;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .step.active { color: var(--gold); }
+  .step.done { color: var(--success); }
+
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  .step.active .step-num {
+    background: var(--goldglow);
+  }
+
+  .step-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin: 0 12px;
+    max-width: 60px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  @keyframes orbPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(93,217,140,0.2); }
+    50% { box-shadow: 0 0 0 16px rgba(93,217,140,0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* ── CHAR COUNTER ── */
+  .char-counter {
+    text-align: right;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    opacity: 0.55;
+    margin-top: 4px;
+  }
+
+  .char-counter.near { color: #ffa94d; opacity: 1; }
+  .char-counter.over { color: var(--error); opacity: 1; }
+
+  /* ── CATEGORY CUSTOM INPUT ── */
+  .custom-cat-wrap {
+    display: none;
+    margin-top: 12px;
+  }
+
+  .custom-cat-wrap.visible { display: block; animation: fadeUp 0.3s ease forwards; opacity: 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">AEDTP<span> WORLD</span></div>
+  <div class="header-pill">Work Registration Portal</div>
+</header>
+
+<!-- MAIN -->
+<main class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Open Registrations</div>
+    <h1>Register Your <em>Work</em></h1>
+    <p>Submit your profile as a Developer, Business, Artist, or any legal profession. Your work will be reviewed by AEDTP WORLD.</p>
+  </div>
+
+  <!-- STEP BAR -->
+  <div class="step-bar">
+    <div class="step active" id="step1">
+      <div class="step-num">1</div>
+      <span>Your Identity</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step2">
+      <div class="step-num">2</div>
+      <span>Work Details</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step3">
+      <div class="step-num">3</div>
+      <span>Submit</span>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <form id="registerForm" novalidate>
+
+    <!-- SECTION 1: IDENTITY -->
+    <div class="card">
+      <div class="card-section">
+        <div class="section-label">01. Your Identity</div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="fullName" placeholder="e.g. John Adeyemi" maxlength="80" autocomplete="name" />
+            <span class="field-error" id="err-fullName">Please enter your full name.</span>
+          </div>
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="you@example.com" maxlength="120" autocomplete="email" />
+            <span class="field-error" id="err-email">Enter a valid email address.</span>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="field">
+            <label>Country / Region <span class="req">*</span></label>
+            <select id="country">
+              <option value="">-- Select your country --</option>
+              <option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option>
+              <option>United States</option><option>United Kingdom</option><option>Canada</option><option>Germany</option>
+              <option>France</option><option>Australia</option><option>India</option><option>Brazil</option>
+              <option>Japan</option><option>China</option><option>Other</option>
+            </select>
+            <span class="field-error" id="err-country">Please select your country.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: WORK CATEGORY -->
+      <div class="card-section">
+        <div class="section-label">02. Work Category</div>
+
+        <div class="field" style="margin-bottom:14px;">
+          <label>Select your work type <span class="req">*</span></label>
+          <div class="category-grid" id="catGrid">
+            <button type="button" class="cat-btn" data-cat="Developer">
+              <div class="cat-icon">{ }</div>
+              Developer
+            </button>
+            <button type="button" class="cat-btn" data-cat="Business">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              </div>
+              Business
+            </button>
+            <button type="button" class="cat-btn" data-cat="Artist">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2"/><path d="M17.89 13.21A4 4 0 1113.21 17.89"/><path d="M2 2l20 20"/></svg>
+              </div>
+              Artist
+            </button>
+            <button type="button" class="cat-btn" data-cat="Musician">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </div>
+              Musician
+            </button>
+            <button type="button" class="cat-btn" data-cat="Designer">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              Designer
+            </button>
+            <button type="button" class="cat-btn" data-cat="Writer">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+              Writer
+            </button>
+            <button type="button" class="cat-btn" data-cat="Freelancer">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </div>
+              Freelancer
+            </button>
+            <button type="button" class="cat-btn" data-cat="Other">
+              <div class="cat-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              Other
+            </button>
+          </div>
+          <span class="field-error show" id="err-cat" style="display:none;">Please select a work category.</span>
+        </div>
+
+        <!-- Custom category for "Other" -->
+        <div class="custom-cat-wrap" id="customCatWrap">
+          <div class="field">
+            <label>Specify your work type <span class="req">*</span></label>
+            <input type="text" id="customCat" placeholder="e.g. Photographer, Consultant, Tutor..." maxlength="60" />
+            <span class="field-error" id="err-customCat">Please specify your work type.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: WORK DETAILS -->
+      <div class="card-section">
+        <div class="section-label">03. Work Details</div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Work / Brand Name <span class="req">*</span></label>
+            <input type="text" id="workName" placeholder="e.g. AFMALL, CodeNest, ArtHouse" maxlength="80" />
+            <span class="field-hint">This becomes part of your registration URL.</span>
+            <span class="field-error" id="err-workName">Work name is required.</span>
+          </div>
+          <div class="field">
+            <label>Registration Title <span class="req">*</span></label>
+            <input type="text" id="regTitle" placeholder="e.g. AFMALL_Business_Registration" maxlength="80" />
+            <span class="field-hint">Becomes the file title. Spaces auto-converted to underscores.</span>
+            <span class="field-error" id="err-regTitle">Registration title is required.</span>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="field">
+            <label>Brief Description <span class="req">*</span></label>
+            <textarea id="description" placeholder="Describe what you do, your services, skills or goals..." maxlength="500" rows="3"></textarea>
+            <div class="char-counter" id="descCounter">0 / 500</div>
+            <span class="field-error" id="err-description">Please provide a brief description.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Website / Portfolio URL</label>
+            <input type="url" id="website" placeholder="https://yoursite.com" maxlength="200" />
+            <span class="field-error" id="err-website">Enter a valid URL (include https://).</span>
+          </div>
+          <div class="field">
+            <label>Social Handle / Profile Link</label>
+            <input type="text" id="social" placeholder="@handle or profile URL" maxlength="120" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: BUSINESS-ONLY SECTION -->
+      <div class="card-section business-section" id="businessSection">
+        <div class="section-label">04. Business Details <span style="color:var(--muted);font-style:italic;font-size:10px;">(required for Business)</span></div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Business Registration Number</label>
+            <input type="text" id="bizRegNum" placeholder="e.g. RC-1234567" maxlength="60" />
+          </div>
+          <div class="field">
+            <label>Business Type <span class="req">*</span></label>
+            <select id="bizType">
+              <option value="">-- Select type --</option>
+              <option>Sole Proprietorship</option>
+              <option>Partnership</option>
+              <option>Limited Liability Company (LLC)</option>
+              <option>Corporation</option>
+              <option>Non-Profit Organization</option>
+              <option>Cooperative</option>
+              <option>Other</option>
+            </select>
+            <span class="field-error" id="err-bizType">Please select business type.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Industry / Sector <span class="req">*</span></label>
+            <input type="text" id="industry" placeholder="e.g. E-Commerce, Tech, Fashion, Food..." maxlength="80" />
+            <span class="field-error" id="err-industry">Please enter your industry.</span>
+          </div>
+          <div class="field">
+            <label>Year Established</label>
+            <input type="text" id="yearEst" placeholder="e.g. 2023" maxlength="4" />
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="field">
+            <label>Business Address</label>
+            <input type="text" id="bizAddress" placeholder="Street, City, Country" maxlength="200" />
+          </div>
+        </div>
+
+        <!-- BUSINESS REQUEST BOX -->
+        <div class="field" style="margin-top: 20px;">
+          <label>Business Build Request <span class="req">*</span></label>
+          <div class="rte-wrapper" id="rteWrapper">
+            <div class="rte-toolbar">
+              <button type="button" class="rte-btn" id="rte-bold" title="Bold" onclick="rteCmd('bold')"><b>B</b></button>
+              <button type="button" class="rte-btn" id="rte-italic" title="Italic" onclick="rteCmd('italic')"><i>I</i></button>
+              <button type="button" class="rte-btn" id="rte-underline" title="Underline" onclick="rteCmd('underline')"><u>U</u></button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" id="rte-h2" title="Heading" onclick="rteCmd('formatBlock','H2')">H2</button>
+              <button type="button" class="rte-btn" id="rte-h3" title="Subheading" onclick="rteCmd('formatBlock','H3')">H3</button>
+              <button type="button" class="rte-btn" id="rte-p" title="Paragraph" onclick="rteCmd('formatBlock','P')">P</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" id="rte-ul" title="Bullet List" onclick="rteCmd('insertUnorderedList')">&#8226; List</button>
+              <button type="button" class="rte-btn" id="rte-ol" title="Numbered List" onclick="rteCmd('insertOrderedList')">1. List</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" id="rte-left" title="Align Left" onclick="rteCmd('justifyLeft')">Left</button>
+              <button type="button" class="rte-btn" id="rte-center" title="Center" onclick="rteCmd('justifyCenter')">Center</button>
+              <button type="button" class="rte-btn" id="rte-right" title="Align Right" onclick="rteCmd('justifyRight')">Right</button>
+              <div class="rte-sep"></div>
+              <button type="button" class="rte-btn" id="rte-hr" title="Divider" onclick="rteCmd('insertHorizontalRule')">---</button>
+            </div>
+            <div class="rte-area"
+              id="rteArea"
+              contenteditable="true"
+              spellcheck="true"
+              data-placeholder="Write your business request here. Describe what you want AEDTP WORLD to build for you — include features, pages, functionality, and any specific requirements. Use formatting tools above to organise your request.&#10;&#10;Note: Once you save a block, it cannot be deleted.">
+            </div>
+            <div class="rte-save-row">
+              <span class="rte-save-hint">Save blocks to lock them permanently</span>
+              <button type="button" class="rte-save-btn" onclick="saveBlock()">Save Current Block</button>
+            </div>
+          </div>
+          <span class="field-error" id="err-rte">Please write your business request.</span>
+          <div class="info-box" style="margin-top:10px;">
+            <strong>Important:</strong> Once you click "Save Current Block", the selected content is locked and <strong>cannot be deleted</strong>. Write carefully. All saved content is included in your registration file for AEDTP WORLD review.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: REVIEW PREVIEW -->
+      <div class="card-section">
+        <div class="section-label">Preview — Registration URL</div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted);word-break:break-all;line-height:1.7;">
+          <span style="color:var(--muted);opacity:0.5;">https://aedtpworldawfl.github.io/awflmeta/register/</span><span id="urlPreview" style="color:var(--gold);">{title}@{workname}.html</span>
+        </div>
+      </div>
+
+      <!-- SUBMIT SECTION -->
+      <div class="submit-section">
+        <div class="submit-info">
+          <strong>Ready to register your work?</strong>
+          <small>Your registration will be reviewed by AEDTP WORLD</small>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="btn-text">Submit Registration</span>
+          <span class="btn-loader"></span>
+        </button>
+      </div>
+
+    </div>
+  </form>
+
+</main>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-orb">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h2>Registration Submitted!</h2>
+  <p>Your work registration has been sent to AEDTP WORLD for review. You will be notified once a decision is made.</p>
+  <p style="margin-top:6px;font-size:12px;color:#5a5868;">Your registration file is available at:</p>
+  <div class="success-url" id="successUrl"></div>
+  <p style="font-size:12px;color:#5a5868;max-width:400px;">If accepted, your business will be accessible at <code style="color:var(--gold);">https://aedtpworldawfl.github.io/business/{name}/</code></p>
+  <div class="success-btns" style="margin-top:24px;">
+    <button class="btn-outline" onclick="resetForm()">Register Another</button>
+    <a id="viewRegLink" href="#" class="btn-solid" target="_blank" rel="noopener">View Registration</a>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon"></div>
+  <div class="toast-body">
+    <div class="toast-title" id="toastTitle"></div>
+    <div class="toast-msg" id="toastMsg"></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   CONFIGURATION
+   ===================================================== */
+const API_BASE = 'https://awflmeta-api.onrender.com'; // Replace with your Render URL
+const GH_OWNER = 'aedtpworldawfl';
+const GH_REPO  = 'awflmeta';
+
+/* =====================================================
+   STATE
+   ===================================================== */
+let selectedCat = '';
+let savedBlocks = [];
+
+/* =====================================================
+   UTILITY
+   ===================================================== */
+function slugify(str) {
+  return str.trim().replace(/\s+/g, '_').replace(/[^\w\-@\.]/g, '').substring(0, 120);
+}
+
+function toBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+/* =====================================================
+   TOAST
+   ===================================================== */
+let toastTimer = null;
+function showToast(type, title, msg) {
+  const t = document.getElementById('toast');
+  const icons = { success: '&#10003;', error: '&#10007;', info: 'i' };
+  t.className = 'toast ' + type;
+  document.getElementById('toastIcon').innerHTML = icons[type] || 'i';
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+/* =====================================================
+   CATEGORY SELECTION
+   ===================================================== */
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedCat = btn.dataset.cat;
+
+    // Show/hide Business section
+    const biz = document.getElementById('businessSection');
+    if (selectedCat === 'Business') {
+      biz.classList.add('visible');
+      document.getElementById('step2').classList.add('active');
+    } else {
+      biz.classList.remove('visible');
+    }
+
+    // Show/hide custom category input
+    const cw = document.getElementById('customCatWrap');
+    if (selectedCat === 'Other') {
+      cw.classList.add('visible');
+    } else {
+      cw.classList.remove('visible');
+    }
+
+    document.getElementById('err-cat').style.display = 'none';
+    updateUrlPreview();
+  });
+});
+
+/* =====================================================
+   URL PREVIEW
+   ===================================================== */
+function updateUrlPreview() {
+  const title    = document.getElementById('regTitle').value || '{title}';
+  const workName = document.getElementById('workName').value || '{workname}';
+  const t = slugify(title) || '{title}';
+  const w = slugify(workName) || '{workname}';
+  document.getElementById('urlPreview').textContent = t + '@' + w + '.html';
+}
+
+document.getElementById('regTitle').addEventListener('input', updateUrlPreview);
+document.getElementById('workName').addEventListener('input', updateUrlPreview);
+
+/* =====================================================
+   CHAR COUNTER
+   ===================================================== */
+const descTA = document.getElementById('description');
+const descCtr = document.getElementById('descCounter');
+descTA.addEventListener('input', () => {
+  const len = descTA.value.length;
+  const max = 500;
+  descCtr.textContent = len + ' / ' + max;
+  descCtr.className = 'char-counter' + (len > max - 30 ? (len >= max ? ' over' : ' near') : '');
+});
+
+/* =====================================================
+   RICH TEXT EDITOR
+   ===================================================== */
+const rteArea = document.getElementById('rteArea');
+
+function rteCmd(cmd, val) {
+  rteArea.focus();
+  document.execCommand(cmd, false, val || null);
+  updateToolbarState();
+}
+
+function updateToolbarState() {
+  const cmds = ['bold','italic','underline'];
+  cmds.forEach(c => {
+    const btn = document.getElementById('rte-' + c);
+    if (btn) btn.classList.toggle('active', document.queryCommandState(c));
+  });
+}
+
+rteArea.addEventListener('keyup', updateToolbarState);
+rteArea.addEventListener('mouseup', updateToolbarState);
+rteArea.addEventListener('selectionchange', updateToolbarState);
+
+function saveBlock() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) {
+    showToast('info', 'Nothing selected', 'Select the text you want to save as a locked block.');
+    return;
+  }
+
+  const range = sel.getRangeAt(0);
+  if (range.collapsed) {
+    showToast('info', 'No selection', 'Highlight text in the editor first, then click Save.');
+    return;
+  }
+
+  // Check if selection is inside rteArea
+  if (!rteArea.contains(range.commonAncestorContainer)) {
+    showToast('error', 'Invalid selection', 'Please select text inside the editor.');
+    return;
+  }
+
+  const fragment = range.extractContents();
+  const savedSpan = document.createElement('div');
+  savedSpan.className = 'saved-block';
+  savedSpan.setAttribute('contenteditable', 'false');
+  savedSpan.appendChild(fragment);
+
+  range.insertNode(savedSpan);
+  savedBlocks.push(savedSpan.innerHTML);
+
+  // Collapse selection after saved block
+  const newRange = document.createRange();
+  newRange.setStartAfter(savedSpan);
+  newRange.collapse(true);
+  sel.removeAllRanges();
+  sel.addRange(newRange);
+
+  showToast('success', 'Block saved', 'This content is now locked and cannot be deleted.');
+}
+
+/* =====================================================
+   VALIDATION
+   ===================================================== */
+function validateForm() {
+  let valid = true;
+
+  function check(id, condition, errId) {
+    const el = document.getElementById(id);
+    const errEl = document.getElementById(errId);
+    if (!condition) {
+      el.classList.add('error');
+      errEl.classList.add('show');
+      valid = false;
+    } else {
+      el.classList.remove('error');
+      errEl.classList.remove('show');
+    }
+  }
+
+  check('fullName', document.getElementById('fullName').value.trim().length >= 2, 'err-fullName');
+  check('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim()), 'err-email');
+  check('country', document.getElementById('country').value !== '', 'err-country');
+  check('workName', document.getElementById('workName').value.trim().length >= 1, 'err-workName');
+  check('regTitle', document.getElementById('regTitle').value.trim().length >= 1, 'err-regTitle');
+  check('description', document.getElementById('description').value.trim().length >= 10, 'err-description');
+
+  const websiteVal = document.getElementById('website').value.trim();
+  if (websiteVal) {
+    try { new URL(websiteVal); document.getElementById('website').classList.remove('error'); document.getElementById('err-website').classList.remove('show'); }
+    catch { document.getElementById('website').classList.add('error'); document.getElementById('err-website').classList.add('show'); valid = false; }
+  }
+
+  if (!selectedCat) {
+    document.getElementById('err-cat').style.display = 'block';
+    valid = false;
+  }
+
+  if (selectedCat === 'Other') {
+    check('customCat', document.getElementById('customCat').value.trim().length >= 2, 'err-customCat');
+  }
+
+  if (selectedCat === 'Business') {
+    check('bizType', document.getElementById('bizType').value !== '', 'err-bizType');
+    check('industry', document.getElementById('industry').value.trim().length >= 2, 'err-industry');
+
+    const rteContent = rteArea.innerHTML.trim();
+    const rteWrapper = document.getElementById('rteWrapper');
+    const rteErr = document.getElementById('err-rte');
+    if (!rteContent || rteArea.textContent.trim().length < 10) {
+      rteWrapper.classList.add('error');
+      rteErr.classList.add('show');
+      valid = false;
+    } else {
+      rteWrapper.classList.remove('error');
+      rteErr.classList.remove('show');
+    }
+  }
+
+  return valid;
+}
+
+/* =====================================================
+   BUILD REGISTRATION HTML
+   ===================================================== */
+function buildRegistrationHTML(data) {
+  const ts = new Date().toISOString();
+  const {
+    fullName, email, country, category, workName, regTitle,
+    description, website, social,
+    bizRegNum, bizType, industry, yearEst, bizAddress,
+    requestHTML
+  } = data;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${regTitle} @ ${workName} — AEDTP WORLD Registration</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#0d0d10;color:#e4e2dd;min-height:100vh;padding:40px 20px}
+.wrap{max-width:780px;margin:0 auto}
+.header{border-bottom:2px solid #c9a84c;padding-bottom:20px;margin-bottom:32px}
+.badge{display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);color:#c9a84c;font-family:monospace;font-size:11px;letter-spacing:.1em;padding:4px 12px;border-radius:20px;margin-bottom:12px;text-transform:uppercase}
+h1{font-size:26px;font-weight:700;color:#e8e6e0;margin-bottom:4px}
+.meta{font-size:12px;color:#7a7888;font-family:monospace}
+.section{background:#16161c;border:1px solid #2a2a35;border-radius:10px;padding:24px;margin-bottom:16px}
+.section h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c9a84c;font-family:monospace;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #2a2a35}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+.field label{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7a7888;margin-bottom:4px}
+.field .val{font-size:14px;color:#e4e2dd}
+.field .val a{color:#4a9eff;text-decoration:none}
+.request-content{background:#111118;border:1px solid #2a2a35;border-radius:8px;padding:20px;margin-top:8px;font-size:14px;line-height:1.75;color:#e4e2dd}
+.request-content h2,.request-content h3{color:#c9a84c;margin:12px 0 6px}
+.request-content ul,.request-content ol{padding-left:20px;margin:8px 0}
+.request-content hr{border:none;border-top:1px solid #2a2a35;margin:12px 0}
+.saved-block{display:block;background:rgba(201,168,76,0.05);border-left:3px solid #c9a84c;padding:8px 12px;margin:4px 0;border-radius:0 6px 6px 0}
+.status-box{background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);border-radius:10px;padding:16px 20px;margin-top:24px;font-size:13px;color:#9bc8ff;line-height:1.6}
+.footer{text-align:center;font-size:11px;color:#4a4858;margin-top:40px;font-family:monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="badge">AEDTP WORLD — Registration File</div>
+    <h1>${regTitle}</h1>
+    <div class="meta">Submitted: ${ts} &nbsp;|&nbsp; Category: ${category} &nbsp;|&nbsp; Work: ${workName}</div>
+  </div>
+
+  <div class="section">
+    <h2>Registrant Identity</h2>
+    <div class="row">
+      <div class="field"><label>Full Name</label><div class="val">${fullName}</div></div>
+      <div class="field"><label>Email</label><div class="val"><a href="mailto:${email}">${email}</a></div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Country</label><div class="val">${country}</div></div>
+      <div class="field"><label>Category</label><div class="val">${category}</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Work Details</h2>
+    <div class="row">
+      <div class="field"><label>Work / Brand Name</label><div class="val">${workName}</div></div>
+      <div class="field"><label>Registration Title</label><div class="val">${regTitle}</div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Website</label><div class="val">${website ? '<a href="' + website + '" target="_blank" rel="noopener">' + website + '</a>' : '—'}</div></div>
+      <div class="field"><label>Social</label><div class="val">${social || '—'}</div></div>
+    </div>
+    <div class="field" style="margin-top:10px"><label>Description</label><div class="val" style="margin-top:4px;line-height:1.6">${description.replace(/\n/g,'<br>')}</div></div>
+  </div>
+
+${category === 'Business' ? `
+  <div class="section">
+    <h2>Business Details</h2>
+    <div class="row">
+      <div class="field"><label>Registration Number</label><div class="val">${bizRegNum || '—'}</div></div>
+      <div class="field"><label>Business Type</label><div class="val">${bizType || '—'}</div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Industry</label><div class="val">${industry || '—'}</div></div>
+      <div class="field"><label>Year Established</label><div class="val">${yearEst || '—'}</div></div>
+    </div>
+    <div class="field" style="margin-top:10px"><label>Address</label><div class="val">${bizAddress || '—'}</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Business Build Request</h2>
+    <div class="request-content">${requestHTML}</div>
+  </div>
+` : ''}
+
+  <div class="status-box">
+    <strong style="color:#4a9eff">Status: PENDING REVIEW</strong><br>
+    AEDTP WORLD will review this registration and decide to accept or deny the request. If accepted, the business will be accessible at:<br>
+    <code style="color:#c9a84c;font-size:12px">https://aedtpworldawfl.github.io/business/${workName.toLowerCase().replace(/\s+/g,'_')}/</code>
+  </div>
+
+  <div class="footer">AEDTP WORLD &mdash; awflmeta Registration System &mdash; ${ts}</div>
+</div>
+</body>
+</html>`;
+}
+
+/* =====================================================
+   GITHUB FILE WRITE (via API server)
+   ===================================================== */
+async function pushToGitHub(filePath, htmlContent, commitMsg) {
+  const b64 = toBase64(htmlContent);
+
+  // First try to get existing SHA
+  let sha = null;
+  try {
+    const chk = await fetch(`${API_BASE}/api/awflmeta/register-sha?path=${encodeURIComponent(filePath)}`);
+    if (chk.ok) {
+      const data = await chk.json();
+      sha = data.sha || null;
+    }
+  } catch (_) { /* ignore */ }
+
+  const resp = await fetch(`${API_BASE}/api/awflmeta/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      filePath,
+      content: b64,
+      message: commitMsg,
+      sha
+    })
+  });
+
+  if (!resp.ok) {
+    let errMsg = 'Server error ' + resp.status;
+    try { const j = await resp.json(); errMsg = j.error || errMsg; } catch(_) {}
+    throw new Error(errMsg);
+  }
+
+  return await resp.json();
+}
+
+/* =====================================================
+   FORM SUBMIT
+   ===================================================== */
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  if (!validateForm()) {
+    showToast('error', 'Validation Error', 'Please fix the highlighted fields before submitting.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Gather data
+  const fullName    = document.getElementById('fullName').value.trim();
+  const email       = document.getElementById('email').value.trim();
+  const country     = document.getElementById('country').value;
+  const category    = selectedCat === 'Other'
+    ? (document.getElementById('customCat').value.trim() || 'Other')
+    : selectedCat;
+  const workName    = document.getElementById('workName').value.trim();
+  const regTitle    = document.getElementById('regTitle').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const website     = document.getElementById('website').value.trim();
+  const social      = document.getElementById('social').value.trim();
+  const bizRegNum   = document.getElementById('bizRegNum').value.trim();
+  const bizType     = document.getElementById('bizType').value;
+  const industry    = document.getElementById('industry').value.trim();
+  const yearEst     = document.getElementById('yearEst').value.trim();
+  const bizAddress  = document.getElementById('bizAddress').value.trim();
+  const requestHTML = rteArea.innerHTML;
+
+  // Build slug / file path
+  const safeTitle    = slugify(regTitle);
+  const safeWorkName = slugify(workName);
+  const fileName     = `${safeTitle}@${safeWorkName}.html`;
+  const filePath     = `register/${fileName}`;
+
+  // Build HTML
+  const regHTML = buildRegistrationHTML({
+    fullName, email, country, category, workName, regTitle,
+    description, website, social,
+    bizRegNum, bizType, industry, yearEst, bizAddress,
+    requestHTML
+  });
+
+  try {
+    await pushToGitHub(
+      filePath,
+      regHTML,
+      `register: "${regTitle}" by ${fullName} [${category}]`
+    );
+
+    const registrationUrl = `https://${GH_OWNER}.github.io/${GH_REPO}/${filePath}`;
+
+    document.getElementById('successUrl').textContent = registrationUrl;
+    document.getElementById('viewRegLink').href = registrationUrl;
+    document.getElementById('successOverlay').classList.add('show');
+
+    document.getElementById('step1').className = 'step done';
+    document.getElementById('step2').className = 'step done';
+    document.getElementById('step3').className = 'step active done';
+
+  } catch (err) {
+    showToast('error', 'Submission Failed', err.message || 'Could not connect to server. Please try again.');
+    console.error('[register] submit error:', err);
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
+
+/* =====================================================
+   RESET
+   ===================================================== */
+function resetForm() {
+  document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('registerForm').reset();
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('businessSection').classList.remove('visible');
+  document.getElementById('customCatWrap').classList.remove('visible');
+  rteArea.innerHTML = '';
+  selectedCat = '';
+  savedBlocks = [];
+  updateUrlPreview();
+
+  ['step1','step2','step3'].forEach((s,i) => {
+    document.getElementById(s).className = 'step' + (i === 0 ? ' active' : '');
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* =====================================================
+   PREVENT DELETION OF SAVED BLOCKS IN RTE
+   ===================================================== */
+rteArea.addEventListener('keydown', function(e) {
+  if (e.key === 'Backspace' || e.key === 'Delete') {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+
+    // Walk up to check if we're inside or adjacent to a saved block
+    let node = range.startContainer;
+    while (node && node !== rteArea) {
+      if (node.classList && node.classList.contains('saved-block')) {
+        e.preventDefault();
+        showToast('info', 'Locked', 'This block has been saved and cannot be deleted.');
+        return;
+      }
+      node = node.parentNode;
+    }
+
+    // Check if selection spans over a saved block
+    const ancestor = range.commonAncestorContainer;
+    let check = ancestor.nodeType === 3 ? ancestor.parentNode : ancestor;
+    if (check && check !== rteArea) {
+      const saved = check.querySelectorAll ? check.querySelectorAll('.saved-block') : [];
+      if (saved.length > 0) {
+        e.preventDefault();
+        showToast('info', 'Locked', 'Your selection includes a locked block and cannot be deleted.');
+        return;
+      }
+    }
+  }
+});
+
+/* Prevent drag-drop removal of saved blocks */
+rteArea.addEventListener('dragstart', function(e) {
+  let node = e.target;
+  while (node && node !== rteArea) {
+    if (node.classList && node.classList.contains('saved-block')) {
+      e.preventDefault();
+      return;
+    }
+    node = node.parentNode;
+  }
+});
+
+/* =====================================================
+   INIT
+   ===================================================== */
+updateUrlPreview();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
