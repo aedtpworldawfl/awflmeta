@@ -1,346 +1,393 @@
-/**
- * AWFLMETA API SERVER
- * Deploy on Render (Node.js 18+)
- *
- * Required environment variables (set in Render dashboard):
- *   GH_TOKEN   — GitHub Personal Access Token with repo write scope
- *   GH_OWNER   — aedtpworldawfl
- *   GH_REPO    — awflmeta
- *   GH_BRANCH  — main   (or master)
- *   PORT       — set automatically by Render (defaults to 10000)
- *
- * This file lives in your repo at api/server.js but is run by Render,
- * NOT served as a static file — Render executes it with Node.
- */
+#!/bin/bash
+# AWFLMETA API Server — Deployment Guide for Render
+# Author: Emmanuel Deliver Amable
+# Organization: AEDTP WORLD
 
-'use strict';
+cat << 'EOF'
 
-const http     = require('http');
-const https    = require('https');
-const url      = require('url');
-const path     = require('path');
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║         AWFLMETA API SERVER v2.0 — RENDER DEPLOYMENT GUIDE           ║
+║                                                                       ║
+║              AEDTP WORLD FREE LICENSE (AWFL) v1.0.0                   ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
 
-/* ─── ENV ─── */
-const GH_TOKEN  = process.env.GH_TOKEN  || '';
-const GH_OWNER  = process.env.GH_OWNER  || 'aedtpworldawfl';
-const GH_REPO   = process.env.GH_REPO   || 'awflmeta';
-const GH_BRANCH = process.env.GH_BRANCH || 'main';
-const PORT      = parseInt(process.env.PORT || '10000', 10);
+📦 QUICK START
 
-/* Origins allowed to call this API */
-const ALLOWED_ORIGINS = [
-  'https://aedtpworldawfl.github.io',
-  'http://localhost:3000',
-  'http://localhost:5500',
-  'http://127.0.0.1:5500',
-];
+This guide walks you through deploying the AWFLMETA API Server to Render.com
+with automated GitHub integration for content management.
 
-/* ─── GITHUB API HELPER ─── */
-function ghRequest(method, endpoint, body) {
-  return new Promise((resolve, reject) => {
-    const payload = body ? JSON.stringify(body) : null;
-    const opts = {
-      hostname: 'api.github.com',
-      path: endpoint,
-      method,
-      headers: {
-        'User-Agent': 'awflmeta-server/1.0',
-        'Accept': 'application/vnd.github+json',
-        'Authorization': 'Bearer ' + GH_TOKEN,
-        'X-GitHub-Api-Version': '2022-11-28',
-        ...(payload ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } : {}),
-      },
-    };
-    const req = https.request(opts, res => {
-      let data = '';
-      res.on('data', c => (data += c));
-      res.on('end', () => {
-        try {
-          const json = data ? JSON.parse(data) : {};
-          if (res.statusCode >= 400) reject(new Error(json.message || 'GitHub error ' + res.statusCode));
-          else resolve(json);
-        } catch (e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    if (payload) req.write(payload);
-    req.end();
-  });
-}
+═══════════════════════════════════════════════════════════════════════════
 
-/* Get existing file SHA (needed to update a file) */
-async function getFileSHA(filePath) {
-  try {
-    const res = await ghRequest('GET', `/repos/${GH_OWNER}/${GH_REPO}/contents/${filePath}?ref=${GH_BRANCH}`);
-    return res.sha || null;
-  } catch {
-    return null; // file doesn't exist yet
+STEP 1: CREATE GITHUB PERSONAL ACCESS TOKEN (PAT)
+───────────────────────────────────────────────────
+
+This token allows the API server to read/write content to your GitHub repo.
+
+1. Go to: https://github.com/settings/tokens
+
+2. Click: "Generate new token" → "Generate new token (classic)"
+
+3. Configure:
+   └─ Token name:   "awflmeta-api-render"
+   └─ Expiration:   90 days (or custom)
+   └─ Scopes:       ✓ repo (full control of private repositories)
+                    └─ Required for: repo, public_repo
+
+4. Click "Generate token"
+
+⚠️  IMPORTANT: Copy the token immediately — you won't see it again!
+    Save it temporarily: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+═══════════════════════════════════════════════════════════════════════════
+
+STEP 2: PREPARE YOUR GITHUB REPOSITORY
+───────────────────────────────────────
+
+Ensure your repo structure includes:
+
+awflmeta/
+├── api/
+│   └── server.js           ← Node.js API server
+├── package.json            ← Node dependencies
+├── ai/
+│   ├── index.json          ← Category index
+│   └── *.html              ← Wiki pages
+├── apps/
+│   ├── index.json
+│   └── *.html
+├── artists/
+│   ├── index.json
+│   └── *.html
+├── ... (other categories)
+├── awfl/
+│   ├── index.json
+│   └── *.html
+├── images/
+│   └── *.jpg, *.png        ← Uploaded images
+├── README.md
+└── .gitignore
+
+The server expects:
+- Category directories: ai, apps, artists, bible, biography, business,
+  developer, dictionary, education, legacy, music, news, awfl
+- Each category has: index.json (array of page metadata)
+- Images directory for uploads
+
+═══════════════════════════════════════════════════════════════════════════
+
+STEP 3: SET UP PACKAGE.JSON
+────────────────────────────
+
+If not already present, create package.json in repo root:
+
+{
+  "name": "awflmeta",
+  "version": "2.0.0",
+  "description": "AEDTP WORLD WIKI METADATA Engine",
+  "main": "api/server.js",
+  "scripts": {
+    "start": "node api/server.js",
+    "dev": "node api/server.js"
+  },
+  "keywords": ["wiki", "metadata", "aedtp", "awfl"],
+  "author": "AEDTP WORLD",
+  "license": "AWFL-1.0",
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
 
-/* Create or update a file in the repo */
-async function putFile(filePath, contentBase64, message, sha) {
-  const body = {
-    message,
-    content: contentBase64,
-    branch: GH_BRANCH,
-    ...(sha ? { sha } : {}),
-  };
-  return ghRequest('PUT', `/repos/${GH_OWNER}/${GH_REPO}/contents/${filePath}`, body);
-}
+No external dependencies required — using Node.js built-ins only!
 
-/* ─── REQUEST HELPERS ─── */
-function readBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    req.on('data', c => chunks.push(c));
-    req.on('end', () => resolve(Buffer.concat(chunks)));
-    req.on('error', reject);
-  });
-}
+═══════════════════════════════════════════════════════════════════════════
 
-function setCORS(res, origin) {
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  res.setHeader('Access-Control-Allow-Origin', allowed);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.setHeader('Access-Control-Max-Age', '86400');
-}
+STEP 4: CREATE RENDER SERVICE
+──────────────────────────────
 
-function json(res, status, obj) {
-  const body = JSON.stringify(obj);
-  res.writeHead(status, { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) });
-  res.end(body);
-}
+1. Go to: https://dashboard.render.com
 
-function err(res, status, message) {
-  json(res, status, { error: message });
-}
+2. Sign up or log in
 
-/* ─── MULTIPART PARSER (for image upload) ─── */
-function parseMultipart(buffer, boundary) {
-  const sep = Buffer.from('--' + boundary);
-  const end = Buffer.from('--' + boundary + '--');
-  const parts = [];
-  let start = 0;
+3. Click: "New +" → "Web Service"
 
-  while (start < buffer.length) {
-    const sepIdx = buffer.indexOf(sep, start);
-    if (sepIdx === -1) break;
-    const afterSep = sepIdx + sep.length;
-    if (buffer.slice(afterSep, afterSep + 2).equals(Buffer.from('--'))) break; // end boundary
+4. Connect GitHub:
+   └─ Click "Connect account" if not already authenticated
+   └─ Select: aedtpworldawfl/awflmeta repository
+   └─ Click "Connect"
 
-    // skip CRLF after boundary
-    const headerStart = afterSep + 2;
-    const headerEnd = buffer.indexOf(Buffer.from('\r\n\r\n'), headerStart);
-    if (headerEnd === -1) break;
-    const headerStr = buffer.slice(headerStart, headerEnd).toString();
+5. Configure service:
 
-    // find next boundary
-    const nextSep = buffer.indexOf(sep, headerEnd + 4);
-    const bodyEnd = nextSep === -1 ? buffer.length : nextSep - 2; // subtract CRLF
-    const body = buffer.slice(headerEnd + 4, bodyEnd);
+   Field              │ Value
+   ──────────────────┼──────────────────────────────────
+   Name              │ awflmeta-api
+   Environment       │ Node
+   Region            │ (closest to you, or N. California)
+   Build Command     │ npm install
+   Start Command     │ node api/server.js
+   Instance Type     │ Free (or Starter Pro for production)
 
-    // parse headers
-    const headers = {};
-    headerStr.split('\r\n').forEach(line => {
-      const ci = line.indexOf(':');
-      if (ci > -1) {
-        const k = line.slice(0, ci).trim().toLowerCase();
-        const v = line.slice(ci + 1).trim();
-        headers[k] = v;
-      }
-    });
+6. Click: "Create Web Service"
 
-    // extract name and filename from content-disposition
-    const disp = headers['content-disposition'] || '';
-    const nameM = disp.match(/name="([^"]+)"/);
-    const fileM = disp.match(/filename="([^"]+)"/);
-    parts.push({
-      name: nameM ? nameM[1] : '',
-      filename: fileM ? fileM[1] : null,
-      contentType: headers['content-type'] || 'application/octet-stream',
-      data: body,
-    });
-    start = nextSep === -1 ? buffer.length : nextSep;
-  }
-  return parts;
-}
+   ⏳ Render will start building and deploying automatically.
+      This takes 2-5 minutes. You'll see a build log.
 
-/* ─── ROUTE HANDLERS ─── */
+═══════════════════════════════════════════════════════════════════════════
 
-/**
- * POST /api/awflmeta/publish
- *
- * Body (JSON):
- *   slug         string   e.g. "Buddy_DML"
- *   title        string
- *   category     string   e.g. "music"
- *   htmlContent  string   inner HTML of the wiki-content div
- *   wikiHTML     string   full standalone page HTML
- *   infoboxData  object|null
- *   author       string
- *
- * Actions:
- *   1. Write  awfl/<slug>.html
- *   2. Update awfl/index.json  (adds/updates entry)
- */
-async function handlePublish(req, res) {
-  if (!GH_TOKEN) return err(res, 500, 'Server not configured (GH_TOKEN missing).');
+STEP 5: ADD ENVIRONMENT VARIABLES
+──────────────────────────────────
 
-  let body;
-  try {
-    const raw = await readBody(req);
-    body = JSON.parse(raw.toString());
-  } catch {
-    return err(res, 400, 'Invalid JSON body.');
-  }
+After creating the service, go to the "Environment" tab and add these:
 
-  const { slug, title, category, wikiHTML, infoboxData, author } = body;
-  if (!slug || !title || !wikiHTML) return err(res, 400, 'slug, title and wikiHTML are required.');
+Variable Name      │ Value
+──────────────────┼──────────────────────────────────────────────────
+GH_TOKEN          │ ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+GH_OWNER          │ aedtpworldawfl
+GH_REPO           │ awflmeta
+GH_BRANCH         │ main
+NODE_ENV          │ production
 
-  /* Sanitise slug — allow word chars, hyphens, dots */
-  const safeSlug = slug.replace(/[^\w\-\.]/g, '');
-  if (!safeSlug) return err(res, 400, 'Invalid slug.');
+Detailed explanation:
 
-  const pagePath  = `awfl/${safeSlug}.html`;
-  const indexPath = 'awfl/index.json';
+┌─ GH_TOKEN (Required)
+│  └─ Your GitHub Personal Access Token (from Step 1)
+│     ⚠️  Keep this SECRET — never share or commit it!
+│
+├─ GH_OWNER (Required)
+│  └─ GitHub username: aedtpworldawfl
+│
+├─ GH_REPO (Required)
+│  └─ Repository name: awflmeta
+│
+├─ GH_BRANCH (Optional, defaults to 'main')
+│  └─ Git branch: main or master
+│     └─ Must exist in your repository!
+│
+└─ NODE_ENV (Optional, defaults to 'production')
+   └─ production ← deployment
+   └─ development ← local testing with verbose logging
 
-  try {
-    /* 1. Write the page HTML */
-    const pageSHA = await getFileSHA(pagePath);
-    const pageB64 = Buffer.from(wikiHTML, 'utf8').toString('base64');
-    await putFile(
-      pagePath,
-      pageB64,
-      `wiki: publish "${title}" [awflmeta]`,
-      pageSHA,
-    );
+After entering variables, click "Save"
 
-    /* 2. Update index.json */
-    let index = [];
-    const indexSHA = await getFileSHA(indexPath);
-    if (indexSHA) {
-      try {
-        const raw = await ghRequest('GET', `/repos/${GH_OWNER}/${GH_REPO}/contents/${indexPath}?ref=${GH_BRANCH}`);
-        index = JSON.parse(Buffer.from(raw.content, 'base64').toString('utf8'));
-        if (!Array.isArray(index)) index = [];
-      } catch { index = []; }
-    }
+═══════════════════════════════════════════════════════════════════════════
 
-    /* Remove existing entry for this slug, then prepend updated one */
-    index = index.filter(e => e.slug !== safeSlug);
-    index.unshift({
-      slug     : safeSlug,
-      title    : title.trim(),
-      category : (category || 'awfl').trim(),
-      updated  : Date.now(),
-      author   : author || 'unknown',
-    });
+STEP 6: DEPLOY & TEST
+─────────────────────
 
-    const indexB64 = Buffer.from(JSON.stringify(index, null, 2), 'utf8').toString('base64');
-    await putFile(
-      indexPath,
-      indexB64,
-      `wiki: update index for "${title}" [awflmeta]`,
-      indexSHA || undefined,
-    );
+Render will automatically deploy after:
+1. You add environment variables
+2. Service finishes initial build
 
-    const pageUrl = `https://${GH_OWNER}.github.io/${GH_REPO}/awfl/${safeSlug}.html`;
-    return json(res, 200, { ok: true, slug: safeSlug, url: pageUrl });
+Check status:
+- ✓ Green indicator = deployed successfully
+- 🔴 Red indicator = failed (check build logs)
 
-  } catch (e) {
-    console.error('[publish]', e.message);
-    return err(res, 502, 'GitHub write failed: ' + e.message);
-  }
-}
+Your API URL will be:
+    https://awflmeta-api.onrender.com
 
-/**
- * POST /api/upload/image
- *
- * Multipart form-data with field "image" (JPEG or PNG).
- * Writes the file to images/<filename> in the repo.
- * Returns { fileName, url }
- */
-async function handleUpload(req, res) {
-  if (!GH_TOKEN) return err(res, 500, 'Server not configured (GH_TOKEN missing).');
+Test it:
+1. Visit: https://awflmeta-api.onrender.com/api/health
+   └─ Should show a JSON response with server info
 
-  const ct = req.headers['content-type'] || '';
-  const boundaryM = ct.match(/boundary=([^\s;]+)/);
-  if (!boundaryM) return err(res, 400, 'Expected multipart/form-data.');
+2. Or use curl:
+   $ curl https://awflmeta-api.onrender.com/api/health
 
-  const rawBody = await readBody(req);
-  const parts = parseMultipart(rawBody, boundaryM[1]);
-  const filePart = parts.find(p => p.name === 'image' && p.filename);
-  if (!filePart) return err(res, 400, 'No image field found.');
+═══════════════════════════════════════════════════════════════════════════
 
-  if (!/^image\/(jpeg|png)$/.test(filePart.contentType))
-    return err(res, 400, 'Only JPEG and PNG images are accepted.');
+STEP 7: CONFIGURE GITHUB WEBHOOK (OPTIONAL)
+────────────────────────────────────────────
 
-  /* Sanitise filename */
-  const ext  = filePart.contentType === 'image/png' ? '.png' : '.jpg';
-  const base = path.basename(filePart.filename, path.extname(filePart.filename))
-    .replace(/[^\w\-]/g, '_').substring(0, 80);
-  const fileName = base + '_' + Date.now() + ext;
-  const filePath = `images/${fileName}`;
+This auto-redeploys your API when you push to the repository.
 
-  try {
-    const b64 = filePart.data.toString('base64');
-    await putFile(filePath, b64, `images: upload ${fileName} [awflmeta]`, null);
+1. In Render dashboard, go to your service
+2. Settings tab → find "GitHub Webhook"
+3. Copy webhook URL
+4. Go to: https://github.com/aedtpworldawfl/awflmeta/settings/hooks
+5. Click "Add webhook"
+6. Paste URL from Render
+7. Choose "Push" events
+8. Click "Add webhook"
 
-    const fileUrl = `https://${GH_OWNER}.github.io/${GH_REPO}/images/${fileName}`;
-    return json(res, 200, { ok: true, fileName, url: fileUrl });
-  } catch (e) {
-    console.error('[upload]', e.message);
-    return err(res, 502, 'GitHub write failed: ' + e.message);
-  }
-}
+Now every git push triggers automatic redeployment! ✓
 
-/**
- * GET /api/awflmeta/pages
- * Proxies awfl/index.json from the repo (avoids CORS / caching issues).
- */
-async function handleGetPages(req, res) {
-  try {
-    const raw = await ghRequest('GET', `/repos/${GH_OWNER}/${GH_REPO}/contents/awfl/index.json?ref=${GH_BRANCH}`);
-    const arr = JSON.parse(Buffer.from(raw.content, 'base64').toString('utf8'));
-    return json(res, 200, arr);
-  } catch (e) {
-    return json(res, 200, []); // return empty rather than error
-  }
-}
+═══════════════════════════════════════════════════════════════════════════
 
-/**
- * GET /api/health
- */
-function handleHealth(req, res) {
-  json(res, 200, { ok: true, service: 'awflmeta-api', ts: Date.now() });
-}
+API ENDPOINTS (After Deployment)
+─────────────────────────────────
 
-/* ─── MAIN SERVER ─── */
-const server = http.createServer(async (req, res) => {
-  const origin = req.headers.origin || '';
-  setCORS(res, origin);
+GET /api/health
+  └─ Health check & diagnostics
 
-  /* Preflight */
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    return res.end();
-  }
+GET /api/stats
+  └─ Server statistics
 
-  const { pathname } = url.parse(req.url);
+POST /api/awflmeta/publish
+  └─ Create/update wiki page
+     Body: { slug, title, category, wikiHTML, author, description, tags }
 
-  /* Route table */
-  if (req.method === 'POST' && pathname === '/api/awflmeta/publish') return handlePublish(req, res);
-  if (req.method === 'POST' && pathname === '/api/upload/image')     return handleUpload(req, res);
-  if (req.method === 'GET'  && pathname === '/api/awflmeta/pages')   return handleGetPages(req, res);
-  if (req.method === 'GET'  && pathname === '/api/health')           return handleHealth(req, res);
+POST /api/upload/image
+  └─ Upload image (JPEG/PNG, max 5MB)
+     Format: multipart/form-data with 'image' field
 
-  return err(res, 404, 'Not found.');
-});
+GET /api/awflmeta/pages
+  └─ List pages (optionally filter by ?category=CATEGORY)
 
-server.listen(PORT, () => {
-  console.log(`[awflmeta] API server running on port ${PORT}`);
-  console.log(`[awflmeta] Repo: ${GH_OWNER}/${GH_REPO} @ ${GH_BRANCH}`);
-  if (!GH_TOKEN) console.warn('[awflmeta] WARNING: GH_TOKEN is not set — publish & upload will fail!');
-});
+GET /api/awflmeta/page/:category/:slug
+  └─ Get single page metadata
+
+POST /api/cache/clear
+  └─ Clear index cache (?category=CATEGORY optional)
+
+Examples:
+
+  # Health check
+  curl https://awflmeta-api.onrender.com/api/health
+
+  # List music pages
+  curl "https://awflmeta-api.onrender.com/api/awflmeta/pages?category=music"
+
+  # Publish new page
+  curl -X POST https://awflmeta-api.onrender.com/api/awflmeta/publish \
+    -H "Content-Type: application/json" \
+    -d '{
+      "slug": "My_New_Page",
+      "title": "My New Page",
+      "category": "music",
+      "wikiHTML": "<h1>Title</h1><p>Content...</p>",
+      "author": "Your Name"
+    }'
+
+═══════════════════════════════════════════════════════════════════════════
+
+MONITORING & LOGS
+─────────────────
+
+View logs in Render dashboard:
+1. Select your service: awflmeta-api
+2. Click "Logs" tab
+3. See real-time server output
+
+Common log messages:
+
+✓ "[awflmeta] API server running on port 10000"
+  └─ Server started successfully
+
+✓ "[awflmeta] Repo: aedtpworldawfl/awflmeta @ main"
+  └─ GitHub connection configured
+
+✓ "[awflmeta] GitHub Token: ✓ Configured"
+  └─ Auth token is valid
+
+⚠️  "[awflmeta] WARNING: GH_TOKEN is not set"
+  └─ Token not configured in environment variables
+
+❌ "Cannot read property 'content' of undefined"
+  └─ GitHub API error (check GH_OWNER, GH_REPO, GH_BRANCH)
+
+═══════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+───────────────
+
+Problem: Service won't start
+┌─ Check package.json exists in repo root
+├─ Verify start command: "node api/server.js"
+└─ Review build logs in Render dashboard
+
+Problem: "GH_TOKEN is missing" error
+┌─ Add GH_TOKEN to environment variables in Render
+├─ Ensure token has 'repo' scope
+└─ Redeploy service after adding variable
+
+Problem: "Bad credentials" from GitHub
+┌─ Token may be expired or revoked
+├─ Generate new token at https://github.com/settings/tokens
+└─ Update GH_TOKEN and redeploy
+
+Problem: "Cannot find module" error
+┌─ Ensure package.json exists
+├─ Run: npm install (locally)
+└─ Commit package-lock.json to repo
+
+Problem: Slow response times
+┌─ Check memory usage: /api/stats
+├─ Clear cache: POST /api/cache/clear
+└─ Consider upgrading instance type
+
+Problem: 404 Not Found on endpoints
+┌─ Verify API URL: https://awflmeta-api.onrender.com
+├─ Check endpoint path: /api/awflmeta/publish
+└─ See API documentation for correct routes
+
+═══════════════════════════════════════════════════════════════════════════
+
+PERFORMANCE OPTIMIZATION
+────────────────────────
+
+Production settings:
+
+# In Render Environment variables:
+NODE_ENV=production
+
+# In server.js (already configured):
+- In-memory caching: 5-minute TTL on index files
+- Rate limiting: 100 requests/minute per IP
+- Connection pooling: Kept-alive HTTPS to GitHub
+- Request timeout: 30 seconds
+
+To increase rate limit:
+1. Edit server.js line ~50:
+   const RATE_LIMIT = { maxRequests: 1000, windowMs: 60000 }
+
+2. Commit and push to trigger redeployment
+
+═══════════════════════════════════════════════════════════════════════════
+
+SECURITY BEST PRACTICES
+───────────────────────
+
+✓ Never commit GH_TOKEN to version control
+✓ Rotate token every 90 days
+✓ Use GitHub webhook for auto-deploy (skip manual commits)
+✓ Monitor /api/stats for abuse
+✓ Keep Render service instance updated
+✓ Review server logs regularly for errors
+
+═══════════════════════════════════════════════════════════════════════════
+
+SUPPORT & RESOURCES
+───────────────────
+
+Documentation:
+  ├─ API Docs: See API_DOCUMENTATION.md
+  ├─ Server Code: api/server.js
+  └─ GitHub: https://github.com/aedtpworldawfl/awflmeta
+
+Support:
+  ├─ Email: aedtpworld@gmail.com
+  ├─ Creator: Emmanuel Deliver Amable
+  └─ License: AEDTP WORLD FREE LICENSE (AWFL) v1.0.0
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ YOU'RE DONE!
+
+Your AWFLMETA API Server is now live and ready to:
+  • Publish wiki content to 13 categories
+  • Upload and serve images
+  • Manage metadata indexes
+  • Scale automatically with Render
+
+Start publishing by POSTing to: /api/awflmeta/publish
+
+Questions? Contact: aedtpworld@gmail.com
+
+═══════════════════════════════════════════════════════════════════════════
+
+Version: 2.0.0
+Last Updated: May 19, 2026
+Platform: Render (render.com)
+Node.js: 18+ recommended
+
+EOF
