@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AWFLMETA — Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:       #0a0a0b;
+    --surface:  #111114;
+    --border:   #222228;
+    --accent:   #e8ff4a;
+    --accent2:  #4affb0;
+    --muted:    #555560;
+    --text:     #e8e8f0;
+    --text-dim: #888896;
+    --error:    #ff5a5a;
+    --radius:   6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── GRID LINES BG ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .logo span { color: var(--text-dim); font-weight: 400; }
+
+  .header-badge {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page {
+    position: relative; z-index: 10;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── HEADING ── */
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .page-title em {
+    font-style: normal;
+    -webkit-text-stroke: 1px var(--accent);
+    color: transparent;
+  }
+
+  .page-sub {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 48px;
+    max-width: 440px;
+  }
+
+  /* ── STEPS INDICATOR ── */
+  .steps {
+    display: flex; gap: 0; margin-bottom: 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .step {
+    flex: 1; padding: 10px 16px;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+    border-right: 1px solid var(--border);
+    transition: all 0.25s;
+  }
+  .step:last-child { border-right: none; }
+  .step.active { color: var(--accent); background: rgba(232,255,74,0.05); }
+  .step.done   { color: var(--accent2); }
+  .step-num    { font-size: 10px; display: block; margin-bottom: 2px; }
+
+  /* ── FORM SECTIONS ── */
+  .form-section {
+    display: none;
+    animation: fadeUp 0.35s ease both;
+  }
+  .form-section.visible { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── FIELD ── */
+  .field { margin-bottom: 24px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  label .req { color: var(--accent); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 12px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232,255,74,0.08);
+  }
+  textarea { resize: vertical; min-height: 100px; }
+  select option { background: #1a1a1e; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* ── CATEGORY GRID ── */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: all 0.2s;
+    background: var(--surface);
+    user-select: none;
+  }
+  .cat-card:hover  { border-color: var(--muted); }
+  .cat-card.selected {
+    border-color: var(--accent);
+    background: rgba(232,255,74,0.06);
+    box-shadow: 0 0 0 3px rgba(232,255,74,0.08);
+  }
+  .cat-icon { font-size: 22px; margin-bottom: 6px; }
+  .cat-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .cat-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .cat-custom { grid-column: 1 / -1; }
+  .cat-custom .cat-label { font-size: 12px; }
+
+  /* ── RICH TEXT EDITOR ── */
+  .rich-toolbar {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    padding: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .tb-btn {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tb-btn:hover  { background: var(--surface); border-color: var(--border); color: var(--text); }
+  .tb-btn.active { background: rgba(232,255,74,0.1); border-color: var(--accent); color: var(--accent); }
+
+  .rich-editor {
+    min-height: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    outline: none;
+    overflow-y: auto;
+    word-break: break-word;
+  }
+  .rich-editor:focus { border-color: var(--accent); }
+  .rich-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .rich-editor b, .rich-editor strong { color: var(--accent); }
+  .rich-editor u { text-decoration-color: var(--accent2); }
+  .rich-editor s { color: var(--muted); }
+
+  /* saved blocks cannot be edited */
+  .rich-editor .saved-block {
+    border-left: 2px solid var(--accent2);
+    padding-left: 10px;
+    margin: 4px 0;
+    color: var(--text-dim);
+    pointer-events: none;
+    user-select: text;
+  }
+
+  /* ── SAVE BLOCK BTN ── */
+  .save-block-row {
+    display: flex; justify-content: flex-end; margin-top: 8px;
+  }
+  .btn-save-block {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    padding: 6px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-save-block:hover { background: rgba(74,255,176,0.08); }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; margin-top: 36px; }
+
+  .btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0b;
+    flex: 1;
+  }
+  .btn-primary:hover { background: #f4ff77; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,255,74,0.2); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── NOTICE BOX ── */
+  .notice {
+    background: rgba(232,255,74,0.04);
+    border: 1px solid rgba(232,255,74,0.2);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .notice strong { color: var(--accent); }
+
+  /* ── ERROR ── */
+  .err-msg {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 6px;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+
+  /* ── SUCCESS PANEL ── */
+  #success-panel {
+    display: none;
+    text-align: center;
+    padding: 60px 0;
+    animation: fadeUp 0.4s ease both;
+  }
+  #success-panel.visible { display: block; }
+  .success-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: pop 0.4s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .success-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .success-sub { color: var(--text-dim); margin-bottom: 24px; font-size: 13px; }
+  .success-url {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 20px;
+    font-size: 12px;
+    color: var(--accent2);
+    word-break: break-all;
+    text-decoration: none;
+  }
+  .success-url:hover { border-color: var(--accent2); }
+
+  /* ── SPINNER ── */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(10,10,11,0.3);
+    border-top-color: #0a0a0b;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 480px) {
+    header { padding: 16px 20px; }
+    .page  { padding: 40px 16px 80px; }
+    .category-grid { grid-template-columns: 1fr 1fr; }
+    .btn-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">AWFL<span>META</span></a>
+  <span class="header-badge">Registration Portal</span>
+</header>
+
+<div class="page">
+
+  <h1 class="page-title">Register Your<br><em>Work</em></h1>
+  <p class="page-sub">Submit your work for review. AEDTP WORLD will build and host your page once approved.</p>
+
+  <!-- Steps -->
+  <div class="steps" id="steps-bar">
+    <div class="step active" id="step-1"><span class="step-num">01</span>Category</div>
+    <div class="step"        id="step-2"><span class="step-num">02</span>Details</div>
+    <div class="step"        id="step-3"><span class="step-num">03</span>Request</div>
+    <div class="step"        id="step-4"><span class="step-num">04</span>Submit</div>
+  </div>
+
+  <div id="main-form">
+
+    <!-- ══ SECTION 1: CATEGORY ══ -->
+    <div class="form-section visible" id="sec-1">
+      <div class="field">
+        <label>What type of work are you registering? <span class="req">*</span></label>
+        <div class="category-grid" id="cat-grid">
+          <div class="cat-card" data-value="Developer">
+            <div class="cat-icon">💻</div>
+            <div class="cat-label">Developer</div>
+            <div class="cat-desc">Software, apps, tools</div>
+          </div>
+          <div class="cat-card" data-value="Business">
+            <div class="cat-icon">🏢</div>
+            <div class="cat-label">Business</div>
+            <div class="cat-desc">Products, services</div>
+          </div>
+          <div class="cat-card" data-value="Artist">
+            <div class="cat-icon">🎨</div>
+            <div class="cat-label">Artist</div>
+            <div class="cat-desc">Visual, music, design</div>
+          </div>
+          <div class="cat-card" data-value="Creator">
+            <div class="cat-icon">🎬</div>
+            <div class="cat-label">Creator</div>
+            <div class="cat-desc">Content, media</div>
+          </div>
+          <div class="cat-card" data-value="Educator">
+            <div class="cat-icon">📚</div>
+            <div class="cat-label">Educator</div>
+            <div class="cat-desc">Teaching, training</div>
+          </div>
+          <div class="cat-card" data-value="Freelancer">
+            <div class="cat-icon">⚡</div>
+            <div class="cat-label">Freelancer</div>
+            <div class="cat-desc">Contract work</div>
+          </div>
+          <div class="cat-card cat-custom" data-value="__custom__">
+            <div class="cat-icon">✏️</div>
+            <div class="cat-label">Other — specify below</div>
+          </div>
+        </div>
+        <span class="err-msg" id="err-cat">Please select a category.</span>
+      </div>
+
+      <div class="field" id="custom-field" style="display:none">
+        <label>Custom work type <span class="req">*</span></label>
+        <input type="text" id="custom-type" placeholder="e.g. Photographer, NGO, Consultant…" maxlength="60" />
+        <span class="err-msg" id="err-custom">Please enter your work type.</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="goStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 2: DETAILS ══ -->
+    <div class="form-section" id="sec-2">
+
+      <div class="field">
+        <label>Registration Title <span class="req">*</span></label>
+        <input type="text" id="reg-title" placeholder="e.g. AFMALL Launch Request" maxlength="80" />
+        <div class="field-hint">Becomes part of the file name: {title}@{workname}.html</div>
+        <span class="err-msg" id="err-title">Title is required.</span>
+      </div>
+
+      <div class="field">
+        <label>Your Name / Handle <span class="req">*</span></label>
+        <input type="text" id="reg-name" placeholder="e.g. Kwame Asante" maxlength="80" />
+        <span class="err-msg" id="err-name">Name is required.</span>
+      </div>
+
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" />
+        <div class="field-hint">Optional. For AEDTP WORLD to contact you.</div>
+      </div>
+
+      <!-- Business-only fields -->
+      <div id="business-fields" style="display:none">
+        <hr class="divider" />
+        <div class="notice">
+          <strong>Business registration</strong> — the fields below are required for Business accounts.
+        </div>
+
+        <div class="field">
+          <label>Business / Brand Name <span class="req">*</span></label>
+          <input type="text" id="biz-name" placeholder="e.g. AFMALL" maxlength="80" />
+          <div class="field-hint">This will be used as the URL slug, e.g. /business/afmall/</div>
+          <span class="err-msg" id="err-biz">Business name is required.</span>
+        </div>
+
+        <div class="field">
+          <label>Business Description <span class="req">*</span></label>
+          <textarea id="biz-desc" placeholder="What does your business do? Products, services, target audience…" rows="4"></textarea>
+          <span class="err-msg" id="err-bizdesc">Please describe your business.</span>
+        </div>
+
+        <div class="field">
+          <label>Website / Social Link</label>
+          <input type="url" id="biz-link" placeholder="https://…" />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 3: REQUEST (rich text, Business + all) ══ -->
+    <div class="form-section" id="sec-3">
+
+      <div class="notice">
+        <strong>Request Message</strong> — describe what you'd like AEDTP WORLD to build.
+        You can format your text with the toolbar below. Once you click <em>Save Block</em>, that
+        section is locked and cannot be deleted. Add as many blocks as you need.
+      </div>
+
+      <div class="field">
+        <label>Your Request <span class="req">*</span></label>
+
+        <div class="rich-toolbar" id="toolbar">
+          <button class="tb-btn" title="Bold"          onmousedown="fmt(event,'bold')"><b>B</b></button>
+          <button class="tb-btn" title="Italic"        onmousedown="fmt(event,'italic')"><i>I</i></button>
+          <button class="tb-btn" title="Underline"     onmousedown="fmt(event,'underline')"><u>U</u></button>
+          <button class="tb-btn" title="Strikethrough" onmousedown="fmt(event,'strikeThrough')"><s>S</s></button>
+          <button class="tb-btn" title="Heading"       onmousedown="fmtBlock(event,'h3')">H3</button>
+          <button class="tb-btn" title="Paragraph"     onmousedown="fmtBlock(event,'p')">¶</button>
+          <button class="tb-btn" title="Bullet list"   onmousedown="fmt(event,'insertUnorderedList')">• List</button>
+          <button class="tb-btn" title="Numbered list" onmousedown="fmt(event,'insertOrderedList')"># List</button>
+          <button class="tb-btn" title="Code"          onmousedown="wrapCode(event)">{ }</button>
+        </div>
+
+        <div
+          class="rich-editor"
+          id="rich-editor"
+          contenteditable="true"
+          data-placeholder="Describe your request. Type here, format, then Save Block to lock it…"
+        ></div>
+
+        <div class="save-block-row">
+          <button class="btn-save-block" onclick="saveBlock()">⟳ Save Block</button>
+        </div>
+        <span class="err-msg" id="err-request">Please write your request.</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goStep(4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══ SECTION 4: REVIEW + SUBMIT ══ -->
+    <div class="form-section" id="sec-4">
+
+      <div class="notice">
+        <strong>Review before submitting.</strong> Once sent, your registration will be saved to the AWFLMETA repository
+        for review. AEDTP WORLD will accept or deny your request.
+      </div>
+
+      <div id="review-box" style="
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:20px 24px;
+        font-size:13px;
+        line-height:1.8;
+        margin-bottom:24px;
+      "></div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">
+          Register →
+        </button>
+      </div>
+      <span class="err-msg" id="err-submit" style="margin-top:12px;"></span>
+    </div>
+
+  </div><!-- /main-form -->
+
+  <!-- ══ SUCCESS ══ -->
+  <div id="success-panel">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Registration Sent!</div>
+    <p class="success-sub">Your file has been submitted for review by AEDTP WORLD.</p>
+    <a class="success-url" id="success-url" href="#" target="_blank"></a>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ─── STATE ─── */
+const API = 'https://awflmeta-api.onrender.com'; // ← your Render URL
+let selectedCat = '';
+let currentStep = 1;
+let savedBlocks = []; // array of HTML strings (locked)
+
+/* ─── CATEGORY SELECTION ─── */
+document.getElementById('cat-grid').addEventListener('click', e => {
+  const card = e.target.closest('.cat-card');
+  if (!card) return;
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedCat = card.dataset.value;
+  const customField = document.getElementById('custom-field');
+  customField.style.display = selectedCat === '__custom__' ? 'block' : 'none';
+});
+
+/* ─── STEP NAVIGATION ─── */
+function goStep(n) {
+  if (n > currentStep && !validate(currentStep)) return;
+
+  // Update Business-only fields visibility when arriving at step 2+
+  const cat = resolvedCategory();
+  document.getElementById('business-fields').style.display =
+    cat === 'Business' ? 'block' : 'none';
+
+  document.getElementById('sec-' + currentStep).classList.remove('visible');
+  currentStep = n;
+  document.getElementById('sec-' + n).classList.add('visible');
+
+  // Update step bar
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('step-' + i);
+    el.classList.remove('active', 'done');
+    if (i === n)      el.classList.add('active');
+    else if (i < n)   el.classList.add('done');
+  }
+
+  if (n === 4) buildReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ─── VALIDATION ─── */
+function validate(step) {
+  let ok = true;
+  const show = (id, show) => {
+    document.getElementById(id).classList.toggle('show', show);
+    if (show) ok = false;
+  };
+
+  if (step === 1) {
+    show('err-cat', !selectedCat);
+    if (selectedCat === '__custom__')
+      show('err-custom', !document.getElementById('custom-type').value.trim());
+  }
+
+  if (step === 2) {
+    show('err-title', !v('reg-title'));
+    show('err-name',  !v('reg-name'));
+    if (resolvedCategory() === 'Business') {
+      show('err-biz',     !v('biz-name'));
+      show('err-bizdesc', !v('biz-desc'));
+    }
+  }
+
+  if (step === 3) {
+    const editorText = document.getElementById('rich-editor').innerText.trim();
+    const hasContent = savedBlocks.length > 0 || editorText.length > 0;
+    show('err-request', !hasContent);
+  }
+
+  return ok;
+}
+
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function resolvedCategory() {
+  if (selectedCat === '__custom__')
+    return document.getElementById('custom-type').value.trim() || 'Other';
+  return selectedCat;
+}
+
+/* ─── RICH TEXT FORMATTING ─── */
+function fmt(e, cmd) {
+  e.preventDefault();
+  document.getElementById('rich-editor').focus();
+  document.execCommand(cmd, false, null);
+}
+
+function fmtBlock(e, tag) {
+  e.preventDefault();
+  document.getElementById('rich-editor').focus();
+  document.execCommand('formatBlock', false, tag);
+}
+
+function wrapCode(e) {
+  e.preventDefault();
+  const editor = document.getElementById('rich-editor');
+  editor.focus();
+  const sel = window.getSelection();
+  if (sel && !sel.isCollapsed) {
+    const range = sel.getRangeAt(0);
+    const code = document.createElement('code');
+    code.style.cssText = 'background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:3px;font-family:inherit;';
+    range.surroundContents(code);
+  }
+}
+
+/* ─── SAVE BLOCK (lock) ─── */
+function saveBlock() {
+  const editor = document.getElementById('rich-editor');
+  const html = editor.innerHTML.trim();
+  if (!html || html === '<br>') return;
+
+  // Wrap current content as locked block
+  savedBlocks.push(html);
+
+  // Replace editor content with locked block + fresh cursor
+  const block = document.createElement('div');
+  block.className = 'saved-block';
+  block.contentEditable = 'false';
+  block.innerHTML = html;
+
+  editor.innerHTML = '';
+  editor.appendChild(block);
+  editor.appendChild(document.createElement('br'));
+
+  // Move cursor to end
+  const range = document.createRange();
+  range.selectNodeContents(editor);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+/* Prevent deletion of saved blocks via keyboard */
+document.addEventListener('keydown', e => {
+  const editor = document.getElementById('rich-editor');
+  if (!editor) return;
+  if (document.activeElement !== editor && !editor.contains(document.activeElement)) return;
+
+  if (e.key === 'Backspace' || e.key === 'Delete') {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+
+    // Check if caret is right after a saved-block
+    let node = range.startContainer;
+    if (node.nodeType === 3 && range.startOffset === 0) node = node.previousSibling;
+    if (node && node.classList && node.classList.contains('saved-block')) {
+      e.preventDefault();
+    }
+  }
+});
+
+/* ─── BUILD REVIEW ─── */
+function buildReview() {
+  const cat = resolvedCategory();
+  const title = v('reg-title');
+  const name  = v('reg-name');
+  const email = v('reg-email');
+  const slug  = makeSlug(title) + '@' + makeSlug(cat);
+  const url   = `https://aedtpworldawfl.github.io/awflmeta/register/${slug}.html`;
+
+  const editor = document.getElementById('rich-editor');
+  const requestHTML = editor.innerHTML.trim();
+
+  let html = `
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Category</span><br>
+      <strong>${cat}</strong>
+    </div>
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Title</span><br>
+      <strong>${escHtml(title)}</strong>
+    </div>
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Name</span><br>
+      ${escHtml(name)}
+    </div>`;
+
+  if (email) html += `
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Email</span><br>
+      ${escHtml(email)}
+    </div>`;
+
+  if (cat === 'Business') {
+    html += `
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Business Name</span><br>
+      <strong>${escHtml(v('biz-name'))}</strong>
+    </div>
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Description</span><br>
+      ${escHtml(v('biz-desc'))}
+    </div>`;
+    if (v('biz-link')) html += `
+    <div style="margin-bottom:12px">
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">Link</span><br>
+      <a href="${escHtml(v('biz-link'))}" style="color:var(--accent2)">${escHtml(v('biz-link'))}</a>
+    </div>`;
+  }
+
+  html += `<hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <div>
+      <span style="color:var(--text-dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase">File URL</span><br>
+      <span style="color:var(--accent2);word-break:break-all;">${url}</span>
+    </div>`;
+
+  document.getElementById('review-box').innerHTML = html;
+}
+
+/* ─── SLUG HELPER ─── */
+function makeSlug(str) {
+  return str.trim().replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+}
+
+/* ─── HTML ESCAPE ─── */
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ─── BUILD PAGE HTML ─── */
+function buildPageHTML(data) {
+  const { cat, title, name, email, bizName, bizDesc, bizLink, requestHTML, ts } = data;
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${escHtml(title)} @ ${escHtml(cat)} — AWFLMETA Register</title>
+<style>
+body{font-family:monospace;background:#0a0a0b;color:#e8e8f0;max-width:760px;margin:0 auto;padding:40px 20px}
+h1{font-size:28px;color:#e8ff4a;margin-bottom:8px}
+.meta{color:#555560;font-size:12px;margin-bottom:32px}
+.field{margin-bottom:20px}
+.label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#555560;margin-bottom:4px}
+.value{color:#e8e8f0}
+hr{border:none;border-top:1px solid #222228;margin:24px 0}
+.request-box{background:#111114;border:1px solid #222228;border-radius:6px;padding:20px;line-height:1.7}
+.request-box b,.request-box strong{color:#e8ff4a}
+.request-box a{color:#4affb0}
+.status{display:inline-block;padding:4px 14px;border-radius:100px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:rgba(232,255,74,.08);border:1px solid #e8ff4a;color:#e8ff4a}
+</style>
+</head>
+<body>
+<p style="font-size:12px;color:#555560;margin-bottom:32px">AWFLMETA / register / ${escHtml(makeSlug(title))}@${escHtml(makeSlug(cat))}.html</p>
+<h1>${escHtml(title)}</h1>
+<div class="meta">Submitted ${new Date(ts).toUTCString()} &nbsp;·&nbsp; <span class="status">Pending Review</span></div>
+<div class="field"><div class="label">Category</div><div class="value">${escHtml(cat)}</div></div>
+<div class="field"><div class="label">Registrant</div><div class="value">${escHtml(name)}${email ? ` &lt;${escHtml(email)}&gt;` : ''}</div></div>
+${cat === 'Business' ? `
+<hr/>
+<div class="field"><div class="label">Business Name</div><div class="value">${escHtml(bizName)}</div></div>
+<div class="field"><div class="label">Description</div><div class="value">${escHtml(bizDesc)}</div></div>
+${bizLink ? `<div class="field"><div class="label">Link</div><div class="value"><a href="${escHtml(bizLink)}">${escHtml(bizLink)}</a></div></div>` : ''}` : ''}
+<hr/>
+<div class="field"><div class="label">Request</div></div>
+<div class="request-box">${requestHTML}</div>
+</body>
+</html>`;
+}
+
+/* ─── SUBMIT ─── */
+async function submitForm() {
+  if (!validate(3)) { goStep(3); return; }
+
+  const cat      = resolvedCategory();
+  const title    = v('reg-title');
+  const name     = v('reg-name');
+  const email    = v('reg-email');
+  const bizName  = v('biz-name');
+  const bizDesc  = v('biz-desc');
+  const bizLink  = v('biz-link');
+  const editor   = document.getElementById('rich-editor');
+  const requestHTML = editor.innerHTML.trim();
+
+  const slug  = makeSlug(title) + '@' + makeSlug(cat);
+  const ts    = Date.now();
+  const wikiHTML = buildPageHTML({ cat, title, name, email, bizName, bizDesc, bizLink, requestHTML, ts });
+
+  const btn = document.getElementById('submit-btn');
+  const errEl = document.getElementById('err-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Registering…';
+  errEl.classList.remove('show');
+
+  try {
+    const res = await fetch(`${API}/api/awflmeta/publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: slug,
+        title: title,
+        category: cat,
+        wikiHTML: wikiHTML,
+        author: name,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Unknown error');
+
+    // Success
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('steps-bar').style.display = 'none';
+    const panel = document.getElementById('success-panel');
+    panel.classList.add('visible');
+    const urlEl = document.getElementById('success-url');
+    urlEl.href = data.url;
+    urlEl.textContent = data.url;
+
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = 'Register →';
+    errEl.textContent = 'Submission failed: ' + e.message;
+    errEl.classList.add('show');
+  }
+}
+</script>
+
+</body>
+</html>
