@@ -1,0 +1,117 @@
+help me fix these codes, i want to use render.com to work it, but i don't know if it would work, tell me all what to do; "<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEDTP WORLD - Sign In</title>
+    
+    <script src="google.com" async defer></script>
+</head>
+<body>
+    <h1>Welcome to AEDTP WORLD</h1>
+    
+    <!-- Google Sign-In Initialization -->
+    <div id="g_id_onload"
+         data-client_id="151232337403-pr4r3q4in5cugnffvkds0ctt59jdpouh.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <!-- Google Sign-In Button Component -->
+    <div class="g_id_signin"
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="outline"
+         data-text="signin_with"
+         data-size="large"
+         data-logo_alignment="left">
+    </div>
+
+    <script>
+        // Callback function triggered when user successfully logs into Google
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token received.");
+            
+            // Send the token to your Node.js backend server
+            fetch('aedtpworld.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: response.credential })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Login successful! Welcome ' + data.user.name);
+                    window.location.href = '/dashboard'; // Redirect to dashboard
+                } else {
+                    alert('Authentication failed: ' + data.error);
+                }
+            })
+            .catch(err => console.error('Error:', err));
+        }
+    </script>
+</body>
+</html>
+---
+const express = require('express');
+const cors = require('cors');
+const { OAuth2Client } = require('google-auth-library');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Your verified configuration credentials
+const GOOGLE_CLIENT_ID = '151232337403-pr4r3q4in5cugnffvkds0ctt59jdpouh.apps.googleusercontent.com';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+// API Endpoint to receive and verify the Google token
+app.post('/api/auth/google', async (expressRequest, expressResponse) => {
+    const { token } = expressRequest.body;
+
+    if (!token) {
+        return expressResponse.status(400).json({ success: false, error: 'Token is required.' });
+    }
+
+    try {
+        // Cryptographically verify the token structure with Google's public keys
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: GOOGLE_CLIENT_ID
+        });
+        
+        const payload = ticket.getPayload();
+        
+        // Extracted profile information securely verified by Google
+        const userProfile = {
+            googleId: payload['sub'], // Unique, immutable Google user ID
+            email: payload['email'],
+            name: payload['name'],
+            picture: payload['picture']
+        };
+
+        // TODO: Query your database here.
+        // If userProfile.googleId doesn't exist, save them as a new user.
+        console.log('User authenticated successfully:', userProfile);
+
+        // Send a success response back to the front-end
+        return expressResponse.status(200).json({
+            success: true,
+            message: 'Authentication successful',
+            user: userProfile
+        });
+
+    } catch (authError) {
+        console.error('Verification failed:', authError.message);
+        return expressResponse.status(401).json({ success: false, error: 'Invalid Google token.' });
+    }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`AEDTP WORLD server running on port ${PORT}`));
+---
+npm install express google-auth-library cors "
