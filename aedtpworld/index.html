@@ -1,0 +1,819 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AEDTP WORLD VERIFICATION - Global Smartest WIKI METADATA Engine">
+    <meta name="theme-color" content="#252d40">
+    <link rel="icon" href="https://aedtpworldawfl.github.io/awflmeta/icons/aedtpworld.png" type="image/png">
+    <link rel="shortcut icon" href="https://aedtpworldawfl.github.io/awflmeta/icons/aedtpworld.png" type="image/png">
+    <title>AEDTP WORLD VERIFICATION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "IBM Plex Sans", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2030 50%, #141820 100%);
+            color: #e8edf5;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(37, 45, 64, 0.6);
+            border-radius: 12px;
+            border: 1px solid #3a4870;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #4a9eff;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #4a9eff;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 1.1em;
+            color: #6b7a95;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .copyright {
+            font-size: 0.9em;
+            color: #4a9eff;
+            letter-spacing: 0.1em;
+        }
+        
+        .main-image {
+            width: 100%;
+            max-height: 400px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #3a4870;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .description {
+            background: rgba(37, 45, 64, 0.4);
+            border-left: 4px solid #4a9eff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .gallery-item {
+            background: #1a2030;
+            border: 1px solid #3a4870;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(74, 158, 255, 0.2);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: #0f1419;
+        }
+        
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-label {
+            padding: 15px;
+            background: #252d40;
+            border-bottom: 1px solid #3a4870;
+            font-size: 0.95em;
+            color: #6b7a95;
+            text-align: center;
+        }
+        
+        .gallery-description {
+            padding: 15px;
+            font-size: 0.9em;
+            color: #e8edf5;
+        }
+        
+        .gallery-link {
+            display: block;
+            padding: 10px;
+            background: rgba(74, 158, 255, 0.1);
+            border-top: 1px solid #3a4870;
+            color: #4a9eff;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.85em;
+            transition: background 0.3s ease;
+        }
+        
+        .gallery-link:hover {
+            background: rgba(74, 158, 255, 0.2);
+        }
+        
+        .info-section {
+            background: rgba(37, 45, 64, 0.4);
+            border: 1px solid #3a4870;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .info-section h2 {
+            font-size: 1.5em;
+            color: #4a9eff;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3a4870;
+            padding-bottom: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-item {
+            background: rgba(20, 24, 32, 0.8);
+            padding: 15px;
+            border-left: 3px solid #4a9eff;
+            border-radius: 4px;
+        }
+        
+        .info-label {
+            font-size: 0.85em;
+            color: #6b7a95;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            font-size: 1.1em;
+            color: #e8edf5;
+        }
+        
+        .category-list {
+            background: rgba(37, 45, 64, 0.4);
+            border: 1px solid #3a4870;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .category-list h3 {
+            font-size: 1.3em;
+            color: #4a9eff;
+            margin-bottom: 20px;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        
+        .category-tag {
+            background: rgba(74, 158, 255, 0.15);
+            border: 1px solid #4a9eff;
+            color: #4a9eff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-tag:hover {
+            background: rgba(74, 158, 255, 0.25);
+            box-shadow: 0 0 12px rgba(74, 158, 255, 0.3);
+        }
+        
+        .metadata-form {
+            background: rgba(37, 45, 64, 0.6);
+            border: 1px solid #3a4870;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .metadata-form h2 {
+            font-size: 1.5em;
+            color: #4a9eff;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.95em;
+            color: #6b7a95;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1a2030;
+            border: 1px solid #3a4870;
+            border-radius: 6px;
+            color: #e8edf5;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            font-family: "IBM Plex Sans", Arial, sans-serif;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+        }
+        
+        .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a2030;
+            border: 1px solid #3a4870;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .metadata-table thead {
+            background: #252d40;
+            border-bottom: 1px solid #3a4870;
+        }
+        
+        .metadata-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #6b7a95;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-right: 1px solid #3a4870;
+        }
+        
+        .metadata-table th:last-child {
+            border-right: none;
+        }
+        
+        .metadata-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a3450;
+            border-right: 1px solid #2a3450;
+        }
+        
+        .metadata-table td:last-child {
+            border-right: none;
+        }
+        
+        .metadata-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .metadata-table input {
+            width: 100%;
+            background: #141820;
+            border: 1px solid #3a4870;
+            color: #e8edf5;
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: "IBM Plex Sans", Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        .metadata-table input:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: inset 0 0 8px rgba(74, 158, 255, 0.2);
+        }
+        
+        .category-name {
+            font-weight: 600;
+            color: #4a9eff;
+            min-width: 120px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: "IBM Plex Sans", Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .btn-primary {
+            background: #4a9eff;
+            color: #141820;
+        }
+        
+        .btn-primary:hover {
+            background: #3a8eef;
+            box-shadow: 0 0 15px rgba(74, 158, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #4a9eff;
+            color: #4a9eff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(74, 158, 255, 0.1);
+        }
+        
+        .success-message {
+            display: none;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #c8e6c9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .license-section {
+            background: rgba(37, 45, 64, 0.4);
+            border: 1px solid #3a4870;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .license-title {
+            font-size: 1.3em;
+            color: #4a9eff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .license-text {
+            font-size: 1.05em;
+            color: #e8edf5;
+            line-height: 1.8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(20, 24, 32, 0.8);
+            border-top: 1px solid #3a4870;
+            color: #6b7a95;
+            font-size: 0.9em;
+            border-radius: 12px;
+        }
+        
+        .footer a {
+            color: #4a9eff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: #7ab8ff;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="https://aedtpworldawfl.github.io/awflmeta/icons/aedtpworld.png" alt="AEDTP WORLD Logo">
+            </div>
+            <h1>AEDTP WORLD VERIFICATION</h1>
+            <p class="tagline">The Global Smartest WIKI METADATA Engine</p>
+            <p class="copyright">© AEDTP WORLD — All Rights Reserved</p>
+        </div>
+
+        <div class="main-image">
+            <img src="https://aedtpworldawfl.github.io/awflmeta/icons/aedtpworld.jpg" alt="AEDTP WORLD Banner">
+        </div>
+
+        <div class="description">
+            <strong>AEDTP WORLD</strong> is a global technologies, business, developer, and content platform dedicated to providing quick, relevant metadata results across artists, music, biography, business, education, news, and more — all in a single platform. This verification system ensures the integrity and accuracy of all wiki metadata published under the <strong>AEDTP WORLD FREE LICENSE (AWFL)</strong>.
+        </div>
+
+        <div class="info-section">
+            <h2>Identity & Ownership</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Name</div>
+                    <div class="info-value">AEDTP WORLD FREE LICENSE</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Creator</div>
+                    <div class="info-value">Emmanuel Deliver Amable</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Developer</div>
+                    <div class="info-value">AEDTP WORLD</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Founder</div>
+                    <div class="info-value">Emmanuel Deliver Amable</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Owner</div>
+                    <div class="info-value">Emmanuel Deliver Amable</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Publisher</div>
+                    <div class="info-value">AEDTP WORLD</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Origin</div>
+                    <div class="info-value">Volta Region, Ghana 🇬🇭</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Copyright</div>
+                    <div class="info-value">© AEDTP WORLD</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery">
+            <div class="gallery-item">
+                <div class="gallery-image">
+                    <img src="https://aedtpworldawfl.github.io/awflmeta/icons/verification1.jpg" alt="WIKI Metadata Example">
+                </div>
+                <div class="gallery-label">How WIKI is Written</div>
+                <div class="gallery-description">
+                    Shows details and metadata of a musical artist, demonstrating proper wiki structure and format.
+                </div>
+                <a href="https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html" class="gallery-link" target="_blank">View Example ↗</a>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-image">
+                    <img src="https://aedtpworldawfl.github.io/awflmeta/icons/verification2.jpg" alt="WIKI Verification">
+                </div>
+                <div class="gallery-label">How WIKI is Verified</div>
+                <div class="gallery-description">
+                    Illustrates verification processes and components of the AWFLMETA WIKI system.
+                </div>
+                <a href="https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html" class="gallery-link" target="_blank">View Example ↗</a>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-image">
+                    <img src="https://aedtpworldawfl.github.io/awflmeta/icons/verification3.jpg" alt="WIKI Verification Details">
+                </div>
+                <div class="gallery-label">WIKI Verification Details</div>
+                <div class="gallery-description">
+                    Shows the verification confirmation for musical artist metadata.
+                </div>
+                <a href="https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html" class="gallery-link" target="_blank">View Example ↗</a>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-image">
+                    <img src="https://aedtpworldawfl.github.io/awflmeta/icons/verification4.jpg" alt="AWFL Verification Badge">
+                </div>
+                <div class="gallery-label">AWFL Verification Badge</div>
+                <div class="gallery-description">
+                    Official verification indicator for AEDTP WORLD metadata.
+                </div>
+                <a href="https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html" class="gallery-link" target="_blank">View Example ↗</a>
+            </div>
+        </div>
+
+        <div class="category-list">
+            <h3>AWFLMETA Categories</h3>
+            <div class="categories">
+                <div class="category-tag">AI</div>
+                <div class="category-tag">APPS</div>
+                <div class="category-tag">ARTISTS</div>
+                <div class="category-tag">BIOGRAPHY</div>
+                <div class="category-tag">BUSINESS</div>
+                <div class="category-tag">DICTIONARY</div>
+                <div class="category-tag">DISCOGRAPHY</div>
+                <div class="category-tag">EDUCATION</div>
+                <div class="category-tag">MUSIC</div>
+                <div class="category-tag">NEWS</div>
+                <div class="category-tag">WIKI</div>
+            </div>
+        </div>
+
+        <div class="metadata-form">
+            <h2>Add Wiki Verification Metadata</h2>
+            <form id="metadataForm">
+                <div class="form-group">
+                    <label for="artistName">Subject Name/Title</label>
+                    <input type="text" id="artistName" placeholder="e.g., Buddy_DML_Fun(Song)_2026" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Primary Category</label>
+                    <input type="text" id="category" placeholder="e.g., MUSIC, ARTISTS, BIOGRAPHY" required>
+                </div>
+
+                <table class="metadata-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Link/URL (Click to add)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="category-name">AWFL</span></td>
+                            <td><input type="text" class="awfl-link" placeholder="Will auto-generate: https://aedtpworldawfl.github.io/awflmeta/awfl/[name]" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">ARTISTS</span></td>
+                            <td><input type="text" class="artists-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">BIOGRAPHY</span></td>
+                            <td><input type="text" class="biography-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">BUSINESS</span></td>
+                            <td><input type="text" class="business-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">DICTIONARY</span></td>
+                            <td><input type="text" class="dictionary-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">EDUCATION</span></td>
+                            <td><input type="text" class="education-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">MUSIC</span></td>
+                            <td><input type="text" class="music-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="category-name">NEWS</span></td>
+                            <td><input type="text" class="news-link" placeholder="Enter custom link or leave for auto-generation"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-primary" onclick="saveMetadata()">Save Metadata</button>
+                    <button type="reset" class="btn btn-secondary">Clear Form</button>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Metadata saved successfully! Your wiki verification has been recorded.
+                </div>
+            </form>
+        </div>
+
+        <div class="license-section">
+            <div class="license-title">AEDTP WORLD FREE LICENSE (AWFL)</div>
+            <div class="license-text">
+                <strong>The Global Smartest WIKI METADATA Engine</strong><br><br>
+                Developed and published by AEDTP WORLD. Built to provide quick, relevant metadata results across artists, music, biography, business, education, news, and more — all in a single platform.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>AEDTP WORLD | Emmanuel Deliver Amable | Volta Region, Ghana 🇬🇭</p>
+            <p style="margin-top: 15px;">
+                <a href="https://www.google.com/search?q=AEDTP+WORLD" target="_blank">Google</a> •
+                <a href="https://www.bing.com/search?q=AEDTP+WORLD" target="_blank">Bing</a> •
+                <a href="https://duckduckgo.com/?q=AEDTP+WORLD" target="_blank">DuckDuckGo</a> •
+                <a href="https://www.perplexity.ai/search?q=AEDTP+WORLD" target="_blank">Perplexity</a>
+            </p>
+            <p style="margin-top: 15px; color: #4a9eff;">© AEDTP WORLD — All Rights Reserved</p>
+        </div>
+    </div>
+
+    <script>
+        const baseUrls = {
+            awfl: 'https://aedtpworldawfl.github.io/awflmeta/awfl/',
+            artists: 'https://aedtpworldawfl.github.io/awflmeta/artists/',
+            biography: 'https://aedtpworldawfl.github.io/awflmeta/biography/',
+            business: 'https://aedtpworldawfl.github.io/awflmeta/business/',
+            dictionary: 'https://aedtpworldawfl.github.io/awflmeta/dictionary/',
+            education: 'https://aedtpworldawfl.github.io/awflmeta/education/',
+            music: 'https://aedtpworldawfl.github.io/awflmeta/music/',
+            news: 'https://aedtpworldawfl.github.io/awflmeta/news/'
+        };
+
+        const artistNameInput = document.getElementById('artistName');
+        const awflLinkInput = document.querySelector('.awfl-link');
+
+        function generateArtistUrl(name) {
+            if (!name) return '';
+            return baseUrls.awfl + name;
+        }
+
+        artistNameInput.addEventListener('input', function() {
+            const generatedUrl = generateArtistUrl(this.value);
+            awflLinkInput.value = generatedUrl;
+        });
+
+        function saveMetadata() {
+            const artistName = artistNameInput.value.trim();
+            const primaryCategory = document.getElementById('category').value.trim();
+
+            if (!artistName) {
+                alert('Please enter a subject name/title');
+                return;
+            }
+
+            if (!primaryCategory) {
+                alert('Please select a primary category');
+                return;
+            }
+
+            const metadata = {
+                subjectName: artistName,
+                primaryCategory: primaryCategory,
+                categories: {
+                    awfl: awflLinkInput.value,
+                    artists: document.querySelector('.artists-link').value || baseUrls.artists + artistName,
+                    biography: document.querySelector('.biography-link').value || baseUrls.biography + artistName,
+                    business: document.querySelector('.business-link').value || baseUrls.business + artistName,
+                    dictionary: document.querySelector('.dictionary-link').value || baseUrls.dictionary + artistName,
+                    education: document.querySelector('.education-link').value || baseUrls.education + artistName,
+                    music: document.querySelector('.music-link').value || baseUrls.music + artistName,
+                    news: document.querySelector('.news-link').value || baseUrls.news + artistName
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            console.log('Metadata saved:', metadata);
+
+            localStorage.setItem(`awfl_${artistName}`, JSON.stringify(metadata));
+
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 4000);
+
+            document.getElementById('metadataForm').reset();
+            awflLinkInput.value = '';
+        }
+
+        document.getElementById('metadataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveMetadata();
+        });
+
+        const categoryInputs = document.querySelectorAll('.metadata-table input[type="text"]:not(.awfl-link):not([readonly])');
+        categoryInputs.forEach(input => {
+            input.addEventListener('click', function() {
+                const artistName = artistNameInput.value.trim();
+                if (!artistName) {
+                    alert('Please enter a subject name/title first');
+                    return;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
