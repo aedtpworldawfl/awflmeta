@@ -1,3 +1,17 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,10 +97,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 #page-search{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:4px;font-size:12px;outline:none;font-family:var(--font-sans)}
 #page-search:focus{border-color:var(--accent2)}
 #page-search::placeholder{color:var(--text3)}
-#sidebar-cat-filter{display:flex;flex-wrap:wrap;gap:4px;padding:8px 12px;border-bottom:1px solid var(--border)}
-.cat-pill{background:var(--bg4);border:1px solid var(--border);color:var(--text3);padding:2px 7px;border-radius:10px;font-size:11px;cursor:pointer;font-family:var(--font-mono);transition:all .12s}
-.cat-pill:hover{color:var(--text);border-color:var(--border2)}
-.cat-pill.active{background:rgba(74,158,255,.12);border-color:var(--accent2);color:var(--accent)}
 
 /* ── MAIN ── */
 #main{flex:1;min-width:0;display:flex}
@@ -225,13 +235,13 @@ textarea.form-input{resize:vertical;min-height:70px}
 .form-error.show{display:block}
 .form-link{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;background:none;border:none;padding:0;font-family:var(--font-sans)}
 
-/* Page folder grid */
-.folder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px}
-.folder-btn{background:var(--bg4);border:2px solid var(--border);color:var(--text2);padding:12px 10px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;text-align:center;transition:all .15s;font-family:var(--font-sans);line-height:1.2}
-.folder-btn:hover{background:var(--surface);border-color:var(--border2);color:var(--text)}
-.folder-btn.selected{background:rgba(74,158,255,.1);border-color:var(--accent);color:var(--accent)}
-.folder-btn .fb-icon{display:block;font-size:22px;margin-bottom:4px}
-.folder-btn .fb-name{font-size:12px;font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;margin-top:2px;font-size:10px;color:var(--text3)}
+/* Category select in create modal */
+.cat-select-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px}
+.cat-select-btn{background:var(--bg4);border:2px solid var(--border);color:var(--text2);padding:12px 10px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;text-align:center;transition:all .15s;font-family:var(--font-sans);line-height:1.3}
+.cat-select-btn:hover{background:var(--surface);border-color:var(--border2);color:var(--text)}
+.cat-select-btn.selected{background:rgba(74,158,255,.1);border-color:var(--accent);color:var(--accent)}
+.cat-select-btn .csb-icon{display:block;font-size:22px;margin-bottom:4px}
+.cat-select-btn .csb-label{font-size:11px;font-family:var(--font-mono);letter-spacing:.05em;text-transform:uppercase;margin-top:2px;color:var(--text3)}
 
 /* infobox fields */
 .ib-field-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
@@ -319,7 +329,7 @@ textarea.form-input{resize:vertical;min-height:70px}
       <button class="h-btn primary" onclick="openModal('modal-create-account')">Create Account</button>
     </div>
     <div id="auth-user-btns" style="display:none;align-items:center;gap:8px">
-      <span id="auth-status" style="font-size:11px;font-family:var(--font-mono);color:var(--gold)" id="header-username"></span>
+      <span id="auth-status" style="font-size:11px;font-family:var(--font-mono);color:var(--gold)"></span>
       <button class="h-btn primary" onclick="openCreateModal()">+ New Wiki</button>
       <button class="h-btn" onclick="openModal('modal-upload')">↑ Upload</button>
       <button class="h-btn" onclick="doLogout()">Log Out</button>
@@ -329,13 +339,12 @@ textarea.form-input{resize:vertical;min-height:70px}
 
 <div id="search-results" style="display:none"></div>
 
-
-
 <nav id="subnav">
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/" target="_blank">HOME</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/ai/" target="_blank">AI</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/apps/" target="_blank">APPS</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/artists/" target="_blank">ARTISTS</a>
+  <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/awfl/" target="_blank">AWFL</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/bible/" target="_blank">BIBLE</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/biography/" target="_blank">BIOGRAPHY</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/business/" target="_blank">BUSINESS</a>
@@ -347,11 +356,7 @@ textarea.form-input{resize:vertical;min-height:70px}
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/news/" target="_blank">NEWS</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/help/" target="_blank">HELP</a>
   <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/license/" target="_blank">LICENSE</a>
-  <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/register/" target="_blank">REGISTER BUSINESS</a>
-  <a class="snav-btn" href="https://aedtpworldawfl.github.io/awflmeta/upload/" target="_blank">UPLOAD</a>
-
 </nav>
-
 
 <div id="app">
   <aside id="sidebar">
@@ -361,17 +366,6 @@ textarea.form-input{resize:vertical;min-height:70px}
     </div>
     <div id="sidebar-actions">
       <input id="page-search" type="search" placeholder="Filter pages…" oninput="filterPages(this.value)">
-    </div>
-    <div id="sidebar-cat-filter">
-      <span class="cat-pill active" onclick="setCatFilter('')" data-cat="">All</span>
-      <span class="cat-pill" onclick="setCatFilter('apps')" data-cat="apps">Apps</span>
-      <span class="cat-pill" onclick="setCatFilter('artists')" data-cat="artists">Artists</span>
-      <span class="cat-pill" onclick="setCatFilter('biography')" data-cat="biography">Bio</span>
-      <span class="cat-pill" onclick="setCatFilter('business')" data-cat="business">Biz</span>
-      <span class="cat-pill" onclick="setCatFilter('dictionary')" data-cat="dictionary">Dict</span>
-      <span class="cat-pill" onclick="setCatFilter('education')" data-cat="education">Edu</span>
-      <span class="cat-pill" onclick="setCatFilter('music')" data-cat="music">Music</span>
-      <span class="cat-pill" onclick="setCatFilter('news')" data-cat="news">News</span>
     </div>
     <div id="page-list"></div>
   </aside>
@@ -413,7 +407,6 @@ textarea.form-input{resize:vertical;min-height:70px}
         <button class="act-btn danger"  id="btn-delete" onclick="deleteCurrentPage()" style="display:none"><span class="ab-icon">🗑</span> Delete Page</button>
       </div>
 
-      <!-- FORMAT SECTION -->
       <div class="tools-section" id="fmt-section" style="display:none">
         <div class="tools-section-label">Headings</div>
         <div class="fmt-grid">
@@ -583,6 +576,8 @@ textarea.form-input{resize:vertical;min-height:70px}
   <div class="modal-box">
     <div class="modal-header"><h3>↑ Upload Image</h3><button class="modal-close" onclick="closeModal('modal-upload')">×</button></div>
     <div class="modal-body">
+      <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Images are stored at:</p>
+      <p style="font-size:11px;font-family:var(--font-mono);color:var(--accent);margin-bottom:12px">https://aedtpworldawfl.github.io/awflmeta/images/…</p>
       <p style="font-size:12px;color:var(--text3);margin-bottom:12px">Only JPEG and PNG files accepted.</p>
       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('upload-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
         <div class="uz-icon">🖼</div><p>Click to select or drag &amp; drop</p><p style="font-size:11px;margin-top:4px;color:var(--text3)">JPEG / PNG only</p>
@@ -597,49 +592,33 @@ textarea.form-input{resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- Create Wiki -->
+<!-- Create Wiki — simplified: just title + category select -->
 <div class="modal-overlay" id="modal-create">
-  <div class="modal-box" style="max-width:600px">
+  <div class="modal-box" style="max-width:560px">
     <div class="modal-header"><h3>📄 Create New Wiki Page</h3><button class="modal-close" onclick="closeModal('modal-create')">×</button></div>
     <div class="modal-body">
       <div class="form-group">
         <label>Wiki Title <span style="color:var(--red)">*</span></label>
-        <input class="form-input" id="new-page-title" placeholder="e.g. PROJECT BOOT DEV" oninput="updateSlugPreview()">
+        <input class="form-input" id="new-page-title" placeholder="e.g. Buddy DML" oninput="updateSlugPreview()">
+        <div class="form-hint">Spaces in the title become underscores in the URL.</div>
       </div>
       <div class="form-group">
-        <label>Choose Page Folder <span style="color:var(--red)">*</span></label>
-        <div class="folder-grid" id="folder-grid">
-          <button class="folder-btn" data-folder="apps" onclick="selectFolder('apps',this)">
-            <span class="fb-icon">📱</span>Apps<span class="fb-name">awflmeta/apps/</span>
-          </button>
-          <button class="folder-btn" data-folder="artists" onclick="selectFolder('artists',this)">
-            <span class="fb-icon">🎨</span>Artists<span class="fb-name">awflmeta/artists/</span>
-          </button>
-          <button class="folder-btn" data-folder="biography" onclick="selectFolder('biography',this)">
-            <span class="fb-icon">📖</span>Biography<span class="fb-name">awflmeta/biography/</span>
-          </button>
-          <button class="folder-btn" data-folder="business" onclick="selectFolder('business',this)">
-            <span class="fb-icon">💼</span>Business<span class="fb-name">awflmeta/business/</span>
-          </button>
-          <button class="folder-btn" data-folder="dictionary" onclick="selectFolder('dictionary',this)">
-            <span class="fb-icon">📚</span>Dictionary<span class="fb-name">awflmeta/dictionary/</span>
-          </button>
-          <button class="folder-btn" data-folder="education" onclick="selectFolder('education',this)">
-            <span class="fb-icon">🎓</span>Education<span class="fb-name">awflmeta/education/</span>
-          </button>
-          <button class="folder-btn" data-folder="music" onclick="selectFolder('music',this)">
-            <span class="fb-icon">🎵</span>Music<span class="fb-name">awflmeta/music/</span>
-          </button>
-          <button class="folder-btn" data-folder="news" onclick="selectFolder('news',this)">
-            <span class="fb-icon">📰</span>News<span class="fb-name">awflmeta/news/</span>
-          </button>
+        <label>Choose Category <span style="color:var(--red)">*</span></label>
+        <div class="cat-select-grid" id="cat-select-grid">
+          <button class="cat-select-btn" data-cat="apps"       onclick="selectCat('apps',this)"><span class="csb-icon">📱</span>Apps<span class="csb-label">awfl/apps/</span></button>
+          <button class="cat-select-btn" data-cat="artists"    onclick="selectCat('artists',this)"><span class="csb-icon">🎨</span>Artists<span class="csb-label">awfl/artists/</span></button>
+          <button class="cat-select-btn" data-cat="biography"  onclick="selectCat('biography',this)"><span class="csb-icon">📖</span>Biography<span class="csb-label">awfl/biography/</span></button>
+          <button class="cat-select-btn" data-cat="business"   onclick="selectCat('business',this)"><span class="csb-icon">💼</span>Business<span class="csb-label">awfl/business/</span></button>
+          <button class="cat-select-btn" data-cat="dictionary" onclick="selectCat('dictionary',this)"><span class="csb-icon">📚</span>Dictionary<span class="csb-label">awfl/dictionary/</span></button>
+          <button class="cat-select-btn" data-cat="education"  onclick="selectCat('education',this)"><span class="csb-icon">🎓</span>Education<span class="csb-label">awfl/education/</span></button>
+          <button class="cat-select-btn" data-cat="music"      onclick="selectCat('music',this)"><span class="csb-icon">🎵</span>Music<span class="csb-label">awfl/music/</span></button>
+          <button class="cat-select-btn" data-cat="news"       onclick="selectCat('news',this)"><span class="csb-icon">📰</span>News<span class="csb-label">awfl/news/</span></button>
         </div>
-        <div class="form-hint" id="folder-error" style="color:var(--red);display:none">Please select a folder.</div>
+        <div class="form-error" id="cat-error" style="display:none">Please select a category.</div>
       </div>
       <div class="form-group">
-        <label>File Name Preview</label>
-        <input class="form-input form-input-mono" id="new-page-filename" placeholder="Will be auto-generated" readonly>
-        <div class="form-hint" id="slug-preview-url" style="font-size:11px;color:var(--accent);margin-top:4px;font-family:var(--font-mono);word-break:break-all"></div>
+        <label>Published URL Preview</label>
+        <div id="slug-preview-url" style="font-size:11px;color:var(--accent);font-family:var(--font-mono);word-break:break-all;min-height:16px;padding:6px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:4px">—</div>
       </div>
     </div>
     <div class="modal-footer"><button class="btn-secondary" onclick="closeModal('modal-create')">Cancel</button><button class="btn-primary" onclick="createPage()">Create &amp; Edit</button></div>
@@ -651,7 +630,7 @@ textarea.form-input{resize:vertical;min-height:70px}
   <div class="modal-box">
     <div class="modal-header"><h3 id="insert-modal-title">Insert</h3><button class="modal-close" onclick="closeModal('modal-insert')">×</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>URL</label><input class="form-input" id="insert-url" placeholder="https://..."></div>
+      <div class="form-group"><label>URL</label><input class="form-input" id="insert-url" placeholder="https://…"></div>
       <div class="form-group" id="insert-text-group" style="display:none"><label>Display Text</label><input class="form-input" id="insert-text" placeholder="Click here"></div>
       <div class="form-group" id="insert-alt-group" style="display:none"><label>Alt / Caption (optional)</label><input class="form-input" id="insert-alt" placeholder="Image description"></div>
       <div class="form-group" id="insert-align-group" style="display:none">
@@ -698,31 +677,41 @@ textarea.form-input{resize:vertical;min-height:70px}
 
 /* ─── CONFIG ─── */
 const API_BASE     = 'https://awflmeta-api.onrender.com';
+const GH_OWNER     = 'aedtpworldawfl';
+const GH_REPO      = 'awflmeta';
 const GH_WIKI_BASE = 'https://aedtpworldawfl.github.io/awflmeta/';
 const GH_RAW_BASE  = 'https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/';
-const ACCOUNTS_URL = GH_RAW_BASE + 'accounts/accounts.json';
 
-const PAGE_FOLDERS = ['apps','artists','biography','business','dictionary','education','music','news'];
+/*
+  AWFL wiki pages live at:
+    https://aedtpworldawfl.github.io/awflmeta/awfl/<Title_With_Underscores>.html
+  The public index lives at:
+    https://aedtpworldawfl.github.io/awflmeta/awfl/index.json
+  Images live at:
+    https://aedtpworldawfl.github.io/awflmeta/images/<filename>
+*/
+const AWFL_INDEX_URL  = GH_RAW_BASE + 'awfl/index.json';
+const AWFL_PAGES_BASE = GH_WIKI_BASE + 'awfl/';
+const IMAGES_BASE     = GH_WIKI_BASE + 'images/';
 
 /* ─── STATE ─── */
 const DB_KEY   = 'awflmeta_pages';
 const IB_KEY   = 'awflmeta_infoboxes';
 const AUTH_KEY = 'awflmeta_auth';
-const PUB_CACHE= 'awflmeta_pub_cache';
+const PUB_CACHE= 'awflmeta_pub_cache_v2';
 
-let publicPages   = {};  // slug -> {slug,title,folder,updated,content}
+let publicPages   = {};   // slug -> {slug,title,updated,content}
 let localPages    = {};
 let infoboxes     = {};
-let currentSlug   = null;
-let currentPageId = null;
+let currentSlug   = null;  // slug of currently displayed public page
+let currentPageId = null;  // id of currently open local draft
 let isEditMode    = false;
 let insertType    = null;
 let savedSel      = null;
 let ibTemplate    = null;
 let currentUser   = null;
 let uploadFile    = null;
-let selectedFolder= null;
-let catFilter     = '';
+let selectedCat   = null;  // category chosen in create modal
 
 const IB_TEMPLATES = {
   Artist:   ['Image','Name','Description','Date of Birth','Origin','Genre','Official Website','Nationality','Occupation','Years Active','Labels','Associated Acts'],
@@ -737,90 +726,68 @@ const IB_TEMPLATES = {
   Custom:   [],
 };
 
-/* ─── LOCAL ACCOUNTS (accounts/accounts.json mirrored in localStorage) ─── */
-/* Since GitHub Pages is static, accounts are stored in localStorage.
-   We attempt to load from accounts.json as initial seed, then keep local. */
+/* ─── LOCAL ACCOUNTS ─── */
 const ACCT_KEY = 'awflmeta_accounts';
 function loadAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCT_KEY)||'[]'); }catch{ return []; } }
 function saveAccounts(arr){ try{ localStorage.setItem(ACCT_KEY,JSON.stringify(arr)); }catch{} }
 
-async function fetchAccountsSeed(){
-  // Try to fetch accounts from GitHub as initial seed (may 404 if not created yet)
-  try{
-    const r = await fetch(ACCOUNTS_URL+'?_='+Date.now());
-    if(r.ok){
-      const data = await r.json(); // [{username,passwordHash,...}]
-      const existing = loadAccounts();
-      // Merge: add any account from GitHub not already local
-      data.forEach(ghAcc=>{
-        if(!existing.find(a=>a.username.toLowerCase()===ghAcc.username.toLowerCase()))
-          existing.push(ghAcc);
-      });
-      saveAccounts(existing);
-    }
-  }catch{}
-}
-
 function hashPassword(pwd){
-  // Simple hash for client-side (not cryptographic, but enough for static-site auth)
-  let hash = 0;
+  let hash=0;
   for(let i=0;i<pwd.length;i++){ const c=pwd.charCodeAt(i); hash=((hash<<5)-hash)+c; hash|=0; }
   return 'h_'+Math.abs(hash).toString(36)+'_'+pwd.length;
 }
 
 function localCreateAccount(username, password){
-  const accounts = loadAccounts();
-  const uLow = username.toLowerCase();
-  if(accounts.find(a=>a.username.toLowerCase()===uLow)) throw new Error('Username already taken.');
-  const acc = { username, passwordHash: hashPassword(password), created: Date.now() };
+  const accounts=loadAccounts();
+  if(accounts.find(a=>a.username.toLowerCase()===username.toLowerCase()))
+    throw new Error('Username already taken.');
+  const acc={username, passwordHash:hashPassword(password), created:Date.now()};
   accounts.push(acc);
   saveAccounts(accounts);
   return acc;
 }
-
 function localSignIn(username, password){
-  const accounts = loadAccounts();
-  const uLow = username.toLowerCase();
-  const acc = accounts.find(a=>a.username.toLowerCase()===uLow);
+  const accounts=loadAccounts();
+  const acc=accounts.find(a=>a.username.toLowerCase()===username.toLowerCase());
   if(!acc) throw new Error('Account not found.');
-  if(acc.passwordHash !== hashPassword(password)) throw new Error('Incorrect password.');
+  if(acc.passwordHash!==hashPassword(password)) throw new Error('Incorrect password.');
   return acc;
 }
 
-/* ─── API helper (used for publish if backend available) ─── */
+/* ─── API helper ─── */
 async function apiCall(method, path, body, auth=true){
-  const hdrs = {'Content-Type':'application/json'};
-  if(auth && currentUser) hdrs['Authorization'] = 'Bearer '+(currentUser.token||'');
-  const res  = await fetch(API_BASE+path,{method,headers:hdrs,body:body?JSON.stringify(body):undefined});
-  const data = await res.json().catch(()=>({}));
+  const hdrs={'Content-Type':'application/json'};
+  if(auth && currentUser) hdrs['Authorization']='Bearer '+(currentUser.token||'');
+  const res=await fetch(API_BASE+path,{method,headers:hdrs,body:body?JSON.stringify(body):undefined});
+  const data=await res.json().catch(()=>({}));
   if(!res.ok) throw new Error(data.error||'API error');
   return data;
 }
 
 /* ─── AUTH ─── */
 function saveAuth(user){
-  currentUser = user;
-  if(user) localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  currentUser=user;
+  if(user) localStorage.setItem(AUTH_KEY,JSON.stringify(user));
   else     localStorage.removeItem(AUTH_KEY);
   updateAuthUI();
 }
 function loadAuth(){
-  try{ currentUser = JSON.parse(localStorage.getItem(AUTH_KEY)||'null'); }catch{ currentUser=null; }
+  try{ currentUser=JSON.parse(localStorage.getItem(AUTH_KEY)||'null'); }catch{ currentUser=null; }
   updateAuthUI();
 }
 function updateAuthUI(){
-  const guestDiv = document.getElementById('auth-guest-btns');
-  const userDiv  = document.getElementById('auth-user-btns');
-  const authStatus = document.getElementById('auth-status');
-  const btnCreate = document.getElementById('btn-create');
+  const guestDiv=document.getElementById('auth-guest-btns');
+  const userDiv=document.getElementById('auth-user-btns');
+  const authStatus=document.getElementById('auth-status');
+  const btnCreate=document.getElementById('btn-create');
   if(currentUser){
     guestDiv.style.display='none'; userDiv.style.display='flex';
-    if(authStatus) authStatus.textContent = '👤 '+currentUser.username;
-    if(btnCreate)  btnCreate.style.display='flex';
+    if(authStatus) authStatus.textContent='👤 '+currentUser.username;
+    if(btnCreate) btnCreate.style.display='flex';
   } else {
     guestDiv.style.display='flex'; userDiv.style.display='none';
     if(authStatus) authStatus.textContent='';
-    if(btnCreate)  btnCreate.style.display='none';
+    if(btnCreate) btnCreate.style.display='none';
     ['btn-edit','btn-save','btn-delete','fmt-section','fmt-inline-section',
      'fmt-block-section','fmt-align-section','fmt-insert-section',
      'color-section','clip-section'].forEach(id=>{
@@ -830,12 +797,12 @@ function updateAuthUI(){
   }
 }
 
-/* ─── ACCOUNT CREATION ─── */
+/* ─── CREATE ACCOUNT ─── */
 async function doCreateAccount(){
-  const username = document.getElementById('ca-username').value.trim();
-  const password = document.getElementById('ca-password').value;
-  const errEl    = document.getElementById('ca-error');
-  const btn      = document.getElementById('ca-btn');
+  const username=document.getElementById('ca-username').value.trim();
+  const password=document.getElementById('ca-password').value;
+  const errEl=document.getElementById('ca-error');
+  const btn=document.getElementById('ca-btn');
   errEl.classList.remove('show');
   if(!username){ showFormErr(errEl,'Username is required.'); return; }
   if(/\s/.test(username)){ showFormErr(errEl,'No spaces in username.'); return; }
@@ -844,35 +811,35 @@ async function doCreateAccount(){
   if(password.length<8){ showFormErr(errEl,'Password must be at least 8 characters.'); return; }
   btn.disabled=true; btn.textContent='Creating…';
   try{
-    const acc = localCreateAccount(username, password);
-    saveAuth({username: acc.username, token: 'local_'+Date.now()});
+    const acc=localCreateAccount(username,password);
+    saveAuth({username:acc.username, token:'local_'+Date.now()});
     closeModal('modal-create-account');
     document.getElementById('ca-username').value='';
     document.getElementById('ca-password').value='';
     loadLocalData(); renderPageList();
     toast('Account created! Welcome, '+acc.username+' ✓','ok');
-  } catch(e){ showFormErr(errEl, e.message); }
+  } catch(e){ showFormErr(errEl,e.message); }
   finally{ btn.disabled=false; btn.textContent='Create Account'; }
 }
 
 async function doSignIn(){
-  const username = document.getElementById('si-username').value.trim();
-  const password = document.getElementById('si-password').value;
-  const errEl    = document.getElementById('si-error');
-  const btn      = document.getElementById('si-btn');
+  const username=document.getElementById('si-username').value.trim();
+  const password=document.getElementById('si-password').value;
+  const errEl=document.getElementById('si-error');
+  const btn=document.getElementById('si-btn');
   errEl.classList.remove('show');
   if(!username){ showFormErr(errEl,'Username is required.'); return; }
   if(!password){ showFormErr(errEl,'Password is required.'); return; }
   btn.disabled=true; btn.textContent='Signing in…';
   try{
-    const acc = localSignIn(username, password);
-    saveAuth({username: acc.username, token: 'local_'+Date.now()});
+    const acc=localSignIn(username,password);
+    saveAuth({username:acc.username, token:'local_'+Date.now()});
     closeModal('modal-signin');
     document.getElementById('si-username').value='';
     document.getElementById('si-password').value='';
     loadLocalData(); renderPageList();
     toast('Welcome back, '+acc.username+'!','ok');
-  } catch(e){ showFormErr(errEl, e.message); }
+  } catch(e){ showFormErr(errEl,e.message); }
   finally{ btn.disabled=false; btn.textContent='Sign In'; }
 }
 
@@ -913,17 +880,22 @@ async function doUpload(){
   btn.disabled=true; btn.textContent='Uploading…';
   try{
     const fd=new FormData(); fd.append('image',uploadFile);
-    const res=await fetch(API_BASE+'/api/upload/image',{method:'POST',
-      headers:{'Authorization':'Bearer '+(currentUser.token||'')},body:fd});
+    const res=await fetch(API_BASE+'/api/upload/image',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+(currentUser.token||'')},
+      body:fd
+    });
     const data=await res.json();
     if(!res.ok) throw new Error(data.error||'Upload failed');
+    /* Images are served from /awflmeta/images/ on GitHub Pages */
+    const pagesUrl = IMAGES_BASE + data.fileName;
     const urlEl=document.getElementById('upload-result-url');
-    urlEl.innerHTML='✓ URL: <a href="'+esc(data.url)+'" target="_blank" style="color:var(--accent)">'+esc(data.url)+'</a>';
+    urlEl.innerHTML='✓ Image URL (use this):<br><a href="'+esc(pagesUrl)+'" target="_blank" style="color:var(--accent)">'+esc(pagesUrl)+'</a>';
     urlEl.style.display='block';
     toast('Image uploaded ✓','ok');
     uploadFile=null; btn.disabled=true;
   } catch(e){
-    toast('Upload failed: '+e.message+' (paste image URL manually)','err');
+    toast('Upload failed: '+e.message+' — you can paste image URL manually','err');
     btn.disabled=false;
   }
   btn.textContent='Upload';
@@ -939,65 +911,74 @@ function saveLocalData(){
   try{ localStorage.setItem(IB_KEY,JSON.stringify(infoboxes)); }catch{}
 }
 
-/* ─── PUBLIC PAGES (load from GitHub per-folder index.json) ─── */
+/* ─── SLUG UTILITIES ─── */
+/*
+  Title "Buddy DML"  →  slug "Buddy_DML"  →  file "Buddy_DML.html"
+  URL: https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html
+  (no .html shown in index.json href; browser resolves it)
+*/
+function titleToSlug(title){
+  return title.trim().replace(/\s+/g,'_').replace(/[^\w\-\.]/g,'');
+}
+function slugToPageUrl(slug){
+  return AWFL_PAGES_BASE + slug + '.html';
+}
+
+/* ─── PUBLIC PAGES (load from awfl/index.json) ─── */
 async function loadPublicPages(){
   document.getElementById('page-list').innerHTML=
     '<div class="loading-spinner"><span class="spin">⟳</span><br><span style="font-size:12px;margin-top:8px;display:block">Loading pages…</span></div>';
 
-  // Try to load cached data first for fast render
+  /* Serve cached immediately for fast paint */
   try{
-    const cached = JSON.parse(localStorage.getItem(PUB_CACHE)||'{}');
+    const cached=JSON.parse(localStorage.getItem(PUB_CACHE)||'{}');
     if(Object.keys(cached).length){ publicPages=cached; renderPageList(); }
   }catch{}
 
-  // Fetch each folder's index.json from GitHub
-  publicPages = {};
-  const fetches = PAGE_FOLDERS.map(async folder=>{
-    try{
-      const url = GH_RAW_BASE + folder + '/index.json?_='+Date.now();
-      const r   = await fetch(url);
-      if(!r.ok) return;
-      const arr = await r.json(); // [{slug,title,updated,filename}]
+  try{
+    const r=await fetch(AWFL_INDEX_URL+'?_='+Date.now());
+    if(r.ok){
+      const arr=await r.json(); // [{slug, title, updated, category?}]
+      publicPages={};
       arr.forEach(p=>{
-        const key = folder+'/'+p.slug;
-        publicPages[key] = {key, slug:p.slug, title:p.title, folder, updated:p.updated||0, content:null, filename:p.filename||p.slug+'.html'};
+        publicPages[p.slug]={
+          slug    : p.slug,
+          title   : p.title,
+          category: p.category||'awfl',
+          updated : p.updated||Date.now(),
+          content : null,
+        };
       });
-    }catch{}
-  });
-  await Promise.allSettled(fetches);
+      try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{}
+    }
+  }catch(e){
+    console.warn('Could not fetch awfl/index.json:',e.message);
+  }
 
-  try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{}
   renderPageList();
   routeFromHash();
 }
 
 /* ─── FETCH A SINGLE PAGE FROM GITHUB ─── */
-async function fetchPageContent(key){
-  if(publicPages[key]?.content) return publicPages[key].content;
-  const p = publicPages[key];
-  if(!p) return null;
-  const url = GH_WIKI_BASE + p.folder + '/' + (p.filename||p.slug+'.html');
+async function fetchPageContent(slug){
+  if(publicPages[slug]?.content) return publicPages[slug].content;
+  const url=slugToPageUrl(slug);
   try{
-    const r = await fetch(url+'?_='+Date.now());
+    const r=await fetch(url+'?_='+Date.now());
     if(!r.ok) throw new Error('not found');
-    let html = await r.text();
-    const bodyM = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+    let html=await r.text();
+    /* Extract wiki-body content from published standalone HTML */
+    const bodyM=html.match(/<div class="wiki-body"[^>]*>([\s\S]*?)<\/div>\s*<div class="page-footer"/i);
     if(bodyM) html=bodyM[1].trim();
-    // Remove leading h1 (title shown in title bar)
-    html = html.replace(/^<h1[^>]*>[^<]*<\/h1>\s*/i,'');
-    if(publicPages[key]) publicPages[key].content=html;
+    else{
+      /* Fallback: grab <body> content */
+      const bm=html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      if(bm) html=bm[1].trim();
+    }
+    if(publicPages[slug]) publicPages[slug].content=html;
     try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{}
     return html;
   }catch{ return null; }
-}
-
-/* ─── CATEGORY FILTER ─── */
-function setCatFilter(cat){
-  catFilter=cat;
-  document.querySelectorAll('.cat-pill').forEach(el=>{
-    el.classList.toggle('active', el.dataset.cat===cat);
-  });
-  renderPageList(document.getElementById('page-search').value);
 }
 
 /* ─── PAGE LIST ─── */
@@ -1005,21 +986,22 @@ function renderPageList(filter=''){
   const list=document.getElementById('page-list');
   let items=[];
 
-  // Public pages
   Object.values(publicPages).forEach(p=>{
-    if(catFilter && p.folder!==catFilter) return;
     if(filter && !p.title.toLowerCase().includes(filter.toLowerCase())) return;
-    items.push({key:p.key, slug:p.slug, title:p.title, folder:p.folder, updated:p.updated, isPublic:true, isDraft:false});
+    items.push({
+      slug:p.slug, title:p.title, category:p.category||'awfl',
+      updated:p.updated, isPublic:true, isDraft:false
+    });
   });
 
-  // Local drafts (only visible when signed in)
   if(currentUser){
     Object.entries(localPages).forEach(([id,p])=>{
-      if(!p.published){
-        if(catFilter && p.folder!==catFilter) return;
-        if(filter && !p.title.toLowerCase().includes(filter.toLowerCase())) return;
-        items.push({key:'__local__'+id, id, slug:p.slug, title:p.title, folder:p.folder, updated:p.updated, isPublic:false, isDraft:true});
-      }
+      if(p.published) return; // already in public list
+      if(filter && !p.title.toLowerCase().includes(filter.toLowerCase())) return;
+      items.push({
+        id, slug:p.slug, title:p.title, category:p.category||'awfl',
+        updated:p.updated, isPublic:false, isDraft:true
+      });
     });
   }
 
@@ -1027,19 +1009,20 @@ function renderPageList(filter=''){
   document.getElementById('page-count').textContent=items.length;
 
   if(!items.length){
-    list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">'+(currentUser?'No pages yet.':'No published pages yet.')+'</div>';
+    list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">'
+      +(currentUser?'No pages yet.':'No published pages yet.')+'</div>';
     return;
   }
 
   list.innerHTML=items.map(it=>{
     const d=new Date(it.updated).toLocaleDateString();
-    const isActive = it.isDraft ? (currentPageId===it.id) : (currentSlug===it.key);
-    const clickFn  = it.isDraft ? `loadLocalDraft('${it.id}')` : `loadPage('${it.key}')`;
-    const icon     = it.isDraft ? '✏️' : '🌐';
+    const isActive=it.isDraft?(currentPageId===it.id):(currentSlug===it.slug);
+    const clickFn=it.isDraft?`loadLocalDraft('${it.id}')`:`loadPage('${it.slug}')`;
+    const icon=it.isDraft?'✏️':'🌐';
     return `<div class="page-item${isActive?' active':''}" onclick="${clickFn}" title="${esc(it.title)}">
       <div class="page-item-title">${esc(it.title)}</div>
       <div class="page-item-meta">
-        <span class="page-cat-badge">${esc(it.folder||'—')}</span>
+        <span class="page-cat-badge">${esc(it.category)}</span>
         <span style="font-size:10px">${icon} ${d}</span>
       </div>
     </div>`;
@@ -1048,28 +1031,28 @@ function renderPageList(filter=''){
 function filterPages(v){ renderPageList(v); }
 
 /* ─── DISPLAY PUBLIC PAGE ─── */
-async function loadPage(key){
+async function loadPage(slug){
   if(isEditMode && currentPageId){
     if(!confirm('Discard unsaved changes?')) return;
     exitEdit();
   }
-  currentSlug   = key;
-  currentPageId = null;
+  currentSlug=slug; currentPageId=null;
   renderPageList(document.getElementById('page-search').value);
 
-  const meta = publicPages[key] || {title:key, updated:Date.now(), folder:'—'};
-  document.getElementById('wiki-title-display').textContent = meta.title||key;
-  document.getElementById('wiki-date-tag').textContent      = meta.updated ? new Date(meta.updated).toLocaleString() : '—';
-  document.getElementById('wiki-slug-tag').textContent      = meta.slug||key;
-  document.getElementById('wiki-cat-tag').textContent       = '📁 '+meta.folder;
-  document.getElementById('wiki-cat-tag').style.display     = 'inline-flex';
-  document.getElementById('wiki-public-badge').style.display= 'inline-flex';
-  document.getElementById('wiki-draft-badge').style.display = 'none';
+  const meta=publicPages[slug]||{title:slug, updated:Date.now(), category:'awfl'};
+  const pageUrl=slugToPageUrl(slug);
 
-  const pageUrl = GH_WIKI_BASE + meta.folder + '/' + (meta.filename||meta.slug+'.html');
-  const linkEl  = document.getElementById('wiki-page-link');
-  linkEl.innerHTML = '🔗 <a href="'+esc(pageUrl)+'" target="_blank" rel="noopener">'+esc(pageUrl)+'</a>';
-  linkEl.style.display = 'block';
+  document.getElementById('wiki-title-display').textContent=meta.title||slug;
+  document.getElementById('wiki-date-tag').textContent=meta.updated?new Date(meta.updated).toLocaleString():'—';
+  document.getElementById('wiki-slug-tag').textContent=slug;
+  document.getElementById('wiki-cat-tag').textContent='📁 '+(meta.category||'awfl');
+  document.getElementById('wiki-cat-tag').style.display='inline-flex';
+  document.getElementById('wiki-public-badge').style.display='inline-flex';
+  document.getElementById('wiki-draft-badge').style.display='none';
+
+  const linkEl=document.getElementById('wiki-page-link');
+  linkEl.innerHTML='🔗 <a href="'+esc(pageUrl)+'" target="_blank" rel="noopener">'+esc(pageUrl)+'</a>';
+  linkEl.style.display='block';
 
   document.getElementById('wiki-content').innerHTML=
     '<div class="loading-spinner"><span class="spin">⟳</span></div>';
@@ -1087,7 +1070,7 @@ async function loadPage(key){
     document.getElementById('btn-delete').style.display='none';
   }
 
-  const content = await fetchPageContent(key);
+  const content=await fetchPageContent(slug);
   if(content===null){
     document.getElementById('wiki-content').innerHTML=
       '<div style="text-align:center;padding:60px 20px;color:var(--text3)">'
@@ -1096,11 +1079,11 @@ async function loadPage(key){
       +'<p style="margin-top:10px"><a href="'+esc(pageUrl)+'" target="_blank" style="color:var(--accent)">Try opening directly ↗</a></p>'
       +'</div>';
   } else {
-    document.getElementById('wiki-content').innerHTML = content||'<p style="color:var(--text3);font-style:italic">This page is empty.</p>';
+    document.getElementById('wiki-content').innerHTML=content||'<p style="color:var(--text3);font-style:italic">This page is empty.</p>';
   }
 
-  renderInfobox(key);
-  window.location.hash = '#'+key;
+  renderInfobox(slug);
+  window.location.hash='#'+slug;
 }
 
 /* ─── LOCAL DRAFT ─── */
@@ -1111,12 +1094,12 @@ function loadLocalDraft(id){
     exitEdit();
   }
   const p=localPages[id]; if(!p) return;
-  currentPageId=id; currentSlug='__draft__'+id;
+  currentPageId=id; currentSlug=null;
   renderPageList(document.getElementById('page-search').value);
   document.getElementById('wiki-title-display').textContent=p.title;
   document.getElementById('wiki-date-tag').textContent=new Date(p.updated).toLocaleString();
   document.getElementById('wiki-slug-tag').textContent=p.slug;
-  document.getElementById('wiki-cat-tag').textContent='📁 '+(p.folder||'—');
+  document.getElementById('wiki-cat-tag').textContent='📁 '+(p.category||'awfl');
   document.getElementById('wiki-cat-tag').style.display='inline-flex';
   document.getElementById('wiki-public-badge').style.display='none';
   document.getElementById('wiki-draft-badge').style.display='inline-flex';
@@ -1157,46 +1140,58 @@ function renderInfobox(pageId){
   const ib=infoboxes[pageId];
   const c=document.getElementById('infobox-container');
   if(!ib||!ib.fields||!ib.fields.length){ c.style.display='none'; return; }
-  const imgF =ib.fields.find(f=>f.key.toLowerCase()==='image');
+  const imgF=ib.fields.find(f=>f.key.toLowerCase()==='image');
   const nameF=ib.fields.find(f=>f.key.toLowerCase()==='name');
-  const rows =ib.fields.filter(f=>f.key.toLowerCase()!=='image'&&f.key&&f.value);
+  const rows=ib.fields.filter(f=>f.key.toLowerCase()!=='image'&&f.key&&f.value);
   let html=`<div class="infobox-title-bar">${esc(ib.template)}</div>`;
-  if(imgF?.value){ html+=`<div class="infobox-img-wrap"><img src="${esc(imgF.value)}" alt="Infobox" loading="lazy"></div>`; if(nameF?.value) html+=`<div class="infobox-caption">${esc(nameF.value)}</div>`; }
+  if(imgF?.value){
+    const src=resolveImageUrl(imgF.value);
+    html+=`<div class="infobox-img-wrap"><img src="${esc(src)}" alt="Infobox" loading="lazy"></div>`;
+    if(nameF?.value) html+=`<div class="infobox-caption">${esc(nameF.value)}</div>`;
+  }
   if(rows.length){
     html+=`<table class="infobox-table">`;
     rows.forEach(f=>{
       if(!f.key||!f.value) return;
       const kl=f.key.toLowerCase();
       let cell='';
-      if(kl.includes('video'))      cell=`<video src="${esc(f.value)}" controls style="width:100%;max-height:120px"></video>`;
-      else if(kl.includes('audio')) cell=`<audio src="${esc(f.value)}" controls style="width:100%"></audio>`;
-      else if(isImageUrl(f.value))  cell=`<img src="${esc(f.value)}" style="max-width:100%;max-height:80px;border-radius:3px" loading="lazy">`;
-      else if(isUrl(f.value))       cell=`<a class="infobox-link-icon" href="${esc(f.value)}" target="_blank" rel="noopener">${esc(f.value.replace(/^https?:\/\//,'').substring(0,30))}</a>`;
-      else                          cell=esc(f.value);
+      if(kl.includes('video'))        cell=`<video src="${esc(resolveImageUrl(f.value))}" controls style="width:100%;max-height:120px"></video>`;
+      else if(kl.includes('audio'))   cell=`<audio src="${esc(f.value)}" controls style="width:100%"></audio>`;
+      else if(isImageUrl(f.value))    cell=`<img src="${esc(resolveImageUrl(f.value))}" style="max-width:100%;max-height:80px;border-radius:3px" loading="lazy">`;
+      else if(isAbsUrl(f.value))      cell=`<a class="infobox-link-icon" href="${esc(f.value)}" target="_blank" rel="noopener">${esc(f.value.replace(/^https?:\/\//,'').substring(0,30))}</a>`;
+      else                            cell=esc(f.value);
       html+=`<tr><th>${esc(f.key)}</th><td>${cell}</td></tr>`;
     });
     html+=`</table>`;
   }
   c.innerHTML=html; c.style.display='block';
 }
-function isUrl(v){ return /^https?:\/\//.test(v); }
+function isAbsUrl(v){ return /^https?:\/\//.test(v); }
 function isImageUrl(v){ return /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(v); }
+function resolveImageUrl(v){
+  if(!v) return v;
+  if(isAbsUrl(v)) return v;
+  /* Relative path — resolve against images base */
+  return IMAGES_BASE + v.replace(/^\//, '').replace(/^images\//,'');
+}
 
 /* ─── EDIT MODE ─── */
 function toggleEdit(){
   if(!currentUser){ toast('Sign in to edit','err'); return; }
-  if(!currentSlug || currentSlug.startsWith('__draft__')===false && !publicPages[currentSlug] && !currentPageId){
-    toast('Open a page first','inf'); return;
-  }
+  if(!currentSlug && !currentPageId){ toast('Open a page first','inf'); return; }
+
   if(!currentPageId && currentSlug && publicPages[currentSlug]){
-    // Create local draft from public page
-    const meta    = publicPages[currentSlug];
-    const content = document.getElementById('wiki-content').innerHTML;
-    const id      = 'p_'+Date.now();
-    localPages[id] = {id, title:meta.title||currentSlug, slug:meta.slug||currentSlug, folder:meta.folder||'apps',
-                      content, created:Date.now(), updated:Date.now(), published:true};
+    /* Clone public page into a local draft for editing */
+    const meta=publicPages[currentSlug];
+    const content=document.getElementById('wiki-content').innerHTML;
+    const id='p_'+Date.now();
+    localPages[id]={
+      id, title:meta.title||currentSlug, slug:meta.slug||currentSlug,
+      category:meta.category||'awfl', content,
+      created:Date.now(), updated:Date.now(), published:true
+    };
     saveLocalData();
-    currentPageId = id;
+    currentPageId=id;
   }
   if(!isEditMode) enterEdit(); else exitEdit();
 }
@@ -1230,71 +1225,55 @@ function exitEdit(){
 }
 
 /* ─── SAVE & PUBLISH ─── */
-/* 
-  Publishing flow:
-  1. Save content locally.
-  2. Try the backend API (awflmeta-api.onrender.com) which commits to GitHub.
-  3. On success, GitHub Actions / GitHub Pages serves the HTML.
-  4. The published file goes to: awflmeta/<folder>/<Title>.html
-  5. The backend should also update awflmeta/<folder>/index.json.
-  6. The backend should also update/create awflmeta/<folder>/index.html.
-  If the backend is unavailable, we save locally and show the expected URL.
+/*
+  Publishing writes:
+    awfl/<Slug>.html          — full standalone wiki page HTML
+    awfl/index.json           — updated list [{slug, title, updated, category}]
+  All at: https://aedtpworldawfl.github.io/awflmeta/awfl/...
+  Images referenced as: https://aedtpworldawfl.github.io/awflmeta/images/<filename>
 */
 async function saveCurrentPage(){
   if(!currentPageId){ toast('No page to save','err'); return; }
   if(!currentUser){ toast('Sign in to save','err'); return; }
   const wc=document.getElementById('wiki-content');
-  const p =localPages[currentPageId];
+  const p=localPages[currentPageId];
   if(!p){ toast('Page not found','err'); return; }
 
-  // Update local
-  p.content = wc.innerHTML;
-  p.updated = Date.now();
+  p.content=wc.innerHTML;
+  p.updated=Date.now();
   saveLocalData();
   exitEdit();
   renderPageList(document.getElementById('page-search').value);
   document.getElementById('wiki-date-tag').textContent=new Date().toLocaleString();
 
-  // Build expected URL
-  const filename   = p.title+'.html';   // "PROJECT BOOT DEV.html"
-  const folder     = p.folder || 'apps';
-  const pageUrl    = GH_WIKI_BASE + folder + '/' + encodeURIComponent(filename);
-  const indexUrl   = GH_WIKI_BASE + folder + '/index.html';
-  const indexJsonUrl = GH_WIKI_BASE + folder + '/index.json';
+  const slug      = p.slug;                   // e.g. "Buddy_DML"
+  const filename  = slug+'.html';             // "Buddy_DML.html"
+  const pageUrl   = slugToPageUrl(slug);      // full GitHub Pages URL
+  const ib        = infoboxes[currentPageId];
+  const ibData    = (ib&&ib.fields?.length)?{template:ib.template,fields:ib.fields.filter(f=>f.key)}:null;
+  const wikiHTML  = buildPublishedHTML(p.title, p.content, ibData, slug, p.category||'awfl');
 
-  // Show progress
   const prog=document.getElementById('publish-progress');
   prog.style.display='block';
   toast('Saving & publishing…','inf');
 
-  // Collect infobox
-  const ib=infoboxes[currentPageId];
-  const infoboxData=(ib&&ib.fields?.length)?{template:ib.template,fields:ib.fields.filter(f=>f.key)}:null;
-
-  // Build the standalone wiki HTML for the published file
-  const wikiHTML = buildPublishedHTML(p.title, p.content, infoboxData);
-  // Build index.html content for the folder
-  const indexHTML = buildFolderIndexHTML(folder);
-
   try{
-    const result = await apiCall('POST', '/api/awflmeta/publish', {
-      slug       : p.slug,
-      title      : p.title,
-      folder     : folder,
-      filename   : filename,
+    const result=await apiCall('POST','/api/awflmeta/publish',{
+      slug,
+      title   : p.title,
+      category: p.category||'awfl',
       htmlContent: p.content,
-      wikiHTML   : wikiHTML,
-      indexHTML  : indexHTML,
-      infoboxData,
-      author     : currentUser.username,
+      wikiHTML,
+      infoboxData: ibData,
+      author  : currentUser.username,
     });
 
     p.published=true; p.pageUrl=result.url||pageUrl; saveLocalData();
 
-    // Update in-memory public cache
-    const key = folder+'/'+p.slug;
-    publicPages[key]={key, slug:p.slug, title:p.title, folder, updated:p.updated, content:p.content, filename};
+    /* Update in-memory public cache */
+    publicPages[slug]={slug, title:p.title, category:p.category||'awfl', updated:p.updated, content:p.content};
     try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{}
+    currentSlug=slug;
 
     renderPageList(document.getElementById('page-search').value);
     const linkEl=document.getElementById('wiki-page-link');
@@ -1302,83 +1281,162 @@ async function saveCurrentPage(){
     linkEl.style.display='block';
     document.getElementById('wiki-public-badge').style.display='inline-flex';
     document.getElementById('wiki-draft-badge').style.display='none';
-    toast('Published ✓ → '+folder+'/'+filename,'ok');
+    toast('Published ✓ → awfl/'+filename,'ok');
   } catch(e){
-    // Backend unavailable — show local save confirmation and expected URLs
     p.published=false; saveLocalData();
     const linkEl=document.getElementById('wiki-page-link');
-    linkEl.innerHTML='💾 Saved locally. Expected URL once published: <a href="'+esc(pageUrl)+'" target="_blank" rel="noopener">'+esc(pageUrl)+'</a>'
-      +'<br><small style="color:var(--text3)">Also: <a href="'+esc(indexUrl)+'" target="_blank" style="color:var(--text3)">'+esc(indexUrl)+'</a>'
-      +' | <a href="'+esc(indexJsonUrl)+'" target="_blank" style="color:var(--text3)">index.json</a></small>';
+    linkEl.innerHTML='💾 Saved locally. Expected URL once published:<br>'
+      +'<a href="'+esc(pageUrl)+'" target="_blank" rel="noopener" style="color:var(--accent)">'+esc(pageUrl)+'</a>'
+      +'<br><small style="color:var(--text3)">Backend unavailable: '+esc(e.message)+'</small>';
     linkEl.style.display='block';
     toast('Saved locally. Backend: '+e.message,'err');
-    // Offer download of the wiki HTML file
+    /* Offer local download as fallback */
     downloadWikiFile(filename, wikiHTML);
-    downloadWikiFile(folder+'_index.html', indexHTML);
   }
   prog.style.display='none';
 }
 
-/* Build a standalone published wiki HTML file */
-function buildPublishedHTML(title, bodyContent, infoboxData){
-  const ibHTML = infoboxData ? buildInfoboxHTML(infoboxData) : '';
+/* ─── BUILD PUBLISHED HTML ─── */
+function buildPublishedHTML(title, bodyContent, infoboxData, slug, category){
+  const ibHTML=infoboxData?buildInfoboxHTMLClient(infoboxData):'';
+  const canonical=slugToPageUrl(slug||titleToSlug(title));
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} — AWFLMETA</title>
+<title>${esc(title)} — AWFLMETA AEDTP WORLD FREE LICENSE (AWFL) WIKI META</title>
+<meta name="description" content="${esc(title)} Official WIKI | AEDTP WORLD FREE LICENSE (AWFL) WIKI META">
 <meta name="author" content="AEDTP WORLD">
+<meta name="copyright" content="© AEDTP WORLD">
 <meta name="license" content="AEDTP WORLD FREE LICENSE (AWFL)">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="${esc(title)} — AWFLMETA">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/icons/awflmetaawfl.jpg">
+<link rel="canonical" href="${esc(canonical)}">
 <link rel="icon" href="https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/icons/awflmeta.jpg" type="image/jpeg">
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-body{background:#0a0c10;color:#e8edf5;font-family:'IBM Plex Sans',sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;line-height:1.75}
-h1{font-family:'Crimson Pro',Georgia,serif;font-size:36px;font-weight:300;border-bottom:2px solid #2a3450;padding-bottom:10px;margin-bottom:20px}
-h2{font-family:'Crimson Pro',serif;font-size:26px;font-weight:400;border-bottom:1px solid #2a3450;padding-bottom:6px;margin-top:28px}
-h3{font-size:20px;font-weight:600;margin-top:20px}
-a{color:#4a9eff}table{width:100%;border-collapse:collapse;margin:16px 0}
-th{background:#1e2535;padding:8px 12px;text-align:left;border:1px solid #3a4870}
-td{padding:7px 12px;border:1px solid #2a3450}
-.infobox{float:right;margin:0 0 20px 24px;background:#141820;border:1px solid #3a4870;border-radius:6px;width:260px;font-size:13px;overflow:hidden}
-.infobox-title{background:#252d40;padding:8px 12px;font-weight:600;text-align:center;border-bottom:1px solid #3a4870}
-.infobox img{width:100%;max-height:200px;object-fit:cover}
-.infobox table{margin:0}.infobox th,.infobox td{font-size:12px;padding:5px 10px;border:none;border-bottom:1px solid #2a3450}
-blockquote{border-left:3px solid #2d7dd2;padding:10px 18px;background:rgba(74,158,255,.05);margin:16px 0;font-style:italic}
-code{font-family:monospace;background:#1a2030;border:1px solid #2a3450;padding:1px 5px;border-radius:3px;color:#2dd4bf}
-pre{background:#1a2030;border:1px solid #2a3450;border-radius:6px;padding:14px;overflow-x:auto}
-.wiki-note{background:rgba(74,158,255,.07);border:1px solid #1a5fa0;border-radius:5px;padding:10px 14px;margin:12px 0}
-.wiki-warning{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:5px;padding:10px 14px;margin:12px 0;color:#f87171}
-.wiki-tip{background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.3);border-radius:5px;padding:10px 14px;margin:12px 0;color:#3ecf8e}
-nav{margin-bottom:24px;font-size:13px}nav a{color:#4a9eff;margin-right:12px;text-decoration:none}
-footer{margin-top:48px;padding-top:16px;border-top:1px solid #2a3450;font-size:12px;color:#6b7a95;text-align:center}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0a0c10;color:#e8edf5;font-family:'IBM Plex Sans',Arial,sans-serif;font-size:15px;line-height:1.65;padding:0;margin:0}
+.page-topbar{background:rgba(10,12,16,.97);border-bottom:1px solid #2a3450;padding:10px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.page-topbar-brand{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#d4a843;font-weight:600;letter-spacing:.08em;text-decoration:none}
+.page-topbar-brand:hover{color:#f0c060}
+.page-topbar-back{font-size:12px;color:#4a9eff;text-decoration:none}
+.page-topbar-back:hover{text-decoration:underline}
+.page-wrap{max-width:960px;margin:0 auto;padding:32px 28px 60px}
+.page-title{font-family:'Crimson Pro',Georgia,serif;font-size:36px;font-weight:300;color:#e8edf5;border-bottom:2px solid #2a3450;padding-bottom:12px;margin-bottom:22px;line-height:1.2}
+.wiki-body::after{content:'';display:table;clear:both}
+.wiki-body h1{font-family:'Crimson Pro',serif;font-size:28px;font-weight:400;color:#e8edf5;margin:28px 0 12px;border-bottom:1px solid #2a3450;padding-bottom:6px}
+.wiki-body h2{font-family:'Crimson Pro',serif;font-size:23px;font-weight:400;color:#e8edf5;margin:24px 0 10px;border-bottom:1px solid #2a3450;padding-bottom:5px}
+.wiki-body h3{font-family:'Crimson Pro',serif;font-size:19px;font-weight:600;color:#e8edf5;margin:20px 0 8px}
+.wiki-body p{font-family:'Crimson Pro',Georgia,serif;font-size:17px;line-height:1.78;margin:0 0 14px;color:#e8edf5}
+.wiki-body b,.wiki-body strong{font-weight:700;color:#fff}
+.wiki-body u{text-decoration:underline;text-decoration-color:#d4a843}
+.wiki-body em,.wiki-body i{font-style:italic}
+.wiki-body ul,.wiki-body ol{margin:10px 0 14px 28px}
+.wiki-body li{margin-bottom:5px;font-family:'Crimson Pro',serif;font-size:16px}
+.wiki-body a{color:#4a9eff;text-decoration:none}
+.wiki-body a:hover{text-decoration:underline}
+.wiki-body img{max-width:100%;border-radius:6px;margin:10px 0;height:auto}
+.wiki-body video{max-width:100%;border-radius:6px;margin:10px 0}
+.wiki-body audio{width:100%;margin:10px 0}
+.wiki-body code{font-family:'IBM Plex Mono',monospace;font-size:13px;background:#1a2030;border:1px solid #2a3450;padding:1px 5px;border-radius:3px;color:#2dd4bf}
+.wiki-body pre{background:#1a2030;border:1px solid #2a3450;border-radius:6px;padding:14px;overflow-x:auto;margin:12px 0}
+.wiki-body blockquote{border-left:3px solid #2d7dd2;margin:16px 0;padding:10px 18px;background:rgba(74,158,255,.05);color:#a0aec0;font-style:italic;border-radius:0 5px 5px 0}
+.wiki-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;font-family:'IBM Plex Sans',Arial,sans-serif}
+.wiki-body table th{background:#1e2535;padding:8px 12px;text-align:left;font-weight:600;border:1px solid #3a4870;font-size:13px;color:#e8edf5}
+.wiki-body table td{padding:7px 12px;border:1px solid #2a3450;vertical-align:top;color:#e8edf5}
+.wiki-body table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.wiki-body hr{border:none;border-top:1px solid #2a3450;margin:24px 0}
+.wiki-note{background:rgba(74,158,255,.07);border:1px solid #1a5fa0;border-radius:5px;padding:10px 14px;margin:12px 0;font-size:14px}
+.wiki-warning{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:5px;padding:10px 14px;margin:12px 0;font-size:14px;color:#f87171}
+.wiki-tip{background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.3);border-radius:5px;padding:10px 14px;margin:12px 0;font-size:14px;color:#3ecf8e}
+.wiki-img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.wiki-img-left{float:left;margin:0 16px 10px 0;max-width:260px;border-radius:6px}
+.wiki-img-right{float:right;margin:0 0 10px 16px;max-width:260px;border-radius:6px}
+.wiki-caption{font-size:12px;color:#6b7a95;text-align:center;font-style:italic;margin-top:-6px;margin-bottom:14px}
+#toc,.toc{background:#141820;border:1px solid #2a3450;border-radius:6px;padding:12px 16px;margin-bottom:22px;display:inline-block;min-width:200px;max-width:320px}
+#toc .toc-title,.toc .toc-title{font-size:13px;font-weight:600;color:#e8edf5;margin-bottom:8px}
+#toc a,.toc a{display:block;font-size:13px;color:#4a9eff;margin:3px 0;text-decoration:none}
+.page-footer{margin-top:50px;padding-top:18px;border-top:1px solid #2a3450;font-size:12px;color:#6b7a95;font-family:'IBM Plex Mono',monospace;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.page-footer a{color:#4a9eff;text-decoration:none}
+@media(max-width:680px){
+  .page-wrap{padding:20px 14px 40px}
+  .page-title{font-size:26px}
+  div[style*="float:right"]{float:none!important;width:100%!important;margin:0 0 20px 0!important}
+}
 </style>
 </head>
 <body>
-<nav><a href="https://aedtpworldawfl.github.io/awflmeta/">← AWFLMETA Home</a><a href="../index.html">← Folder</a></nav>
-${ibHTML}
-<h1>${esc(title)}</h1>
-${bodyContent}
-<footer>© AEDTP WORLD — Published under the AEDTP WORLD FREE LICENSE (AWFL)<br>
-<a href="https://aedtpworldawfl.github.io/awflmeta/new/" style="color:#4a9eff">Edit on AWFLMETA</a></footer>
+<div class="page-topbar">
+  <a class="page-topbar-brand" href="https://aedtpworldawfl.github.io/awflmeta/">AWFLMETA</a>
+  <a class="page-topbar-back" href="https://aedtpworldawfl.github.io/awflmeta/#${esc(slug||titleToSlug(title))}">← Back to Wiki</a>
+</div>
+<div class="page-wrap">
+  <h1 class="page-title">${esc(title)}</h1>
+  <div class="wiki-body">
+    ${ibHTML}
+    ${bodyContent}
+  </div>
+  <div class="page-footer">
+    <span>Published on <a href="https://aedtpworldawfl.github.io/awflmeta/">AWFLMETA</a> · AEDTP WORLD FREE LICENSE (AWFL)</span>
+    <span>© AEDTP WORLD · <a href="mailto:aedtpworld@gmail.com">aedtpworld@gmail.com</a></span>
+  </div>
+</div>
 </body>
 </html>`;
 }
 
-/* Build infobox HTML for embedding in published pages */
-function buildInfoboxHTML(ib){
+/* ─── CLIENT-SIDE INFOBOX HTML BUILDER ─── */
+function buildInfoboxHTMLClient(ib){
   if(!ib||!ib.fields?.length) return '';
-  const imgF =ib.fields.find(f=>f.key?.toLowerCase()==='image');
-  const nameF=ib.fields.find(f=>f.key?.toLowerCase()==='name');
-  const rows =ib.fields.filter(f=>f.key?.toLowerCase()!=='image'&&f.key&&f.value);
-  let h=`<div class="infobox"><div class="infobox-title">${esc(ib.template)}</div>`;
-  if(imgF?.value){ h+=`<img src="${esc(imgF.value)}" alt="${esc(nameF?.value||'')}"`; if(nameF?.value) h+=` title="${esc(nameF.value)}"`; h+='>'; }
+  const {template, fields}=ib;
+  const imgF=fields.find(f=>f.key?.toLowerCase()==='image');
+  const nameF=fields.find(f=>f.key?.toLowerCase()==='name');
+  const rows=fields.filter(f=>f.key?.toLowerCase()!=='image'&&f.key&&f.value);
+  const S={
+    wrap    :'float:right;clear:right;margin:0 0 20px 28px;background:#141820;border:1px solid #3a4870;border-radius:8px;width:280px;font-size:13px;overflow:hidden;font-family:"IBM Plex Sans",Arial,sans-serif;line-height:1.5;box-shadow:0 4px 18px rgba(0,0,0,.45)',
+    titleBar:'background:#252d40;padding:9px 13px;font-weight:700;font-size:14px;border-bottom:1px solid #3a4870;text-align:center;color:#e8edf5;letter-spacing:.02em',
+    imgWrap :'border-bottom:1px solid #2a3450;text-align:center;overflow:hidden;background:#1a2030',
+    imgTag  :'width:100%;height:auto;max-height:220px;object-fit:cover;display:block',
+    caption :'font-size:11px;color:#6b7a95;padding:5px 10px;text-align:center;background:#1a2030;border-bottom:1px solid #2a3450',
+    table   :'width:100%;border-collapse:collapse',
+    tr0     :'border-bottom:1px solid rgba(42,52,80,.5);background:#141820',
+    tr1     :'border-bottom:1px solid rgba(42,52,80,.5);background:#101318',
+    th      :'background:#1a2030;padding:6px 10px;font-size:12px;font-weight:600;color:#6b7a95;text-align:left;width:42%;vertical-align:top;border-right:1px solid #2a3450',
+    td      :'padding:6px 10px;font-size:12px;color:#e8edf5;vertical-align:top',
+    link    :'color:#4a9eff;text-decoration:none;font-size:12px;word-break:break-all',
+    thumb   :'max-width:100%;max-height:80px;border-radius:4px;display:block',
+    video   :'width:100%;max-height:130px;border-radius:4px;display:block;margin:2px 0',
+    audio   :'width:100%;display:block;margin:2px 0',
+  };
+  function cell(f){
+    const kl=f.key.toLowerCase(), v=f.value;
+    if(kl.includes('video')||/\.(mp4|webm|ogg|mov)(\?|$)/i.test(v))
+      return `<video src="${esc(v)}" controls style="${S.video}"></video>`;
+    if(kl.includes('audio')||kl.includes('music')||/\.(mp3|wav|ogg|flac|aac|m4a)(\?|$)/i.test(v))
+      return `<audio src="${esc(v)}" controls style="${S.audio}"></audio>`;
+    if(isImageUrl(v)) return `<img src="${esc(resolveImageUrl(v))}" alt="${esc(f.key)}" loading="lazy" style="${S.thumb}">`;
+    if(isAbsUrl(v)){
+      const label=v.replace(/^https?:\/\//,'').replace(/\/$/,'').substring(0,34);
+      return `<a href="${esc(v)}" target="_blank" rel="noopener" style="${S.link}">${esc(label)} ↗</a>`;
+    }
+    return esc(v).replace(/\n/g,'<br>');
+  }
+  let h=`<div style="${S.wrap}"><div style="${S.titleBar}">${esc(template)}</div>`;
+  if(imgF?.value){
+    const src=resolveImageUrl(imgF.value);
+    h+=`<div style="${S.imgWrap}"><img src="${esc(src)}" alt="${esc(nameF?.value||template)}" loading="lazy" style="${S.imgTag}"></div>`;
+    if(nameF?.value) h+=`<div style="${S.caption}">${esc(nameF.value)}</div>`;
+  }
   if(rows.length){
-    h+=`<table>`;
-    rows.forEach(f=>{
+    h+=`<table style="${S.table}">`;
+    rows.forEach((f,i)=>{
       if(!f.key||!f.value) return;
-      const v=isUrl(f.value)?`<a href="${esc(f.value)}" target="_blank">${esc(f.value.replace(/^https?:\/\//,'').substring(0,30))}</a>`:esc(f.value);
-      h+=`<tr><th>${esc(f.key)}</th><td>${v}</td></tr>`;
+      h+=`<tr style="${i%2===0?S.tr0:S.tr1}"><th style="${S.th}">${esc(f.key)}</th><td style="${S.td}">${cell(f)}</td></tr>`;
     });
     h+=`</table>`;
   }
@@ -1386,113 +1444,64 @@ function buildInfoboxHTML(ib){
   return h;
 }
 
-/* Build folder index.html */
-function buildFolderIndexHTML(folder){
-  const pages = Object.values(publicPages).filter(p=>p.folder===folder)
-    .concat(Object.values(localPages).filter(p=>p.folder===folder&&p.published));
-  const icon = {apps:'📱',artists:'🎨',biography:'📖',business:'💼',dictionary:'📚',education:'🎓',music:'🎵',news:'📰'}[folder]||'📄';
-  const rows = pages.map(p=>{
-    const fn = (p.filename||p.title+'.html');
-    const d  = p.updated ? new Date(p.updated).toLocaleDateString() : '—';
-    return `<tr><td><a href="${esc(encodeURIComponent(fn))}">${esc(p.title)}</a></td><td>${d}</td></tr>`;
-  }).join('');
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${icon} ${folder.toUpperCase()} — AWFLMETA</title>
-<link rel="icon" href="https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/icons/awflmeta.jpg" type="image/jpeg">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
-<style>
-body{background:#0a0c10;color:#e8edf5;font-family:'IBM Plex Sans',sans-serif;max-width:800px;margin:0 auto;padding:40px 24px}
-h1{font-family:'Crimson Pro',serif;font-size:32px;font-weight:300;margin-bottom:6px}
-h1 span{opacity:.5;font-size:24px;margin-right:10px}
-.subtitle{font-size:13px;color:#6b7a95;margin-bottom:32px}
-table{width:100%;border-collapse:collapse}
-th{background:#1e2535;padding:10px 16px;text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #3a4870}
-td{padding:10px 16px;border:1px solid #2a3450;font-size:14px}
-tr:hover td{background:rgba(255,255,255,.03)}
-a{color:#4a9eff;text-decoration:none}a:hover{text-decoration:underline}
-nav{margin-bottom:24px;font-size:13px}nav a{color:#4a9eff;margin-right:12px}
-.empty{text-align:center;padding:60px;color:#6b7a95;font-size:14px}
-footer{margin-top:48px;font-size:12px;color:#6b7a95;border-top:1px solid #2a3450;padding-top:16px;text-align:center}
-</style>
-</head>
-<body>
-<nav><a href="https://aedtpworldawfl.github.io/awflmeta/">← AWFLMETA Home</a><a href="https://aedtpworldawfl.github.io/awflmeta/new/">✎ Add Page</a></nav>
-<h1><span>${icon}</span>${folder.charAt(0).toUpperCase()+folder.slice(1)}</h1>
-<p class="subtitle">All wiki pages in the <strong>${folder}</strong> category — AEDTP WORLD FREE LICENSE (AWFL)</p>
-${rows ? `<table><thead><tr><th>Title</th><th>Updated</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="empty">No pages in this category yet.</div>'}
-<footer>© AEDTP WORLD — <a href="https://aedtpworldawfl.github.io/awflmeta/new/">AWFLMETA</a></footer>
-</body>
-</html>`;
-}
-
-/* ─── DOWNLOAD WIKI FILE (fallback when API unavailable) ─── */
+/* ─── DOWNLOAD FALLBACK ─── */
 function downloadWikiFile(filename, content){
-  const blob = new Blob([content],{type:'text/html;charset=utf-8'});
-  const a    = document.createElement('a');
-  a.href     = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
+  const blob=new Blob([content],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=filename; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),2000);
 }
 
 /* ─── CREATE PAGE ─── */
-function selectFolder(folder, btn){
-  selectedFolder=folder;
-  document.querySelectorAll('.folder-btn').forEach(b=>b.classList.remove('selected'));
+function selectCat(cat, btn){
+  selectedCat=cat;
+  document.querySelectorAll('.cat-select-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
-  document.getElementById('folder-error').style.display='none';
+  document.getElementById('cat-error').style.display='none';
   updateSlugPreview();
 }
 
 function openCreateModal(){
   if(!currentUser){ openModal('modal-signin'); toast('Sign in to create a wiki page','inf'); return; }
-  selectedFolder=null;
-  document.querySelectorAll('.folder-btn').forEach(b=>b.classList.remove('selected'));
+  selectedCat=null;
+  document.querySelectorAll('.cat-select-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('new-page-title').value='';
-  document.getElementById('new-page-filename').value='';
-  document.getElementById('slug-preview-url').textContent='';
-  document.getElementById('folder-error').style.display='none';
+  document.getElementById('slug-preview-url').textContent='—';
+  document.getElementById('cat-error').style.display='none';
   openModal('modal-create');
   setTimeout(()=>document.getElementById('new-page-title').focus(),100);
 }
 
 function updateSlugPreview(){
   const t=document.getElementById('new-page-title').value;
-  if(!t){ document.getElementById('new-page-filename').value=''; document.getElementById('slug-preview-url').textContent=''; return; }
-  const filename = t+'.html';
-  const slug     = t.replace(/\s+/g,'_').replace(/[^\w\-\.]/g,'');
-  document.getElementById('new-page-filename').value=filename;
-  if(selectedFolder){
-    document.getElementById('slug-preview-url').textContent=
-      GH_WIKI_BASE+selectedFolder+'/'+encodeURIComponent(filename);
-  }
+  const el=document.getElementById('slug-preview-url');
+  if(!t){ el.textContent='—'; return; }
+  const slug=titleToSlug(t);
+  el.textContent=slugToPageUrl(slug);
 }
 
 function createPage(){
   const title=document.getElementById('new-page-title').value.trim();
   if(!title){ toast('Please enter a title','err'); return; }
-  if(!selectedFolder){ document.getElementById('folder-error').style.display='block'; return; }
-  const slug     = title.replace(/\s+/g,'_').replace(/[^\w\-\.]/g,'');
-  const filename = title+'.html';
-  const key      = selectedFolder+'/'+slug;
+  if(!selectedCat){ document.getElementById('cat-error').style.display='block'; return; }
+  const slug=titleToSlug(title);
 
-  if(publicPages[key]||Object.values(localPages).find(p=>p.slug===slug&&p.folder===selectedFolder)){
-    toast('A page with this title already exists in '+selectedFolder,'err'); return;
+  if(publicPages[slug]||Object.values(localPages).find(p=>p.slug===slug)){
+    toast('A page with this title already exists','err'); return;
   }
   const id='p_'+Date.now();
-  localPages[id]={id, title, slug, folder:selectedFolder, filename, content:'', created:Date.now(), updated:Date.now(), published:false};
+  localPages[id]={
+    id, title, slug, category:selectedCat,
+    content:'', created:Date.now(), updated:Date.now(), published:false
+  };
   saveLocalData();
   closeModal('modal-create');
-  currentPageId=id; currentSlug='__draft__'+id;
+  currentPageId=id; currentSlug=null;
   renderPageList();
   document.getElementById('wiki-title-display').textContent=title;
   document.getElementById('wiki-date-tag').textContent=new Date().toLocaleString();
   document.getElementById('wiki-slug-tag').textContent=slug;
-  document.getElementById('wiki-cat-tag').textContent='📁 '+selectedFolder;
+  document.getElementById('wiki-cat-tag').textContent='📁 '+selectedCat;
   document.getElementById('wiki-cat-tag').style.display='inline-flex';
   document.getElementById('wiki-public-badge').style.display='none';
   document.getElementById('wiki-draft-badge').style.display='inline-flex';
@@ -1502,16 +1511,16 @@ function createPage(){
   document.getElementById('btn-edit').style.display='flex';
   document.getElementById('btn-delete').style.display='flex';
   setTimeout(enterEdit,100);
-  toast('Page created in /'+selectedFolder+'/ — start writing!','ok');
+  toast('Page created — start writing!','ok');
 }
 
 /* ─── DELETE ─── */
 function deleteCurrentPage(){
   if(!currentUser){ toast('Sign in to delete','err'); return; }
-  const title=currentPageId?localPages[currentPageId]?.title:currentSlug;
+  const title=currentPageId?localPages[currentPageId]?.title:(currentSlug?publicPages[currentSlug]?.title:null);
   if(!confirm('Delete "'+title+'"? This cannot be undone.')) return;
   if(currentPageId){ delete localPages[currentPageId]; if(infoboxes[currentPageId]) delete infoboxes[currentPageId]; saveLocalData(); }
-  if(currentSlug && publicPages[currentSlug]){ delete publicPages[currentSlug]; try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{}; }
+  if(currentSlug && publicPages[currentSlug]){ delete publicPages[currentSlug]; try{ localStorage.setItem(PUB_CACHE,JSON.stringify(publicPages)); }catch{} }
   currentPageId=null; currentSlug=null;
   renderPageList(); showHome();
   toast('Page deleted','inf');
@@ -1523,13 +1532,7 @@ function setFontSize(v){ if(v){ document.getElementById('wiki-content').focus();
 function setFontFamily(v){ if(v){ document.getElementById('wiki-content').focus(); document.execCommand('fontName',false,v); } }
 function applyHighlight(){ document.getElementById('wiki-content').focus(); document.execCommand('hiliteColor',false,document.getElementById('hl-color').value); }
 function applyTextColor(){ document.getElementById('wiki-content').focus(); document.execCommand('foreColor',false,document.getElementById('tc-color').value); }
-function applyBgColor(){
-  const wc=document.getElementById('wiki-content'); wc.focus();
-  const c=document.getElementById('bg-color').value;
-  document.execCommand('hiliteColor',false,c);
-}
-
-/* Format blocks */
+function applyBgColor(){ document.getElementById('wiki-content').focus(); document.execCommand('hiliteColor',false,document.getElementById('bg-color').value); }
 function fmt(tag){
   const wc=document.getElementById('wiki-content'); wc.focus();
   if(['h1','h2','h3','h4','h5','h6','p','pre'].includes(tag))
@@ -1540,7 +1543,8 @@ function wrapSel(tag){
   const range=sel.getRangeAt(0);
   if(range.collapsed){ toast('Select text first','inf'); return; }
   const el=document.createElement(tag);
-  try{ range.surroundContents(el); }catch{ document.execCommand('insertHTML',false,'<'+tag+'>'+range.toString()+'</'+tag+'>'); }
+  try{ range.surroundContents(el); }
+  catch{ document.execCommand('insertHTML',false,'<'+tag+'>'+range.toString()+'</'+tag+'>'); }
 }
 function insertBlock(tag){
   document.getElementById('wiki-content').focus();
@@ -1571,6 +1575,12 @@ function promptInsert(type){
   document.getElementById('insert-alt-group').style.display=(type==='image')?'block':'none';
   document.getElementById('insert-align-group').style.display=(type==='image')?'block':'none';
   savedSel=saveSelection();
+  if(type==='image'){
+    document.getElementById('insert-url').placeholder=
+      'https://aedtpworldawfl.github.io/awflmeta/images/filename.jpg';
+  } else {
+    document.getElementById('insert-url').placeholder='https://…';
+  }
   openModal('modal-insert');
   setTimeout(()=>document.getElementById('insert-url').focus(),100);
 }
@@ -1626,20 +1636,19 @@ async function pasteContent(){
   catch{ toast('Use Ctrl+V to paste','inf'); }
 }
 
-/* ─── EXPORT / PRINT ─── */
+/* ─── EXPORT / PRINT / COUNT ─── */
 function exportHTML(){
-  if(!currentSlug&&!currentPageId){ toast('Open a page first','inf'); return; }
-  const title  = document.getElementById('wiki-title-display').textContent;
-  const content= document.getElementById('wiki-content').innerHTML;
-  const p      = currentPageId?localPages[currentPageId]:null;
-  const html   = buildPublishedHTML(title, content, p?infoboxes[currentPageId]:null);
-  const fn     = (p?p.filename:title+'.html');
-  downloadWikiFile(fn, html);
-  toast('Exported '+fn,'ok');
+  if(!currentSlug && !currentPageId){ toast('Open a page first','inf'); return; }
+  const title=document.getElementById('wiki-title-display').textContent;
+  const content=document.getElementById('wiki-content').innerHTML;
+  const p=currentPageId?localPages[currentPageId]:null;
+  const slug=currentSlug||(p?p.slug:titleToSlug(title));
+  const cat=p?p.category:'awfl';
+  const html=buildPublishedHTML(title, content, p?infoboxes[currentPageId]:null, slug, cat);
+  downloadWikiFile(slug+'.html', html);
+  toast('Exported '+slug+'.html','ok');
 }
-function printPage(){
-  window.print();
-}
+function printPage(){ window.print(); }
 function wordCount(){
   const txt=document.getElementById('wiki-content').innerText||'';
   const words=txt.trim().split(/\s+/).filter(Boolean).length;
@@ -1711,20 +1720,26 @@ function searchWiki(q){
   const res=Object.values(publicPages).filter(p=>
     p.title.toLowerCase().includes(lq)||(p.content||'').toLowerCase().includes(lq)
   ).slice(0,10);
-  if(!res.length){ box.innerHTML=`<div class="sr-empty">No results for "<b>${esc(q)}</b>"</div>`; box.style.display='block'; return; }
+  if(!res.length){
+    box.innerHTML=`<div class="sr-empty">No results for "<b>${esc(q)}</b>"</div>`;
+    box.style.display='block'; return;
+  }
   box.innerHTML=res.map(p=>{
-    const txt=(p.content||'').replace(/<[^>]+>/g,'').substring(0,120);
+    const txt=(p.content||'').replace(/<[^>]+>/g,'').substring(0,200);
     const hi=txt.toLowerCase().indexOf(lq);
     const snip=hi>=0?txt.substring(Math.max(0,hi-20),hi+70)+'…':txt.substring(0,80)+'…';
-    return `<div class="sr-item" onclick="loadPage('${esc(p.key)}');closeSearch()">
-      <div class="sri-cat">${esc(p.folder||'')}</div>
+    return `<div class="sr-item" onclick="loadPage('${esc(p.slug)}');closeSearch()">
+      <div class="sri-cat">${esc(p.category||'awfl')}</div>
       <div class="sri-title">${esc(p.title)}</div>
       <div class="sri-snippet">${esc(snip)||'Click to view'}</div>
     </div>`;
   }).join('');
   box.style.display='block';
 }
-function closeSearch(){ document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value=''; }
+function closeSearch(){
+  document.getElementById('search-results').style.display='none';
+  document.getElementById('search-input').value='';
+}
 
 /* ─── SELECTION HELPERS ─── */
 function saveSelection(){ const s=window.getSelection(); return s.rangeCount?s.getRangeAt(0).cloneRange():null; }
@@ -1739,7 +1754,7 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
   if((e.ctrlKey||e.metaKey)&&e.key==='s'&&isEditMode){ e.preventDefault(); saveCurrentPage(); }
-  if((e.ctrlKey||e.metaKey)&&e.key==='e'&&currentSlug&&!isEditMode){ e.preventDefault(); if(currentUser) toggleEdit(); }
+  if((e.ctrlKey||e.metaKey)&&e.key==='e'&&!isEditMode&&(currentSlug||currentPageId)){ e.preventDefault(); if(currentUser) toggleEdit(); }
   if((e.ctrlKey||e.metaKey)&&e.key==='z'&&isEditMode){ e.preventDefault(); execFmt('undo'); }
   if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='Z'))&&isEditMode){ e.preventDefault(); execFmt('redo'); }
 });
@@ -1755,27 +1770,28 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 
 /* ─── HASH ROUTING ─── */
 function routeFromHash(){
-  const hash=window.location.hash.replace('#','');
+  const hash=decodeURIComponent(window.location.hash.replace('#',''));
   if(!hash) return;
-  // Key format: "folder/slug"
+  /* Direct slug match */
   if(publicPages[hash]){ loadPage(hash); return; }
-  // Legacy slug-only (try to find in any folder)
-  const found=Object.values(publicPages).find(p=>p.slug===hash);
-  if(found){ loadPage(found.key); return; }
-  // Local draft
+  /* Title-as-slug match (spaces in hash → underscores) */
+  const asSlug=hash.replace(/\s+/g,'_');
+  if(publicPages[asSlug]){ loadPage(asSlug); return; }
+  /* Partial title match */
+  const found=Object.values(publicPages).find(p=>
+    p.title.toLowerCase()===hash.toLowerCase()||p.slug.toLowerCase()===hash.toLowerCase()
+  );
+  if(found){ loadPage(found.slug); return; }
   if(currentUser){
-    const lp=Object.values(localPages).find(p=>p.slug===hash||p.id===hash);
+    const lp=Object.values(localPages).find(p=>p.slug===hash||p.slug===asSlug);
     if(lp){ loadLocalDraft(lp.id); return; }
   }
-  // Try to load directly anyway (may be published but not in local cache)
-  toast('Loading page: '+hash+'…','inf');
 }
 
 /* ─── INIT ─── */
 async function init(){
   loadLocalData();
   loadAuth();
-  fetchAccountsSeed(); // async, non-blocking
   await loadPublicPages();
 }
 window.addEventListener('hashchange',routeFromHash);
@@ -1783,3 +1799,19 @@ window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
