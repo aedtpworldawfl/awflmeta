@@ -1,0 +1,872 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload — AWFLMETA</title>
+<meta name="description" content="Upload wiki pages to AWFLMETA — AEDTP WORLD FREE LICENSE.">
+<meta name="author" content="AEDTP WORLD">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/icons/awflmeta.jpg" type="image/jpeg">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090d;--bg2:#0d1017;--bg3:#111520;--bg4:#161c28;
+  --surface:#1b2233;--surface2:#202840;
+  --border:#242e48;--border2:#32406a;
+  --accent:#4a9eff;--accent2:#2d7dd2;--accent3:#1a5fa0;
+  --gold:#d4a843;--gold2:#b8891c;
+  --text:#e4eaf5;--text2:#98a8c0;--text3:#5a6880;
+  --green:#3ecf8e;--red:#f87171;--teal:#2dd4bf;
+  --header-h:62px;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-serif:'Crimson Pro',Georgia,serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── HEADER ── */
+#header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:rgba(8,9,13,.97);border-bottom:1px solid var(--border);display:flex;align-items:center;z-index:1000;backdrop-filter:blur(16px)}
+#logo-area{display:flex;align-items:center;gap:10px;padding:0 20px;flex-shrink:0;text-decoration:none;border-right:1px solid var(--border)}
+#logo-area img{width:32px;height:32px;border-radius:5px;object-fit:cover;border:1px solid var(--border2)}
+#logo-text .lt1{font-family:var(--font-mono);font-size:10px;color:var(--gold);font-weight:500;letter-spacing:.09em;display:block}
+#logo-text .lt2{font-family:var(--font-sans);font-size:12px;color:var(--text);font-weight:600;display:block}
+#header-nav{display:flex;align-items:center;gap:2px;padding:0 16px;flex:1}
+.hn-link{font-family:var(--font-mono);font-size:11px;color:var(--text3);padding:5px 10px;border-radius:4px;text-decoration:none;transition:all .15s;letter-spacing:.04em;font-weight:500}
+.hn-link:hover{color:var(--text);background:var(--bg3)}
+.hn-link.active{color:var(--accent);background:rgba(74,158,255,.08)}
+#header-auth{display:flex;align-items:center;gap:8px;padding:0 18px;flex-shrink:0;border-left:1px solid var(--border)}
+#auth-guest{display:flex;gap:7px}
+#auth-user{display:none;align-items:center;gap:10px}
+#auth-username{font-family:var(--font-mono);font-size:12px;color:var(--gold);font-weight:500}
+.h-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:5px 13px;border-radius:5px;font-size:12px;cursor:pointer;font-family:var(--font-sans);font-weight:500;transition:all .15s;white-space:nowrap}
+.h-btn:hover{background:var(--surface);color:var(--text);border-color:var(--accent2)}
+.h-btn.primary{background:var(--accent2);color:#fff;border-color:var(--accent)}
+.h-btn.primary:hover{background:var(--accent)}
+.h-btn.ghost{background:transparent;border-color:var(--border);color:var(--text3)}
+.h-btn.ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+
+/* ── PAGE ── */
+#page{margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));display:flex;flex-direction:column;align-items:center;padding:40px 20px 80px}
+
+/* ── GUEST WALL ── */
+#guest-wall{display:none;text-align:center;padding:80px 20px;max-width:440px}
+#guest-wall .gw-icon{font-size:58px;opacity:.25;margin-bottom:20px}
+#guest-wall h2{font-family:var(--font-serif);font-size:30px;font-weight:300;color:var(--text2);margin-bottom:10px}
+#guest-wall p{font-size:14px;color:var(--text3);margin-bottom:28px;line-height:1.7}
+#guest-wall .gw-btns{display:flex;gap:10px;justify-content:center}
+
+/* ── UPLOAD PANEL ── */
+#upload-panel{display:none;width:100%;max-width:680px}
+
+/* Section headers */
+.sec-head{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Drop Zone */
+#drop-zone{border:2px dashed var(--border2);border-radius:10px;padding:42px 24px;text-align:center;cursor:pointer;transition:all .22s;position:relative;background:var(--bg2);margin-bottom:28px}
+#drop-zone:hover,#drop-zone.drag{border-color:var(--accent);background:rgba(74,158,255,.04);box-shadow:0 0 0 4px rgba(74,158,255,.06)}
+#drop-zone.has-file{border-color:var(--green);background:rgba(62,207,142,.04)}
+#drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-icon{font-size:40px;margin-bottom:12px;line-height:1;display:block}
+.dz-title{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:5px}
+.dz-sub{font-size:12px;color:var(--text3)}
+#file-info{display:none;margin-top:14px;background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:12px 16px;text-align:left}
+#file-info .fi-name{font-family:var(--font-mono);font-size:13px;color:var(--green);font-weight:500;margin-bottom:4px;word-break:break-all}
+#file-info .fi-slug{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+#file-info .fi-size{font-size:11px;color:var(--text3)}
+.fi-clear{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;float:right;line-height:1;padding:0;transition:color .15s}
+.fi-clear:hover{color:var(--red)}
+
+/* PATH SELECTOR */
+#path-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:28px}
+.path-btn{background:var(--bg3);border:2px solid var(--border);border-radius:8px;padding:14px 12px;cursor:pointer;transition:all .18s;text-align:left;position:relative;user-select:none}
+.path-btn:hover{border-color:var(--border2);background:var(--bg4)}
+.path-btn.sel{border-color:var(--accent);background:rgba(74,158,255,.08)}
+.path-btn .pb-icon{font-size:20px;display:block;margin-bottom:5px}
+.path-btn .pb-name{font-size:13px;font-weight:600;color:var(--text2);display:block}
+.path-btn.sel .pb-name{color:var(--accent)}
+.path-btn .pb-path{font-size:10px;color:var(--text3);font-family:var(--font-mono);margin-top:2px;display:block}
+.path-btn .pb-check{position:absolute;top:8px;right:10px;width:16px;height:16px;border-radius:50%;background:var(--accent);display:none;align-items:center;justify-content:center}
+.path-btn.sel .pb-check{display:flex}
+.path-btn .pb-check::after{content:'✓';font-size:9px;color:#fff;font-weight:700}
+.path-sel-all{display:flex;gap:8px;margin-bottom:12px}
+.sel-all-btn{background:none;border:1px solid var(--border);color:var(--text3);padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-family:var(--font-mono);transition:all .15s}
+.sel-all-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+
+/* DESTINATION PREVIEW */
+#dest-preview{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:28px;display:none}
+#dest-preview .dp-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-family:var(--font-mono);margin-bottom:10px}
+.dp-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(36,46,72,.5)}
+.dp-row:last-child{border-bottom:none}
+.dp-cat{font-family:var(--font-mono);font-size:11px;color:var(--gold);width:80px;flex-shrink:0;font-weight:600}
+.dp-url{font-size:11px;color:var(--accent);font-family:var(--font-mono);word-break:break-all}
+
+/* UPLOAD BTN */
+#btn-upload{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent3));color:#fff;border:1px solid var(--accent);padding:13px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-sans);letter-spacing:.03em;transition:all .2s;margin-bottom:24px;position:relative;overflow:hidden}
+#btn-upload:hover:not(:disabled){background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 20px rgba(74,158,255,.25)}
+#btn-upload:disabled{opacity:.45;cursor:not-allowed}
+
+/* PROGRESS */
+#progress-wrap{margin-bottom:28px;display:none}
+#progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+#progress-label .pl-text{font-size:12px;font-family:var(--font-mono);color:var(--text2)}
+#progress-label .pl-pct{font-size:16px;font-weight:700;font-family:var(--font-mono);color:var(--green);transition:color .3s}
+#progress-label .pl-pct.fail{color:var(--red)}
+#progress-bar-track{background:var(--bg4);border:1px solid var(--border);border-radius:20px;height:14px;overflow:hidden;position:relative}
+#progress-bar-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,#2d7dd2,#3ecf8e);transition:width .3s ease,background .4s;position:relative;overflow:hidden}
+#progress-bar-fill::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 1.2s ease infinite}
+@keyframes shimmer{to{left:100%}}
+#progress-bar-fill.fail{background:linear-gradient(90deg,#b22020,#f87171)}
+#progress-bar-fill.fail::after{display:none}
+#progress-detail{margin-top:8px;font-size:11px;font-family:var(--font-mono);color:var(--text3)}
+.pd-row{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(36,46,72,.3)}
+.pd-row:last-child{border-bottom:none}
+.pd-cat{width:80px;flex-shrink:0;color:var(--gold);font-weight:600}
+.pd-status{font-size:12px}
+.pd-status.ok{color:var(--green)}
+.pd-status.err{color:var(--red)}
+.pd-status.wait{color:var(--text3)}
+.pd-status.run{color:var(--accent)}
+
+/* RESULT */
+#result-wrap{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px;text-align:center}
+#result-icon{font-size:40px;margin-bottom:10px;display:block}
+#result-title{font-family:var(--font-serif);font-size:22px;font-weight:400;margin-bottom:6px}
+#result-sub{font-size:13px;color:var(--text3);margin-bottom:16px}
+.res-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* UPLOAD HISTORY */
+#history-wrap{margin-top:40px;width:100%;max-width:680px}
+#history-list{display:flex;flex-direction:column;gap:6px}
+.hist-item{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:10px 14px;display:flex;align-items:center;gap:12px}
+.hi-icon{font-size:18px;flex-shrink:0}
+.hi-info{flex:1;min-width:0}
+.hi-name{font-family:var(--font-mono);font-size:12px;color:var(--green);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hi-paths{font-size:11px;color:var(--text3);margin-top:2px}
+.hi-date{font-size:10px;color:var(--text3);font-family:var(--font-mono);flex-shrink:0}
+
+/* MODALS */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.80);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
+.mo.open{display:flex}
+.mb{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;width:100%;max-width:420px;box-shadow:0 24px 70px rgba(0,0,0,.7);animation:msl .2s ease}
+@keyframes msl{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mh{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mh h3{font-size:15px;font-weight:600;color:var(--text)}
+.mc{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;padding:2px 7px;border-radius:3px}
+.mc:hover{color:var(--text);background:var(--surface)}
+.mby{padding:18px}
+.mft{padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px}
+.fi{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:5px;font-size:13px;outline:none;font-family:var(--font-sans);transition:border-color .15s}
+.fi:focus{border-color:var(--accent2)}
+.fi::placeholder{color:var(--text3)}
+.fh{font-size:11px;color:var(--text3);margin-top:3px}
+.fe{font-size:12px;color:var(--red);margin-top:5px;display:none}
+.fe.show{display:block}
+.bp{background:var(--accent2);color:#fff;border:1px solid var(--accent);padding:7px 18px;border-radius:5px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:background .15s}
+.bp:hover{background:var(--accent)}
+.bp:disabled{opacity:.5;cursor:not-allowed}
+.bs{background:var(--bg3);color:var(--text2);border:1px solid var(--border);padding:7px 18px;border-radius:5px;font-size:13px;cursor:pointer;font-family:var(--font-sans)}
+.bs:hover{background:var(--surface);color:var(--text)}
+.fl{font-size:12px;color:var(--accent);cursor:pointer;background:none;border:none;padding:0;font-family:var(--font-sans);text-decoration:underline}
+
+/* TOAST */
+#toast-wrap{position:fixed;bottom:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none}
+.toast{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:9px 14px;border-radius:6px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.4);animation:tsl .3s ease,tfd .3s 2.7s ease forwards;max-width:300px}
+.toast.ok{border-left:3px solid var(--green)}
+.toast.err{border-left:3px solid var(--red)}
+.toast.inf{border-left:3px solid var(--accent)}
+@keyframes tsl{from{transform:translateX(36px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tfd{to{opacity:0;transform:translateX(6px)}}
+
+@media(max-width:600px){
+  #path-grid{grid-template-columns:repeat(2,1fr)}
+  #header-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <a id="logo-area" href="https://aedtpworldawfl.github.io/awflmeta/">
+    <img src="https://raw.githubusercontent.com/aedtpworldawfl/awflmeta/main/icons/awflmeta.jpg" alt="AWFLMETA" onerror="this.style.display='none'">
+    <div id="logo-text">
+      <span class="lt1">AWFLMETA</span>
+      <span class="lt2">UPLOAD</span>
+    </div>
+  </a>
+  <nav id="header-nav">
+    <a class="hn-link" href="https://aedtpworldawfl.github.io/awflmeta/">HOME</a>
+    <a class="hn-link" href="https://aedtpworldawfl.github.io/awflmeta/create/">CREATE</a>
+    <a class="hn-link active" href="https://aedtpworldawfl.github.io/awflmeta/upload/">UPLOAD</a>
+  </nav>
+  <div id="header-auth">
+    <div id="auth-guest">
+      <button class="h-btn ghost" onclick="openModal('modal-signin')">Sign In</button>
+      <button class="h-btn primary" onclick="openModal('modal-register')">Create Account</button>
+    </div>
+    <div id="auth-user">
+      <span id="auth-username"></span>
+      <button class="h-btn ghost" onclick="doLogout()">Log Out</button>
+    </div>
+  </div>
+</header>
+
+<div id="page">
+
+  <!-- GUEST WALL -->
+  <div id="guest-wall">
+    <div class="gw-icon">🔐</div>
+    <h2>Sign In to Upload</h2>
+    <p>You need an account to upload HTML files to AWFLMETA. Guests can browse the wiki but cannot upload pages.</p>
+    <div class="gw-btns">
+      <button class="h-btn ghost" onclick="openModal('modal-signin')">Sign In</button>
+      <button class="h-btn primary" onclick="openModal('modal-register')">Create Account</button>
+    </div>
+  </div>
+
+  <!-- UPLOAD PANEL -->
+  <div id="upload-panel">
+
+    <!-- DROP ZONE -->
+    <div class="sec-head">Select HTML File</div>
+    <div id="drop-zone"
+      ondragover="dzDragOver(event)" ondragleave="dzDragLeave(event)" ondrop="dzDrop(event)"
+      onclick="document.getElementById('file-input').click()">
+      <input type="file" id="file-input" accept=".html,.htm" onchange="onFileSelect(this.files[0])">
+      <span class="dz-icon" id="dz-icon">📄</span>
+      <div class="dz-title" id="dz-title">Click or drag an HTML file here</div>
+      <div class="dz-sub" id="dz-sub">Only .html files accepted · One file at a time</div>
+      <div id="file-info">
+        <button class="fi-clear" onclick="clearFile(event)" title="Remove file">×</button>
+        <div class="fi-name" id="fi-name"></div>
+        <div class="fi-slug" id="fi-slug"></div>
+        <div class="fi-size" id="fi-size"></div>
+      </div>
+    </div>
+
+    <!-- PATH SELECTOR -->
+    <div class="sec-head">Choose Destination Paths</div>
+    <div class="path-sel-all">
+      <button class="sel-all-btn" onclick="selectAllPaths()">Select All</button>
+      <button class="sel-all-btn" onclick="clearAllPaths()">Clear All</button>
+    </div>
+    <div id="path-grid">
+      <div class="path-btn" data-cat="artists"    onclick="togglePath(this)">
+        <span class="pb-icon">🎨</span>
+        <span class="pb-name">Artists</span>
+        <span class="pb-path">awflmeta/artists/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="biography"  onclick="togglePath(this)">
+        <span class="pb-icon">📖</span>
+        <span class="pb-name">Biography</span>
+        <span class="pb-path">awflmeta/biography/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="business"   onclick="togglePath(this)">
+        <span class="pb-icon">💼</span>
+        <span class="pb-name">Business</span>
+        <span class="pb-path">awflmeta/business/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="dictionary" onclick="togglePath(this)">
+        <span class="pb-icon">📚</span>
+        <span class="pb-name">Dictionary</span>
+        <span class="pb-path">awflmeta/dictionary/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="education"  onclick="togglePath(this)">
+        <span class="pb-icon">🎓</span>
+        <span class="pb-name">Education</span>
+        <span class="pb-path">awflmeta/education/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="music"      onclick="togglePath(this)">
+        <span class="pb-icon">🎵</span>
+        <span class="pb-name">Music</span>
+        <span class="pb-path">awflmeta/music/</span>
+        <span class="pb-check"></span>
+      </div>
+      <div class="path-btn" data-cat="news"       onclick="togglePath(this)">
+        <span class="pb-icon">📰</span>
+        <span class="pb-name">News</span>
+        <span class="pb-path">awflmeta/news/</span>
+        <span class="pb-check"></span>
+      </div>
+    </div>
+
+    <!-- DESTINATION PREVIEW -->
+    <div id="dest-preview">
+      <div class="dp-title">Upload Destinations</div>
+      <div id="dp-rows"></div>
+    </div>
+
+    <!-- UPLOAD BUTTON -->
+    <button id="btn-upload" onclick="startUpload()" disabled>↑ Upload to Selected Paths</button>
+
+    <!-- PROGRESS -->
+    <div id="progress-wrap">
+      <div id="progress-label">
+        <span class="pl-text" id="pl-text">Uploading…</span>
+        <span class="pl-pct" id="pl-pct">0%</span>
+      </div>
+      <div id="progress-bar-track">
+        <div id="progress-bar-fill"></div>
+      </div>
+      <div id="progress-detail"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result-wrap">
+      <span id="result-icon"></span>
+      <div id="result-title"></div>
+      <div id="result-sub"></div>
+      <div class="res-btns">
+        <button class="h-btn primary" onclick="uploadAgain()">↑ Upload Another</button>
+        <button class="h-btn ghost" onclick="window.location.href='https://aedtpworldawfl.github.io/awflmeta/'">← Back to Wiki</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HISTORY -->
+  <div id="history-wrap" style="display:none">
+    <div class="sec-head" style="max-width:680px;width:100%">Upload History (this session)</div>
+    <div id="history-list"></div>
+  </div>
+
+</div>
+
+<div id="toast-wrap"></div>
+
+<!-- ── MODALS ── -->
+
+<!-- REGISTER -->
+<div class="mo" id="modal-register">
+  <div class="mb">
+    <div class="mh"><h3>👤 Create Account</h3><button class="mc" onclick="closeModal('modal-register')">×</button></div>
+    <div class="mby">
+      <div class="fg">
+        <label>Username <span style="color:var(--red)">*</span></label>
+        <input class="fi" id="reg-user" placeholder="e.g. WikiEditor" autocomplete="username">
+        <div class="fh">Letters, numbers, underscores only. No spaces.</div>
+      </div>
+      <div class="fg">
+        <label>Password <span style="color:var(--red)">*</span></label>
+        <input class="fi" id="reg-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password">
+        <div class="fh">Minimum 8 characters. No spaces.</div>
+      </div>
+      <div class="fe" id="reg-err"></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text3)">Already have an account? <button class="fl" onclick="closeModal('modal-register');openModal('modal-signin')">Sign In</button></div>
+    </div>
+    <div class="mft">
+      <button class="bs" onclick="closeModal('modal-register')">Cancel</button>
+      <button class="bp" id="reg-btn" onclick="doRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN IN -->
+<div class="mo" id="modal-signin">
+  <div class="mb">
+    <div class="mh"><h3>🔐 Sign In</h3><button class="mc" onclick="closeModal('modal-signin')">×</button></div>
+    <div class="mby">
+      <div class="fg">
+        <label>Username <span style="color:var(--red)">*</span></label>
+        <input class="fi" id="si-user" placeholder="Your username" autocomplete="username">
+      </div>
+      <div class="fg">
+        <label>Password <span style="color:var(--red)">*</span></label>
+        <input class="fi" id="si-pass" type="password" placeholder="Your password" autocomplete="current-password">
+      </div>
+      <div class="fe" id="si-err"></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text3)">No account? <button class="fl" onclick="closeModal('modal-signin');openModal('modal-register')">Create one</button></div>
+    </div>
+    <div class="mft">
+      <button class="bs" onclick="closeModal('modal-signin')">Cancel</button>
+      <button class="bp" id="si-btn" onclick="doSignIn()">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   AWFLMETA UPLOAD — Full JS
+═══════════════════════════════════════ */
+
+/* ── CONFIG ── */
+const API_BASE    = 'https://awflmeta-api.onrender.com';
+const GH_OWNER    = 'aedtpworldawfl';
+const GH_REPO     = 'awflmeta';
+const GH_PAGES    = 'https://aedtpworldawfl.github.io/awflmeta/';
+const ACCOUNTS_URL= GH_PAGES + 'accounts/accounts.json';
+const ACCT_KEY    = 'awflmeta_accounts';
+const AUTH_KEY    = 'awflmeta_upload_auth';
+const HIST_KEY    = 'awflmeta_upload_history';
+
+const CATEGORIES = {
+  artists   :'artists',
+  biography :'biography',
+  business  :'business',
+  dictionary:'dictionary',
+  education :'education',
+  music     :'music',
+  news      :'news',
+};
+
+/* ── STATE ── */
+let currentUser = null;
+let selectedFile = null;
+let selectedSlug = '';
+let selectedPaths = new Set();
+let uploadHistory = [];
+let uploading = false;
+
+/* ── SLUG ── */
+function toSlug(name){
+  return name
+    .replace(/\.html?$/i,'')  // strip extension
+    .trim()
+    .replace(/\s+/g,'_')
+    .replace(/[^\w\-\.]/g,'');
+}
+function slugToFilename(slug){ return slug+'.html'; }
+function fmtBytes(b){ if(b<1024) return b+'B'; if(b<1048576) return (b/1024).toFixed(1)+'KB'; return (b/1048576).toFixed(2)+'MB'; }
+
+/* ── ACCOUNTS (localStorage mirror of accounts.json) ── */
+function loadAccounts(){
+  try{ return JSON.parse(localStorage.getItem(ACCT_KEY)||'[]'); }catch{ return []; }
+}
+function saveAccounts(arr){
+  try{ localStorage.setItem(ACCT_KEY,JSON.stringify(arr)); }catch{}
+  /* Also push to server so accounts.json on GitHub stays updated */
+  pushAccountsToServer(arr).catch(()=>{});
+}
+async function pushAccountsToServer(arr){
+  /* We only store public-safe data (no raw passwords) */
+  const safe = arr.map(a=>({ username:a.username, ph:a.ph, created:a.created }));
+  await fetch(API_BASE+'/api/awflmeta/accounts', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ accounts:safe })
+  }).catch(()=>{});
+}
+async function syncAccountsFromServer(){
+  try{
+    const r=await fetch(ACCOUNTS_URL+'?_='+Date.now());
+    if(r.ok){
+      const remote=await r.json();
+      /* Merge: keep local entries that don't exist remotely, add remote extras */
+      const local=loadAccounts();
+      const merged=[...remote];
+      local.forEach(la=>{
+        if(!merged.find(m=>m.username.toLowerCase()===la.username.toLowerCase())) merged.push(la);
+      });
+      try{ localStorage.setItem(ACCT_KEY,JSON.stringify(merged)); }catch{}
+    }
+  }catch{}
+}
+
+function hashPwd(pwd){
+  let h=5381;
+  for(let i=0;i<pwd.length;i++) h=((h<<5)+h)+pwd.charCodeAt(i)|0;
+  return 'ph_'+Math.abs(h).toString(36)+'_'+pwd.length;
+}
+
+/* ── AUTH ── */
+function saveAuth(u){ currentUser=u; try{ localStorage.setItem(AUTH_KEY,JSON.stringify(u)); }catch{} updateAuthUI(); }
+function loadAuth(){ try{ currentUser=JSON.parse(localStorage.getItem(AUTH_KEY)||'null'); }catch{ currentUser=null; } updateAuthUI(); }
+function updateAuthUI(){
+  document.getElementById('auth-guest').style.display=currentUser?'none':'flex';
+  document.getElementById('auth-user').style.display=currentUser?'flex':'none';
+  document.getElementById('guest-wall').style.display=currentUser?'none':'flex';
+  document.getElementById('upload-panel').style.display=currentUser?'block':'none';
+  if(currentUser) document.getElementById('auth-username').textContent='👤 '+currentUser.username;
+  renderHistory();
+}
+function doLogout(){
+  if(!confirm('Sign out?')) return;
+  saveAuth(null);
+  toast('Signed out','inf');
+}
+
+/* ── REGISTER ── */
+async function doRegister(){
+  const username=document.getElementById('reg-user').value.trim();
+  const password=document.getElementById('reg-pass').value;
+  const errEl=document.getElementById('reg-err');
+  const btn=document.getElementById('reg-btn');
+  errEl.classList.remove('show');
+  if(!username) return showErr(errEl,'Username is required.');
+  if(!/^[\w\-]+$/.test(username)) return showErr(errEl,'Letters, numbers, _ or - only.');
+  if(/\s/.test(password)||!password) return showErr(errEl,'Password cannot contain spaces.');
+  if(password.length<8) return showErr(errEl,'Password must be at least 8 characters.');
+  const accts=loadAccounts();
+  if(accts.find(a=>a.username.toLowerCase()===username.toLowerCase())) return showErr(errEl,'Username already taken.');
+  btn.disabled=true; btn.textContent='Creating…';
+  const acc={ username, ph:hashPwd(password), created:Date.now() };
+  accts.push(acc);
+  saveAccounts(accts);
+  saveAuth({ username:acc.username });
+  closeModal('modal-register');
+  document.getElementById('reg-user').value='';
+  document.getElementById('reg-pass').value='';
+  toast('Account created! Welcome, '+username+' ✓','ok');
+  btn.disabled=false; btn.textContent='Create Account';
+}
+
+/* ── SIGN IN ── */
+async function doSignIn(){
+  const username=document.getElementById('si-user').value.trim();
+  const password=document.getElementById('si-pass').value;
+  const errEl=document.getElementById('si-err');
+  const btn=document.getElementById('si-btn');
+  errEl.classList.remove('show');
+  if(!username) return showErr(errEl,'Username is required.');
+  if(!password) return showErr(errEl,'Password is required.');
+  btn.disabled=true; btn.textContent='Signing in…';
+  await syncAccountsFromServer();
+  const accts=loadAccounts();
+  const acc=accts.find(a=>a.username.toLowerCase()===username.toLowerCase());
+  if(!acc){ btn.disabled=false; btn.textContent='Sign In'; return showErr(errEl,'Account not found.'); }
+  if(acc.ph!==hashPwd(password)){ btn.disabled=false; btn.textContent='Sign In'; return showErr(errEl,'Incorrect password.'); }
+  saveAuth({ username:acc.username });
+  closeModal('modal-signin');
+  document.getElementById('si-user').value='';
+  document.getElementById('si-pass').value='';
+  toast('Welcome back, '+acc.username+'!','ok');
+  btn.disabled=false; btn.textContent='Sign In';
+}
+
+/* ── DROP ZONE ── */
+function dzDragOver(e){ e.preventDefault(); document.getElementById('drop-zone').classList.add('drag'); }
+function dzDragLeave(){ document.getElementById('drop-zone').classList.remove('drag'); }
+function dzDrop(e){
+  e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag');
+  const f=e.dataTransfer.files[0]; if(f) onFileSelect(f);
+}
+function onFileSelect(file){
+  if(!file) return;
+  if(!/\.html?$/i.test(file.name)){ toast('Only .html files are accepted','err'); return; }
+  selectedFile=file;
+  selectedSlug=toSlug(file.name);
+  /* UI */
+  document.getElementById('dz-icon').textContent='✅';
+  document.getElementById('dz-title').textContent=file.name;
+  document.getElementById('dz-sub').textContent='HTML file selected';
+  document.getElementById('drop-zone').classList.add('has-file');
+  document.getElementById('file-info').style.display='block';
+  document.getElementById('fi-name').textContent=file.name;
+  document.getElementById('fi-slug').textContent='→ '+selectedSlug+'.html';
+  document.getElementById('fi-size').textContent=fmtBytes(file.size);
+  updateDestPreview();
+  validateUploadBtn();
+}
+function clearFile(e){
+  e.stopPropagation();
+  selectedFile=null; selectedSlug='';
+  document.getElementById('dz-icon').textContent='📄';
+  document.getElementById('dz-title').textContent='Click or drag an HTML file here';
+  document.getElementById('dz-sub').textContent='Only .html files accepted · One file at a time';
+  document.getElementById('drop-zone').classList.remove('has-file');
+  document.getElementById('file-info').style.display='none';
+  document.getElementById('file-input').value='';
+  updateDestPreview();
+  validateUploadBtn();
+}
+
+/* ── PATH SELECTION ── */
+function togglePath(btn){
+  const cat=btn.dataset.cat;
+  btn.classList.toggle('sel');
+  if(btn.classList.contains('sel')) selectedPaths.add(cat);
+  else selectedPaths.delete(cat);
+  updateDestPreview();
+  validateUploadBtn();
+}
+function selectAllPaths(){
+  document.querySelectorAll('.path-btn').forEach(b=>{ b.classList.add('sel'); selectedPaths.add(b.dataset.cat); });
+  updateDestPreview(); validateUploadBtn();
+}
+function clearAllPaths(){
+  document.querySelectorAll('.path-btn').forEach(b=>{ b.classList.remove('sel'); });
+  selectedPaths.clear(); updateDestPreview(); validateUploadBtn();
+}
+
+/* ── DEST PREVIEW ── */
+function updateDestPreview(){
+  const wrap=document.getElementById('dest-preview');
+  const rows=document.getElementById('dp-rows');
+  if(!selectedSlug||!selectedPaths.size){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  rows.innerHTML=[...selectedPaths].map(cat=>`
+    <div class="dp-row">
+      <span class="dp-cat">${cat}</span>
+      <span class="dp-url">${GH_PAGES}${cat}/pages/${selectedSlug}.html</span>
+    </div>`).join('');
+}
+
+/* ── VALIDATE ── */
+function validateUploadBtn(){
+  const ok=!!selectedFile && selectedPaths.size>0 && !uploading;
+  document.getElementById('btn-upload').disabled=!ok;
+}
+
+/* ── UPLOAD ── */
+async function startUpload(){
+  if(!selectedFile||!selectedPaths.size||uploading) return;
+  if(!currentUser){ toast('Sign in to upload','err'); return; }
+  uploading=true;
+  validateUploadBtn();
+
+  /* Hide result, show progress */
+  document.getElementById('result-wrap').style.display='none';
+  const progWrap=document.getElementById('progress-wrap');
+  progWrap.style.display='block';
+  setProgress(0,false);
+  document.getElementById('pl-text').textContent='Reading file…';
+  document.getElementById('progress-detail').innerHTML='';
+
+  let fileContent;
+  try{
+    fileContent=await readFileAsText(selectedFile);
+  }catch(e){
+    failUpload('Could not read file: '+e.message); return;
+  }
+
+  const cats=[...selectedPaths];
+  const total=cats.length;
+  let done=0;
+  let anyFail=false;
+  const results={}; // cat -> {ok,url,err}
+
+  /* Init detail rows */
+  document.getElementById('progress-detail').innerHTML=cats.map(c=>`
+    <div class="pd-row">
+      <span class="pd-cat">${c}</span>
+      <span class="pd-status wait" id="pd_${c}">waiting…</span>
+    </div>`).join('');
+
+  document.getElementById('pl-text').textContent='Uploading to '+total+' path'+(total>1?'s':'')+'…';
+  setProgress(0,false);
+
+  for(let i=0;i<cats.length;i++){
+    const cat=cats[i];
+    setStatus(cat,'run','uploading…');
+    try{
+      const res=await uploadToPath(cat, selectedSlug, fileContent, currentUser);
+      results[cat]={ok:true, url:res.url};
+      setStatus(cat,'ok','✓ uploaded');
+    }catch(e){
+      results[cat]={ok:false, err:e.message};
+      setStatus(cat,'err','✗ '+e.message.substring(0,40));
+      anyFail=true;
+    }
+    done++;
+    const pct=Math.round((done/total)*100);
+    setProgress(pct, anyFail&&done===total);
+  }
+
+  /* Final */
+  uploading=false;
+  validateUploadBtn();
+  progWrap.style.display='none';
+  showResult(!anyFail, results, cats);
+  addHistory(selectedSlug, cats, results);
+}
+
+function setProgress(pct, fail){
+  const fill=document.getElementById('progress-bar-fill');
+  const pctEl=document.getElementById('pl-pct');
+  fill.style.width=pct+'%';
+  pctEl.textContent=pct+'%';
+  if(fail){
+    fill.classList.add('fail');
+    pctEl.classList.add('fail');
+  } else {
+    fill.classList.remove('fail');
+    pctEl.classList.remove('fail');
+  }
+}
+function setStatus(cat, type, msg){
+  const el=document.getElementById('pd_'+cat);
+  if(!el) return;
+  el.className='pd-status '+type;
+  el.textContent=msg;
+}
+
+/* ── UPLOAD TO ONE PATH ── */
+async function uploadToPath(cat, slug, htmlContent, user){
+  const filePath = cat+'/pages/'+slug+'.html';
+  const indexPath= cat+'/pages/index.json';
+  const res=await fetch(API_BASE+'/api/awflmeta/upload-page',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+(user.token||'upload')
+    },
+    body:JSON.stringify({
+      filePath,
+      indexPath,
+      slug,
+      htmlContent,
+      category:cat,
+      author:user.username,
+    })
+  });
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.error||'Server error '+res.status);
+  return data;
+}
+
+/* ── RESULT ── */
+function showResult(success, results, cats){
+  const wrap=document.getElementById('result-wrap');
+  wrap.style.display='block';
+  const ok=cats.filter(c=>results[c]?.ok).length;
+  const fail=cats.length-ok;
+  if(success){
+    document.getElementById('result-icon').textContent='✅';
+    document.getElementById('result-title').textContent='Upload Complete!';
+    document.getElementById('result-sub').textContent=
+      selectedSlug+'.html uploaded to '+ok+' path'+(ok>1?'s':'')+'.';
+  } else if(ok>0){
+    document.getElementById('result-icon').textContent='⚠️';
+    document.getElementById('result-title').textContent='Partially Uploaded';
+    document.getElementById('result-sub').textContent=
+      ok+' succeeded, '+fail+' failed. Check the details above.';
+  } else {
+    document.getElementById('result-icon').textContent='❌';
+    document.getElementById('result-title').textContent='Upload Failed';
+    document.getElementById('result-sub').textContent=
+      'All '+fail+' upload'+(fail>1?'s':'')+' failed. Check the server or your connection.';
+  }
+  if(success) toast('Uploaded '+selectedSlug+'.html','ok');
+  else if(ok>0) toast('Partial upload — '+fail+' failed','inf');
+  else toast('Upload failed','err');
+}
+
+/* ── UPLOAD AGAIN ── */
+function uploadAgain(){
+  document.getElementById('result-wrap').style.display='none';
+  document.getElementById('progress-wrap').style.display='none';
+  clearFile({stopPropagation:()=>{}});
+  clearAllPaths();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── FAIL ── */
+function failUpload(msg){
+  uploading=false; validateUploadBtn();
+  setProgress(100,true);
+  document.getElementById('pl-text').textContent='Upload failed';
+  setTimeout(()=>{
+    document.getElementById('progress-wrap').style.display='none';
+    showResult(false,{},{});
+    document.getElementById('result-sub').textContent=msg;
+  },800);
+  toast(msg,'err');
+}
+
+/* ── READ FILE ── */
+function readFileAsText(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>res(e.target.result);
+    r.onerror=()=>rej(new Error('File read error'));
+    r.readAsText(file,'utf-8');
+  });
+}
+
+/* ── HISTORY ── */
+function addHistory(slug, cats, results){
+  try{ uploadHistory=JSON.parse(localStorage.getItem(HIST_KEY)||'[]'); }catch{ uploadHistory=[]; }
+  uploadHistory.unshift({ slug, cats, results, ts:Date.now() });
+  if(uploadHistory.length>20) uploadHistory=uploadHistory.slice(0,20);
+  try{ localStorage.setItem(HIST_KEY,JSON.stringify(uploadHistory)); }catch{}
+  renderHistory();
+}
+function renderHistory(){
+  try{ uploadHistory=JSON.parse(localStorage.getItem(HIST_KEY)||'[]'); }catch{ uploadHistory=[]; }
+  const wrap=document.getElementById('history-wrap');
+  const list=document.getElementById('history-list');
+  if(!uploadHistory.length||!currentUser){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  list.innerHTML=uploadHistory.map(h=>{
+    const ok=h.cats?h.cats.filter(c=>h.results?.[c]?.ok).length:0;
+    const paths=h.cats?h.cats.join(', '):'—';
+    const d=new Date(h.ts).toLocaleString();
+    return `<div class="hist-item">
+      <span class="hi-icon">${ok===h.cats?.length?'✅':'⚠️'}</span>
+      <div class="hi-info">
+        <div class="hi-name">${esc(h.slug)}.html</div>
+        <div class="hi-paths">${esc(paths)} · ${ok}/${h.cats?.length||0} succeeded</div>
+      </div>
+      <span class="hi-date">${esc(d)}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ── MODALS ── */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.mo').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); });
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+});
+
+/* ── HELPERS ── */
+function showErr(el,msg){ el.textContent=msg; el.classList.add('show'); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(msg,type='inf'){
+  const el=document.createElement('div'); el.className='toast '+type; el.textContent=msg;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+
+/* ── INIT ── */
+async function init(){
+  loadAuth();
+  renderHistory();
+  await syncAccountsFromServer();
+}
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
