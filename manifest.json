@@ -1,0 +1,21 @@
+{
+  "name": "AEDTP WORLD",
+  "short_name": "AEDTP WORLD",
+  "description": "Discover And Connect",
+  "start_url": "aedtpworld.com,
+  "display": "standalone",
+  "background_color": "#0a0c10",
+  "theme_color": "#0a0c10",
+  "icons": [
+    {
+      "src": "https://aedtpworld.com/icons/aedtpworld.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://aedtpworld.com/icons/aedtpworld.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

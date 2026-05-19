@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/1.0">
+
+  <!-- Main Pages -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/index.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Category Pages -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/apps/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/artists/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/bible/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/biography/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/business/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/developer/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/dictionary/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/education/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/legacy/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/music/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/news/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/help/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Creation And Uploading Files Pages -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/create/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/upload/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Business Registration Page -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/register/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- License And Verification Pages -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/license/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/aedtpworld/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- AWFL Pages (awfl/) -->
+  <url>
+    <loc>https://aedtpworldawfl.github.io/awflmeta/awfl/Buddy_DML.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+</urlset>
