@@ -1,0 +1,16 @@
+{
+  "contents": [
+    "faqs.html",
+    "smart_ways.html"
+  ],
+  "metadata": {
+    "title": "AWFLMETA Assistant Help",
+    "description": "Complete guide to AEDTP WORLD FREE LICENSE WIKI system",
+    "author": "AEDTP WORLD",
+    "version": "1.0",
+    "last_updated": "2025",
+    "image_path": "https://aedtpworldawfl.github.io/awflmeta/images/",
+    "audio_path": "https://aedtpworldawfl.github.io/awflmeta/audio/",
+    "note": "Spaces in file names are replaced with underscores (_). Add more .html files and list them in the 'contents' array to include them in the help system."
+  }
+}

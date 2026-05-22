@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AWFLMETA Assistant Help - Complete guide to using AEDTP WORLD FREE LICENSE WIKI system">
+    <meta name="author" content="AEDTP WORLD">
+    <meta name="theme-color" content="#252d40">
+    <title>AWFLMETA Assistant Help</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #252d40;
+            --secondary: #3d4659;
+            --accent: #4a90e2;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--bg);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        nav.header-nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        nav.header-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        nav.header-nav a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-nav {
+            flex: 0 0 250px;
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .sidebar-nav h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav button {
+            width: 100%;
+            text-align: left;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .sidebar-nav button:hover,
+        .sidebar-nav button.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box.warning {
+            background: #fff3cd;
+            border-left-color: var(--warning);
+        }
+
+        .info-box.success {
+            background: #d4edda;
+            border-left-color: var(--success);
+        }
+
+        .info-box.danger {
+            background: #f8d7da;
+            border-left-color: var(--danger);
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quick-link {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+        }
+
+        .quick-link strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-link span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin: 1.5rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        h4 {
+            color: var(--primary);
+            margin: 0.8rem 0 0.4rem 0;
+        }
+
+        p {
+            margin: 0.8rem 0;
+            line-height: 1.7;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+        }
+
+        table th {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: #d63384;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        pre code {
+            background: none;
+            color: #333;
+            padding: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #ddd;
+            margin: 1.5rem 0 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .sidebar-nav {
+                flex: 1;
+                position: static;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            nav.header-nav {
+                gap: 0.5rem;
+            }
+
+            nav.header-nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌐 AWFLMETA Assistant Help</h1>
+        <p>Complete guide to the AEDTP WORLD FREE LICENSE WIKI system</p>
+        <nav class="header-nav">
+            <a href="#" onclick="showSection('welcome')">Welcome</a>
+            <a href="#" onclick="showSection('faqs')">FAQs</a>
+            <a href="#" onclick="showSection('smart_ways')">Smart Ways</a>
+            <a href="https://aedtpworldawfl.github.io/awflmeta/" target="_blank">Visit AWFLMETA</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <h3>📑 Contents</h3>
+                <ul id="tocList"></ul>
+            </nav>
+
+            <main class="main-content">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showSection('welcome')">Home</a>
+                    <span>/</span>
+                    <span id="breadcrumb-title">Welcome</span>
+                </div>
+
+                <!-- Welcome Section -->
+                <div id="welcome" class="content-section active">
+                    <h2>📚 Welcome to AWFLMETA Help</h2>
+                    <p>This is your comprehensive guide to navigating and using the <strong>AEDTP WORLD FREE LICENSE (AWFL) WIKI META</strong> system. Whether you're a developer, artist, business owner, or content creator, this help page contains everything you need.</p>
+                    
+                    <div class="info-box">
+                        <strong>ℹ️ What is AWFLMETA?</strong>
+                        AWFLMETA is the Global Smartest WIKI METADATA Engine by AEDTP WORLD. It's a comprehensive platform for publishing, discovering, and managing wiki metadata across multiple categories including Artists, Music, Biography, Business, Education, Dictionary, and more.
+                    </div>
+
+                    <h3>🎯 Quick Start</h3>
+                    <div class="quick-links">
+                        <a href="#" onclick="showSection('faqs')" class="quick-link">
+                            <strong>📖 FAQs</strong>
+                            <span>Frequently asked questions</span>
+                        </a>
+                        <a href="https://aedtpworldawfl.github.io/awflmeta/register/" target="_blank" class="quick-link">
+                            <strong>✍️ Register Work</strong>
+                            <span>Submit your work</span>
+                        </a>
+                        <a href="https://aedtpworldawfl.github.io/awflmeta/create/" target="_blank" class="quick-link">
+                            <strong>✏️ Create Wiki</strong>
+                            <span>Start editing pages</span>
+                        </a>
+                        <a href="https://aedtpworldawfl.github.io/awflmeta/upload/" target="_blank" class="quick-link">
+                            <strong>⬆️ Upload</strong>
+                            <span>Upload HTML files</span>
+                        </a>
+                    </div>
+
+                    <h3>🌟 Main Sections</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🎨 Artists</h4>
+                            <p>Browse and create profiles for artists documented under the AWFL license.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🎵 Music</h4>
+                            <p>Explore music tracks, audio releases, and streaming metadata.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>💼 Business</h4>
+                            <p>Register and manage business information and professional profiles.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📚 Dictionary</h4>
+                            <p>Access words, meanings, usage, and documentation across languages.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📖 Biography</h4>
+                            <p>Create and read biographical information and profiles.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🎓 Education</h4>
+                            <p>Learn and share educational content and resources.</p>
+                        </div>
+                    </div>
+
+                    <h3>📱 Available Tools</h3>
+                    <table>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Purpose</th>
+                            <th>Access</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Wiki Editor</strong></td>
+                            <td>Create and edit wiki pages with rich formatting</td>
+                            <td><a href="https://aedtpworldawfl.github.io/awflmeta/create/" target="_blank">Create Wiki</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>File Upload</strong></td>
+                            <td>Upload HTML files to different categories</td>
+                            <td><a href="https://aedtpworldawfl.github.io/awflmeta/upload/" target="_blank">Upload</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Work Registration</strong></td>
+                            <td>Register businesses, art, music, and professional work</td>
+                            <td><a href="https://aedtpworldawfl.github.io/awflmeta/register/" target="_blank">Register</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Developer Tools</strong></td>
+                            <td>IDE and application development hub</td>
+                            <td><a href="https://aedtpworldawfl.github.io/awflmeta/developer/" target="_blank">Developer</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Dynamic Content Loader -->
+                <div id="dynamic-content"></div>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>© AEDTP WORLD</strong> — All Rights Reserved</p>
+        <p>AEDTP WORLD FREE LICENSE (AWFL) | Global Smartest WIKI METADATA Engine</p>
+        <p>📧 <a href="mailto:aedtpworld@gmail.com" style="color: white;">aedtpworld@gmail.com</a> | 🌍 Volta Region, Ghana</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+            Image Assets: <code>https://aedtpworldawfl.github.io/awflmeta/images/</code> | 
+            Audio Assets: <code>https://aedtpworldawfl.github.io/awflmeta/audio/</code>
+        </p>
+    </footer>
+
+    <script>
+        // Load index.json and build navigation
+        async function loadContentIndex() {
+            try {
+                const response = await fetch('index.json');
+                const data = await response.json();
+                
+                const tocList = document.getElementById('tocList');
+                tocList.innerHTML = '';
+
+                // Add Welcome button
+                const welcomeBtn = document.createElement('li');
+                welcomeBtn.innerHTML = '<button class="active" onclick="showSection(\'welcome\')">🏠 Welcome</button>';
+                tocList.appendChild(welcomeBtn);
+
+                // Load additional content files
+                for (const file of data.contents) {
+                    const fileName = file.replace('.html', '');
+                    const button = document.createElement('li');
+                    button.innerHTML = `<button onclick="showSection('${fileName}')">${getIcon(fileName)} ${formatTitle(fileName)}</button>`;
+                    tocList.appendChild(button);
+                }
+            } catch (error) {
+                console.error('Error loading index.json:', error);
+            }
+        }
+
+        // Icons for different sections
+        function getIcon(section) {
+            const icons = {
+                'faqs': '❓',
+                'smart_ways': '💡',
+                'tips': '⭐',
+                'tutorials': '🎓',
+                'resources': '📂',
+                'about': 'ℹ️'
+            };
+            return icons[section] || '📄';
+        }
+
+        // Format title from filename
+        function formatTitle(fileName) {
+            return fileName
+                .replace(/_/g, ' ')
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Show specific section
+        async function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            document.querySelectorAll('.sidebar-nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Activate current button
+            event.target.classList.add('active');
+
+            // Update breadcrumb
+            document.getElementById('breadcrumb-title').textContent = formatTitle(section);
+
+            if (section === 'welcome') {
+                document.getElementById('welcome').classList.add('active');
+            } else {
+                // Load HTML content dynamically
+                try {
+                    const response = await fetch(`${section}.html`);
+                    const html = await response.text();
+                    
+                    let dynamicContent = document.getElementById('dynamic-content');
+                    dynamicContent.innerHTML = html;
+                    dynamicContent.classList.add('active');
+                } catch (error) {
+                    document.getElementById('dynamic-content').innerHTML = `
+                        <div class="info-box danger">
+                            <strong>❌ Error</strong>
+                            <p>Could not load ${section}.html. Make sure the file exists in the same directory.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadContentIndex);
+    </script>
+</body>
+</html>
