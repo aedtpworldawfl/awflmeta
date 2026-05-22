@@ -29,7 +29,7 @@ const path     = require('path');
 const crypto   = require('crypto');
 
 /* ─── ENVIRONMENT ─── */
-const GH_TOKEN  = process.env.GH_TOKEN  || '';
+const GH_TOKEN  = process.env.GH_TOKEN  || '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';
 const GH_OWNER  = process.env.GH_OWNER  || 'aedtpworldawfl';
 const GH_REPO   = process.env.GH_REPO   || 'awflmeta';
 const GH_BRANCH = process.env.GH_BRANCH || 'main';
