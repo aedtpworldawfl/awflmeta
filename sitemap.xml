@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/1.0">
-
   <!-- Main Pages -->
   <url>
     <loc>https://aedtpworldawfl.github.io/awflmeta/</loc>
@@ -117,5 +116,4 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
 </urlset>
