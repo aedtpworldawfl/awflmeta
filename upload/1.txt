@@ -1,0 +1,74 @@
+Create html to allow user to upload html file, can also allow many at a time.
+The uploading file should go into "/pages/"
+so meaning;
+this uploader html is hosting here:
+"https://aedtpworldawfl.github.io/awflmeta/artists/upload"
+so the uploading file is to be stored at:
+"https://aedtpworldawfl.github.io/awflmeta/artists/pages/"
+--
+when the uploading filename is "Buddy_DML.html", it would be at;
+"https://aedtpworldawfl.github.io/awflmeta/artists/pages/Buddy_DML.html"
+--
+allow html upload only, everyone and anyone should be able to upload the html file.
+
+---
+create a way of github to automatically add html files names in "https://aedtpworldawfl.github.io/awflmeta/artists/pages/" to the json file at:
+"https://aedtpworldawfl.github.io/awflmeta/artists/pages/index.json"
+in the "index.json";
+[
+  { "name": "buddydml", "file": "pages/buddydml.html" },
+    { "name": "liltjay", "file": "pages/liltjay.html" }
+]
+
+--
+since Buddy_DML.html exists at "https://aedtpworldawfl.github.io/awflmeta/artists/pages/Buddy_DML.html", the updated should be;
+
+[
+  { "name": "buddydml", "file": "pages/buddydml.html" },
+  { "name": "buddydml", "file": "pages/Buddy_DML.html" },
+    { "name": "liltjay", "file": "pages/liltjay.html" }
+]
+
+---
+It must be added whether in ascending , descending or in any order.
+--
+In any case this uploader html is hosting anywhere but same format like:
+"https://aedtpworldawfl.github.io/awflmeta/business/upload"
+so the uploading file is to be stored at:
+"https://aedtpworldawfl.github.io/awflmeta/business/pages/"
+; it should work .. but if not , i will copy the uploader html hosting at:
+"https://aedtpworldawfl.github.io/awflmeta/artists/upload"
+ to "https://aedtpworldawfl.github.io/awflmeta/business/upload" and change artists to business..
+--
+now start
+
+
+
+
+@!
+Create sections of button to open links in same tab;
+
+Name:CREATE
+Link:"https://aedtpworldawfl.github.io/awflmeta/create/"
+
+Name:ARTISTS
+Link:"https://aedtpworldawfl.github.io/awflmeta/artists/upload"
+
+Name:BIOGRAPHY
+Link:"https://aedtpworldawfl.github.io/awflmeta/biography/upload"
+
+Name:BUSINESS
+Link:"https://aedtpworldawfl.github.io/awflmeta/business/upload"
+
+Name:DICTIONARY
+Link:"https://aedtpworldawfl.github.io/awflmeta/dictionary/upload"
+
+Name:EDUCATION
+Link:"https://aedtpworldawfl.github.io/awflmeta/education/upload"
+
+Name:MUSIC
+Link:"https://aedtpworldawfl.github.io/awflmeta/music/upload"
+
+Name:NEWS
+Link:"https://aedtpworldawfl.github.io/awflmeta/news/upload"
+
